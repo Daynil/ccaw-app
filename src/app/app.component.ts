@@ -1,24 +1,20 @@
 import { Component } from '@angular/core';
-import { Http, HTTP_PROVIDERS } from '@angular/http';
+import { ROUTER_DIRECTIVES } from '@angular/router';
 
-import { CheshireCatComponent } from './cheshire-cat/cheshire-cat.component';
+import { TransitionService } from './shared/transition.service';
 
 @Component({
   moduleId: module.id,
   selector: 'my-app',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.css'],
-  directives: [CheshireCatComponent],
-  providers: HTTP_PROVIDERS
+  directives: [ROUTER_DIRECTIVES],
+  providers: [TransitionService]
 })
 export class AppComponent {
-  serverData: string;
   
-  constructor(private http: Http) { 
-    this.http.get('/test')
-      .subscribe((res:any) => {
-        this.serverData = res._body;
-      });
+  constructor() { 
+
   }
 
 }

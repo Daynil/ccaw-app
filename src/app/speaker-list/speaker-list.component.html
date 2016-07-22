@@ -1,0 +1,9 @@
+<div [class.page-transition]="transitionService.isTransitioning()">
+  <h1>List of speakers</h1>
+
+  <ul>
+    <li>Overview of speakers</li>
+    <li>Filters? (assigned/unassigned)</li>
+    <li>Click <a [routerLink]="['/speaker']">a speaker</a> to view full details</li>
+  </ul>
+</div>
