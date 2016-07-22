@@ -7,6 +7,7 @@ export class TransitionService {
   constructor() { }
 
   isTransitioning(): boolean {
+    console.log(this.transitioning);
     return this.transitioning;
   }
 
