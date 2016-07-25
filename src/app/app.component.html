@@ -8,17 +8,25 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" [routerLink]="['/']">CCAW</a>
+        <a class="navbar-brand" [routerLink]="['/admin']">CCAW</a>
       </div>
 
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
         <ul class="nav navbar-nav">
-          <li><a [routerLink]="['/calendar']">Calendar</a></li>
-          <li><a [routerLink]="['/session-list']">Sessions</a></li>
-          <li><a [routerLink]="['/speaker-list']">Speakers</a></li>
+          <li><a [routerLink]="['/admin/calendar']">Calendar</a></li>
+          <li><a [routerLink]="['/admin/session-list']">Sessions</a></li>
+          <li><a [routerLink]="['/admin/speaker-list']">Speakers</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-          <li><a href="#">Settings</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Manage Conferences <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#">Create Conference</a></li>
+              <li class="divider"></li>
+              <li><a href="#">Select Active Conference</a></li>
+              <li><a href="#">Modify Conferences</a></li>
+            </ul>
+          </li>
         </ul>
       </div>
     </div>
