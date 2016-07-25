@@ -3,16 +3,15 @@
 const mongoose = require('mongoose');
 
 let conferenceSchema = new mongoose.Schema({
-  year: Number,
   dateRange: {
-    start: String,
+    start: String, // 2016-12-30
     end: String
   },
   timeSlots: [{  // Can these overlap?
     date: String,
     timeRange: {
-      start: Number,
-      end: Number
+      start: String,
+      end: String
     },
     presentation: String // _id of presentation filling slot, unfilled slot if empty
   }]
