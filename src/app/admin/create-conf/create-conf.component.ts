@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import * as moment from 'moment';
 
+import { AdminService } from '../../shared/admin.service';
 import { TransitionService } from '../../shared/transition.service';
 import { ToastComponent } from '../../shared/toast.component';
 
@@ -15,7 +16,8 @@ export class CreateConfComponent implements OnInit {
 
   @ViewChild('toast') toast: ToastComponent;
 
-  constructor(private transitionService: TransitionService) { }
+  constructor(private transitionService: TransitionService,
+              private adminService: AdminService) { }
 
   ngOnInit() {
     this.transitionService.transition();
@@ -28,6 +30,7 @@ export class CreateConfComponent implements OnInit {
     let startValid = moment(startVal).isValid();
     let endValid = moment(endVal).isValid();
     if (startValid && endValid) {
+      this.adminService.createConference(startVal, endVal);
       this.toast.message('Conference created!');
     } else if (!startValid) {
       this.toast.message('Start date invalid');

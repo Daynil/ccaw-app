@@ -15,7 +15,13 @@ if (process.env.NODE_ENV !== 'production') {
 let production = process.env.NODE_ENV === 'production';
 
 // Database
-let mongoURI = process.env.MONGO_URI || 'connect to localhost mongo';
+const mongoose = require('mongoose');
+const Conference = require('./models/conference');
+const Speaker = require('./models/speaker');
+let mongoURI = process.env.MONGO_URI || 'mongodb://localhost/ccaw-app';
+mongoose.connect(mongoURI);
+
+
 
 /** True = get response details on served node modules **/
 let verboseLogging = false;
@@ -38,6 +44,18 @@ app.use( express.static( path.join(__dirname, '../dist') ));
 
 app.use('/scripts', express.static( path.join(__dirname, '../node_modules') ));
 app.use('/app', express.static( path.join(__dirname, '../dist/app') ));
+
+app.get('/api/getallconferences', (req, res) => {
+  res.status(200).end();
+});
+
+app.post('/api/createconference', (req, res) => {
+  res.status(200).end();
+});
+
+app.post('/api/updateconference', (req, res) => {
+  res.status(200).end();
+});
 
 /** Pass all non-api routes to front-end router for handling **/ 
 app.get('*', (req, res) => {
