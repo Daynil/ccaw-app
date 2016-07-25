@@ -41,6 +41,10 @@ export class AdminService {
               .get('/api/getallconferences')
               .toPromise()
               .then(parseJson)
+              .then(conferences => {
+                this.conferences = conferences;
+                return conferences;
+              })
               .catch(handleError);
   }
 

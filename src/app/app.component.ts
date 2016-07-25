@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
+import { HTTP_PROVIDERS } from '@angular/http';
 
 import { AdminService } from './shared/admin.service';
 import { TransitionService } from './shared/transition.service';
@@ -10,7 +11,7 @@ import { TransitionService } from './shared/transition.service';
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.css'],
   directives: [ROUTER_DIRECTIVES],
-  providers: [AdminService, TransitionService]
+  providers: [HTTP_PROVIDERS, AdminService, TransitionService]
 })
 export class AppComponent implements OnInit {
   

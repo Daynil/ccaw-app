@@ -46,15 +46,32 @@ app.use('/scripts', express.static( path.join(__dirname, '../node_modules') ));
 app.use('/app', express.static( path.join(__dirname, '../dist/app') ));
 
 app.get('/api/getallconferences', (req, res) => {
-  res.status(200).end();
+  Conference
+    .find({})
+    .exec()
+    .then(conferences => {
+      res.status(200).json(conferences);
+    });
 });
 
 app.post('/api/createconference', (req, res) => {
-  res.status(200).end();
+  let conf = req.body;
+  let newConf = new Conference();
+  newConf.dateRange = {
+    start: conf.dateRange.start,
+    end: conf.dateRange.end
+  };
+  newConf.save(err => {
+    if (err) {
+      console.log(err);
+      res.status(500).json({message: 'Conference save error'});
+    }
+    else res.status(200).json({message: 'Conference created'});
+  });
 });
 
 app.post('/api/updateconference', (req, res) => {
-  res.status(200).end();
+  res.status(200).json({done: true});
 });
 
 /** Pass all non-api routes to front-end router for handling **/ 
