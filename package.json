@@ -1,5 +1,5 @@
 {
-  "name": "fullstack-angular2express",
+  "name": "ccaw-app",
   "version": "1.0.0",
   "scripts": {
     "start": "gulp serve",

@@ -14,6 +14,9 @@ if (process.env.NODE_ENV !== 'production') {
 }
 let production = process.env.NODE_ENV === 'production';
 
+// Database
+let mongoURI = process.env.MONGO_URI || 'connect to localhost mongo';
+
 /** True = get response details on served node modules **/
 let verboseLogging = false;
 
