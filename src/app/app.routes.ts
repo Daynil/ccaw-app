@@ -12,16 +12,16 @@ import { SpeakerComponent } from './admin/speaker/speaker.component';
 import { SpeakerListComponent } from './admin/speaker-list/speaker-list.component';
 
 export const routes: RouterConfig = [
-  { path: 'admin',               component: HomeComponent },
-  { path: 'admin/calendar',      component: CalendarComponent },
-  { path: 'admin/create-conf',   component: CreateConfComponent },
-  { path: 'admin/modify-conf',    component: ModifyConfComponent },
-  { path: 'admin/proposal',      component: ProposalComponent },
-  { path: 'admin/select-active', component: SelectActiveComponent },
-  { path: 'admin/session',       component: SessionComponent },
-  { path: 'admin/session-list',  component: SessionListComponent },
-  { path: 'admin/speaker',       component: SpeakerComponent },
-  { path: 'admin/speaker-list',  component: SpeakerListComponent }
+  { path: '',               component: HomeComponent },
+  { path: 'calendar',      component: CalendarComponent },
+  { path: 'create-conf',   component: CreateConfComponent },
+  { path: 'modify-conf',   component: ModifyConfComponent },
+  { path: 'proposal',      component: ProposalComponent },
+  { path: 'select-active', component: SelectActiveComponent },
+  { path: 'session',       component: SessionComponent },
+  { path: 'session-list',  component: SessionListComponent },
+  { path: 'speaker',       component: SpeakerComponent },
+  { path: 'speaker-list',  component: SpeakerListComponent }
 ];
 
 

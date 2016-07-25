@@ -39,10 +39,6 @@ app.use( express.static( path.join(__dirname, '../dist') ));
 app.use('/scripts', express.static( path.join(__dirname, '../node_modules') ));
 app.use('/app', express.static( path.join(__dirname, '../dist/app') ));
 
-app.get('/test', (req, res) => {
-  res.status(200).end('Data received from server!');
-});
-
 /** Pass all non-api routes to front-end router for handling **/ 
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../dist', 'index.html'));
