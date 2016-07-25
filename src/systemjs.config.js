@@ -6,7 +6,8 @@
     'rxjs':                       'scripts/rxjs',
     'angular2-in-memory-web-api': 'scripts/angular2-in-memory-web-api',
     '@angular':                   'scripts/@angular',
-    'lodash':                     'scripts/lodash/lodash.js'
+    'lodash':                     'scripts/lodash/lodash.js',
+    'moment':                     'scripts/moment/moment.js'
   };
 
   // packages tells the System loader how to load when no filename and/or no extension
@@ -14,7 +15,8 @@
     'app':                        { main: 'main.js',  defaultExtension: 'js' },
     'rxjs':                       { defaultExtension: 'js' },
     'angular2-in-memory-web-api': { defaultExtension: 'js' },
-    'lodash':                     { defaultExtension: 'js' }
+    'lodash':                     { defaultExtension: 'js' },
+    'moment':                     { defaultExtension: 'js' }
   };
 
   var ngPackageNames = [
