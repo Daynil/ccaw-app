@@ -5,6 +5,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const compress = require('compression');
+const _ = require('lodash');
 
 const app = express();
 
@@ -56,9 +57,10 @@ app.get('/api/getallconferences', (req, res) => {
 
 app.post('/api/createconference', (req, res) => {
   let conf = req.body;
+
   let newConf = new Conference();
+  newConf.title = conf.title;
   newConf.dateRange = {
-    title: conf.title,
     start: conf.dateRange.start,
     end: conf.dateRange.end
   };

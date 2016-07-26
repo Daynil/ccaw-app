@@ -3,10 +3,10 @@
   <h4>Select the conference you want to modify</h4>
   <div id="dropdown" class="row">
     <div class="col-md-4">
-      <label for="conferences" class="ontrol-label">Select Conference</label>
+      <label for="conferences" class="control-label">Select Conference</label>
       <select #conferences class="form-control" id="conferences">
         <option *ngFor="let conf of adminService.conferences">
-          {{ conf.dateRange.start }} to {{ conf.dateRange.end }}
+          {{ conf.title }}
         </option>
       </select>
     </div>

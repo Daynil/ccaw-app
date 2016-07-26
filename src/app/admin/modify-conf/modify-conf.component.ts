@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
+import { AdminService } from '../../shared/admin.service';
 import { TransitionService } from '../../shared/transition.service';
 
 @Component({
@@ -10,7 +11,8 @@ import { TransitionService } from '../../shared/transition.service';
 })
 export class ModifyConfComponent implements OnInit {
 
-  constructor(private transitionService: TransitionService) { }
+  constructor(private transitionService: TransitionService,
+              private adminService: AdminService) { }
 
   ngOnInit() {
     this.transitionService.transition();

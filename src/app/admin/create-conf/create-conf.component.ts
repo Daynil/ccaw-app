@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import * as moment from 'moment';
+import * as _ from 'lodash';
 
 import { AdminService } from '../../shared/admin.service';
+import { Conference } from '../../shared/conference.model';
 import { TransitionService } from '../../shared/transition.service';
 import { ToastComponent } from '../../shared/toast.component';
 
@@ -40,11 +42,19 @@ export class CreateConfComponent implements OnInit {
       if (endMoment.isBefore(startMoment) || endMoment.isSame(startMoment)) {
         this.toast.message("The end date must be after start date");
       } else {
-        this.adminService.createConference(titleText, startText, endText);
-        this.toast.message('Conference created!');
-        title.value = '';
-        start.value = "";
-        end.value = "";
+        this.adminService
+            .getAllConferences()
+            .then((conferences: Conference[]) => {
+              if (!this.isDuplicateTitle(conferences, titleText)) {
+                this.adminService.createConference(titleText, startText, endText);
+                this.toast.message('Conference created!');
+                title.value = '';
+                start.value = "";
+                end.value = "";
+              } else {
+                this.toast.message('Conference title already exists, please choose another');
+              }
+            })
       }
     } else if (!startValid) {
       this.toast.message('Start date invalid');
@@ -53,5 +63,9 @@ export class CreateConfComponent implements OnInit {
     }
   }
 
+  isDuplicateTitle(conferences: Conference[], title: string) {
+    let duplicateTitle = _.find(conferences, d => d.title.toLowerCase() === title.toLowerCase());
+    return typeof duplicateTitle !== 'undefined';
+  }
 
 }
