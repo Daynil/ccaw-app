@@ -30,8 +30,14 @@ export class CreateConfComponent implements OnInit {
     let startValid = moment(startVal).isValid();
     let endValid = moment(endVal).isValid();
     if (startValid && endValid) {
-      this.adminService.createConference(startVal, endVal);
-      this.toast.message('Conference created!');
+      if (endVal < startVal) {
+        this.toast.message("The end date must be after start date");
+      } else {
+        this.adminService.createConference(startVal, endVal);
+        this.toast.message('Conference created!');
+        start.value = "";
+        end.value = "";
+      }
     } else if (!startValid) {
       this.toast.message('Start date invalid');
     } else if (!endValid) {
