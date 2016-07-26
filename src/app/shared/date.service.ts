@@ -4,8 +4,8 @@ import * as moment from 'moment';
 @Injectable()
 export class DateService {
 
-  private userFormat = 'MM/DD/YYYY';
-  private dbFormat = 'YYYY-MM-DD';
+  userFormat = 'MM/DD/YYYY';
+  dbFormat = 'YYYY-MM-DD';
 
   constructor() { }
 

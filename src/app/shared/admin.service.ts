@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/add/operator/toPromise";
+import * as _ from 'lodash';
 
 import { handleError, parseJson, packageForPost } from './http-helpers';
 import { Conference, TimeSlot } from './conference.model';
@@ -32,18 +33,23 @@ export class AdminService {
               .catch(handleError);
   }
 
-  addTimeslot(startTime: string, endTime: string, conference: string) {
-    //ToDO add api call to save to database and then call api here
-    let newTimeslot: Conference = {
-      conference: conference,
-      startTime: startTime,
-      endTime: endTime
+  addTimeslot(startTime: string, endTime: string, conferenceTitle: string) {
+    let conference = _.find(this.conferences, d => d.title === conferenceTitle);
+    let newTimeslot: TimeSlot = {
+      date: '',
+      timeRange: {
+        start: startTime,
+        end: endTime
+      }
     }
+    // TODO: need to get date of slot and check for duplicate (if necessary per brooke)
+    conference.timeSlots.push(newTimeslot);
+    let pkg = packageForPost(conference);
     return this.http
-        .post('/api/addtimeslot', pkg.body, pkg.opts)
-        .toPromise()
-        .then(parseJson)
-        .catch(handleError);
+              .post('/api/addtimeslot', pkg.body, pkg.opts)
+              .toPromise()
+              .then(parseJson)
+              .catch(handleError);
   }
 
   updateConference(startDate: string, endDate: string,

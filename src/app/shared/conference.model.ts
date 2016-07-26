@@ -17,5 +17,5 @@ export interface TimeSlot {
     end: string
   };
   /** _id of presentation */
-  presentation: string;
+  presentation?: string;
 }

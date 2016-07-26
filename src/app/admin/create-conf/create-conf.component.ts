@@ -39,7 +39,7 @@ export class CreateConfComponent implements OnInit {
     let startValid = startMoment.isValid();
     let endValid = endMoment.isValid();
     if (startValid && endValid) {
-      if (endMoment.isBefore(startMoment) || endMoment.isSame(startMoment)) {
+      if (endMoment.isSameOrBefore(startMoment)) {
         this.toast.message("The end date must be after start date");
       } else {
         this.adminService
@@ -64,7 +64,9 @@ export class CreateConfComponent implements OnInit {
   }
 
   isDuplicateTitle(conferences: Conference[], title: string) {
-    let duplicateTitle = _.find(conferences, d => d.title.toLowerCase() === title.toLowerCase());
+    let duplicateTitle = _.find(conferences, function(d) {
+      return d.title.toLowerCase() === title.toLowerCase();
+    });
     return typeof duplicateTitle !== 'undefined';
   }
 
