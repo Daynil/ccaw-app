@@ -25,15 +25,17 @@ export class CreateConfComponent implements OnInit {
 
   createConf(start: HTMLInputElement, end: HTMLInputElement) {
     // Input date value format: 2016-12-30
-    let startVal = start.value;
-    let endVal = end.value;
-    let startValid = moment(startVal).isValid();
-    let endValid = moment(endVal).isValid();
+    let startText = start.value;
+    let endText = end.value;
+    let startMoment = moment(startText);
+    let endMoment = moment(endText);
+    let startValid = startMoment.isValid();
+    let endValid = endMoment.isValid();
     if (startValid && endValid) {
-      if (endVal < startVal) {
+      if (endMoment.isBefore(startMoment) || endMoment.isSame(startMoment)) {
         this.toast.message("The end date must be after start date");
       } else {
-        this.adminService.createConference(startVal, endVal);
+        this.adminService.createConference(startText, endText);
         this.toast.message('Conference created!');
         start.value = "";
         end.value = "";
