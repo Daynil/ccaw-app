@@ -11,6 +11,7 @@ export class AdminService {
 
   conferences: Conference[] = [];
   activeConference: Conference = null;
+  timeslots: TimeSlot[] = [];
 
   constructor(private http: Http) { }
 
@@ -30,9 +31,23 @@ export class AdminService {
               .catch(handleError);
   }
 
+  addTimeslot(startTime: string, endTime: string, conference: string) {
+    //ToDO add api call to save to database and then call api here
+    let newTimeslot: Conference = {
+      conference: conference,
+      startTime: startTime,
+      endTime: endTime
+    }
+    return this.http
+        .post('/api/addtimeslot', pkg.body, pkg.opts)
+        .toPromise()
+        .then(parseJson)
+        .catch(handleError);
+  }
+
   updateConference(startDate: string, endDate: string,
                    timeSlots: TimeSlot[]) {
-    
+
 
   }
 

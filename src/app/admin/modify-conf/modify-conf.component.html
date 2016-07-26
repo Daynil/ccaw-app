@@ -3,7 +3,7 @@
   <h4>Select the conference you want to modify</h4>
   <div id="dropdown" class="row">
     <div class="col-md-4">
-      <label for="conferences" class="col-lg-2 control-label">Conferences</label>
+      <label for="conferences" class="ontrol-label">Select Conference</label>
       <select #conferences class="form-control" id="conferences">
         <option *ngFor="let conf of adminService.conferences">
           {{ conf.dateRange.start }} to {{ conf.dateRange.end }}
@@ -11,6 +11,13 @@
       </select>
     </div>
   </div>
+
+    <div class="form-group row">
+        <div class="col-md-4 col-xs-5">
+            <label class="control-label" for="conference-day">Select Date</label>
+            <input #conferenceDay type="text" class="form-control" id="conference-day">
+        </div>
+    </div>
 
   <h4 class="timeslotHeader">Add Timeslot</h4>
   <div class="form-group row">
@@ -23,7 +30,7 @@
         <input #end type="time" class="form-control" id="end-time">
       </div>
       <div class="col-md-4 col-xs-2">
-        <button class="btn btn-primary">Add</button>
+        <button type="submit" class="btn btn-primary" (click)="addTimeslot(start, end, conferences)">Add</button>
       </div>
   </div>
 
