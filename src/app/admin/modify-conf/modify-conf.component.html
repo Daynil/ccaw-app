@@ -4,7 +4,7 @@
   <div id="dropdown" class="row">
     <div class="col-md-4">
       <label for="conferences" class="control-label">Select Conference</label>
-      <select #conferences class="form-control" id="conferences">
+      <select #conferences class="form-control" id="conferences" (input)="refreshSelectedConf()">
         <option *ngFor="let conf of adminService.conferences">
           {{ conf.title }}
         </option>
@@ -16,8 +16,8 @@
     <div class="col-md-4">
       <label for="dates" class="control-label">Select Date</label>
       <select #dates class="form-control" id="dates">
-        <option *ngFor="let conf of adminService.conferences">
-          {{ conf.title }}
+        <option *ngFor="let date of (selectedConfDates | async)">
+          {{ date }}
         </option>
       </select>
     </div>

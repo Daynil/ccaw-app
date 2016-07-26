@@ -1,4 +1,5 @@
 import { Component, AfterViewInit, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 
@@ -22,7 +23,7 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
   @ViewChild('conferences') conferencesRef: ElementRef;
   conferencesSelect: HTMLSelectElement;
   selectedConf: Conference;
-  selectedConfDates: string[];
+  selectedConfDates: BehaviorSubject<string[]> = new BehaviorSubject([]);
 
   constructor(private transitionService: TransitionService,
               private adminService: AdminService,
@@ -62,13 +63,16 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
   }
 
   refreshSelectedConf() {
+    console.log('called refresh');
     let selectedConfTitle = this.conferencesSelect.value;
     this.selectedConf = _.find(this.adminService.conferences, d => d.title === selectedConfTitle);
     let startMoment = moment(this.selectedConf.dateRange.start);
     let endMoment = moment(this.selectedConf.dateRange.end);
+    let dates = [];
     for (let i = startMoment; i.isSameOrBefore(endMoment); i.add(1, 'd')) {
-      this.selectedConfDates.push(i.format(this.dateService.userFormat));
+      dates.push(i.format(this.dateService.userFormat));
     }
+    this.selectedConfDates.next(dates.slice());
   }
 
 }
