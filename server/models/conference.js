@@ -3,6 +3,7 @@
 const mongoose = require('mongoose');
 
 let conferenceSchema = new mongoose.Schema({
+  title: String,
   dateRange: {
     start: String, // 2016-12-30
     end: String

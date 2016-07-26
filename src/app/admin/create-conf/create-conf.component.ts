@@ -23,7 +23,12 @@ export class CreateConfComponent implements OnInit {
     this.transitionService.transition();
   }
 
-  createConf(start: HTMLInputElement, end: HTMLInputElement) {
+  createConf(title: HTMLInputElement, start: HTMLInputElement, end: HTMLInputElement) {
+    let titleText = title.value;
+    if (titleText.length < 1) {
+      this.toast.message('Create a title for your conference');
+      return;
+    }
     // Input date value format: 2016-12-30
     let startText = start.value;
     let endText = end.value;
@@ -35,8 +40,9 @@ export class CreateConfComponent implements OnInit {
       if (endMoment.isBefore(startMoment) || endMoment.isSame(startMoment)) {
         this.toast.message("The end date must be after start date");
       } else {
-        this.adminService.createConference(startText, endText);
+        this.adminService.createConference(titleText, startText, endText);
         this.toast.message('Conference created!');
+        title.value = '';
         start.value = "";
         end.value = "";
       }

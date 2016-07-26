@@ -6,7 +6,7 @@
       <label for="conferences" class="col-lg-2 control-label">Conferences</label>
         <select #conferences class="form-control" id="conferences">
           <option *ngFor="let conf of adminService.conferences">
-            {{ conf.dateRange.start }} to {{ conf.dateRange.end }}
+            {{ conf.title }}
           </option>
         </select>
     </div>

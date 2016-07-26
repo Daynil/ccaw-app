@@ -15,8 +15,9 @@ export class AdminService {
 
   constructor(private http: Http) { }
 
-  createConference(startDate: string, endDate: string) {
+  createConference(title: string, startDate: string, endDate: string) {
     let newConf: Conference = {
+      title: title,
       dateRange: {
         start: startDate,
         end: endDate

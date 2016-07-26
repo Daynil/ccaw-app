@@ -58,6 +58,7 @@ app.post('/api/createconference', (req, res) => {
   let conf = req.body;
   let newConf = new Conference();
   newConf.dateRange = {
+    title: conf.title,
     start: conf.dateRange.start,
     end: conf.dateRange.end
   };
