@@ -33,16 +33,16 @@ export class AdminService {
               .catch(handleError);
   }
 
-  addTimeslot(startTime: string, endTime: string, conferenceTitle: string) {
-    let conference = _.find(this.conferences, d => d.title === conferenceTitle);
+  addTimeslot(startTime: string, endTime: string, 
+              conferenceTitle: string, date: string) {
+    let conference = _.find(this.conferences, conf => conf.title === conferenceTitle);
     let newTimeslot: TimeSlot = {
-      date: '',
+      date: date,
       timeRange: {
         start: startTime,
         end: endTime
       }
     }
-    // TODO: need to get date of slot and check for duplicate (if necessary per brooke)
     conference.timeSlots.push(newTimeslot);
     let pkg = packageForPost(conference);
     return this.http

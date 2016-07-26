@@ -64,9 +64,7 @@ export class CreateConfComponent implements OnInit {
   }
 
   isDuplicateTitle(conferences: Conference[], title: string) {
-    let duplicateTitle = _.find(conferences, function(d) {
-      return d.title.toLowerCase() === title.toLowerCase();
-    });
+    let duplicateTitle = _.find(conferences, conf => conf.title.toLowerCase() === title.toLowerCase());
     return typeof duplicateTitle !== 'undefined';
   }
 

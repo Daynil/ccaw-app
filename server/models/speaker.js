@@ -105,7 +105,16 @@ let speakerSchema = new mongoose.Schema({
     isMediaOrPressFriendly: String, // Yes, yes no photos, yes no audio rec or photos, no
     willingToRepeat: Boolean,
     hasCopresentor: Boolean,
-    speakers: [Number] // _id's of presentors  
+    speakers: [Number], // _id's of presentors  
+    statusTimeLocation: {
+      conferenceTitle: String,
+      timeSlot: {
+        start: String,
+        end: String
+      },
+      room: String
+    },
+    miscRequirements: String
   }]
 });
 

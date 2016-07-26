@@ -73,6 +73,21 @@ app.post('/api/createconference', (req, res) => {
   });
 });
 
+app.post('/api/addtimeslot', (req, res) => {
+  let conf = req.body;
+
+  Conference
+    .findOne({ title: conf.title })
+    .exec()
+    .then(serverConf => {
+      serverConf.timeSlots = conf.timeSlots;
+      serverConf.save(err => {
+        if (err) res.status(500).json({message: 'Conference save error'});
+        else res.status(200).json({message: 'Conference saved'});
+      });
+    });
+});
+
 app.post('/api/updateconference', (req, res) => {
   res.status(200).json({done: true});
 });

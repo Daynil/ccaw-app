@@ -8,14 +8,15 @@ let conferenceSchema = new mongoose.Schema({
     start: String, // 2016-12-30
     end: String
   },
-  timeSlots: [{  // Can these overlap?
+  // TODO restructure to new timeslots schema front and backend
+  timeSlots: [{
     date: String,
-    timeRange: {
+    timeRanges: [{
       start: String,
       end: String
-    },
-    presentation: String // _id of presentation filling slot, unfilled slot if empty
-  }]
+    }],
+  }],
+  rooms: [String]
 });
 
 module.exports = mongoose.model('Conference', conferenceSchema);

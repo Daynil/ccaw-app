@@ -38,24 +38,31 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
     this.refreshSelectedConf();
   }
 
-  addTimeslot(start: HTMLInputElement, end: HTMLInputElement, conferences: HTMLSelectElement) {
+  addTimeslot(start: HTMLInputElement, end: HTMLInputElement, 
+              conferences: HTMLSelectElement, dates: HTMLSelectElement) {
     let startVal = start.value;
     let endVal = end.value;
     let conferenceTitle = conferences.value;
-    let startMoment = moment(startVal);
-    let endMoment = moment(endVal);
+    let date = this.dateService.formatDateForDatabase(dates.value);
+    let startMoment = moment(`${date} ${startVal}`, this.dateService.timeDate);
+    let endMoment = moment(`${date} ${endVal}`, this.dateService.timeDate);
     let startValid = startMoment.isValid();
     let endValid = endMoment.isValid();
     if (startValid && endValid) {
       if (endMoment.isSameOrBefore(startMoment)) {
         this.toast.message("The end time must be after start time");
       } else {
-        this.adminService.addTimeslot(startVal, endVal, conferenceTitle);
-        this.toast.message('Timeslot added!');
-        start.value = "";
-        end.value = "";
+/*        if (this.overlappingTimeslot(startVal, endVal, conferenceTitle, date)) {
+          this.toast.message('Timeslot overlaps with existing slot!');
+        } else {*/
+          this.adminService.addTimeslot(startVal, endVal, conferenceTitle, date);
+          this.toast.message('Timeslot added!');
+          start.value = "";
+          end.value = "";
+        //}
       }
     } else if (!startValid) {
+      console.log(startVal);
       this.toast.message('Start time invalid');
     } else if (!endValid) {
       this.toast.message('End time invalid');
@@ -63,7 +70,6 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
   }
 
   refreshSelectedConf() {
-    console.log('called refresh');
     let selectedConfTitle = this.conferencesSelect.value;
     this.selectedConf = _.find(this.adminService.conferences, d => d.title === selectedConfTitle);
     let startMoment = moment(this.selectedConf.dateRange.start);
@@ -75,4 +81,21 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
     this.selectedConfDates.next(dates.slice());
   }
 
+/*  overlappingTimeslot(startTime: string, endTime: string, 
+                      conferenceTitle: string, date: string): boolean {
+    // TODO: This doesn't validate properly yet
+    let conference = _.find(this.adminService.conferences, conf => conf.title === conferenceTitle);
+    let slotsForDate = _.filter(conference.timeSlots, slot => slot.date === date);
+    let startMoment = moment(startTime);
+    let endMoment = moment(endTime);
+    let isOverlapping = false;
+    slotsForDate.forEach(slot => {
+      let slotStartMoment = moment(slot.timeRange.start);
+      let slotEndMoment = moment(slot.timeRange.end);
+      let overlappingStart = startMoment.isBetween(slotStartMoment, slotEndMoment);
+      let overlappingEnd = endMoment.isBetween(slotStartMoment, slotEndMoment);
+      if (overlappingStart || overlappingEnd) isOverlapping = true;
+    });
+    return isOverlapping;
+  }*/
 }

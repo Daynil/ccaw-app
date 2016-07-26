@@ -5,7 +5,9 @@ import * as moment from 'moment';
 export class DateService {
 
   userFormat = 'MM/DD/YYYY';
+  
   dbFormat = 'YYYY-MM-DD';
+  timeDate = 'YYYY-MM-DD kk:mm'
 
   constructor() { }
 
