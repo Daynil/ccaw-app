@@ -38,8 +38,9 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
     this.refreshSelectedConf();
   }
 
-  addTimeslot(start: HTMLInputElement, end: HTMLInputElement, 
+  addTimeslot(start: HTMLInputElement, end: HTMLInputElement,
               conferences: HTMLSelectElement, dates: HTMLSelectElement) {
+    console.log(' ---- addTimeSlot -----');
     let startVal = start.value;
     let endVal = end.value;
     let conferenceTitle = conferences.value;
@@ -52,14 +53,10 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
       if (endMoment.isSameOrBefore(startMoment)) {
         this.toast.message("The end time must be after start time");
       } else {
-/*        if (this.overlappingTimeslot(startVal, endVal, conferenceTitle, date)) {
-          this.toast.message('Timeslot overlaps with existing slot!');
-        } else {*/
           this.adminService.addTimeslot(startVal, endVal, conferenceTitle, date);
           this.toast.message('Timeslot added!');
           start.value = "";
           end.value = "";
-        //}
       }
     } else if (!startValid) {
       console.log(startVal);
@@ -67,6 +64,23 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
     } else if (!endValid) {
       this.toast.message('End time invalid');
     }
+  }
+
+  addRoom(conferences: HTMLSelectElement, roomName: HTMLInputElement) {
+    console.log('****  addRoom  ****');
+    let conferenceTitle = conferences.value;
+    let name = roomName.value;
+
+    if (name.length < 1) {
+      this.toast.message("You must enter a room name");
+      return;
+    } else {
+
+      this.adminService.addTimeslot(conferenceTitle, name);
+      this.toast.message('Room added!');
+      roomName.value = "";
+    }
+
   }
 
   refreshSelectedConf() {
@@ -81,7 +95,7 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
     this.selectedConfDates.next(dates.slice());
   }
 
-/*  overlappingTimeslot(startTime: string, endTime: string, 
+/*  overlappingTimeslot(startTime: string, endTime: string,
                       conferenceTitle: string, date: string): boolean {
     // TODO: This doesn't validate properly yet
     let conference = _.find(this.adminService.conferences, conf => conf.title === conferenceTitle);

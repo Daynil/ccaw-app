@@ -33,7 +33,7 @@ export class AdminService {
               .catch(handleError);
   }
 
-  addTimeslot(startTime: string, endTime: string, 
+  addTimeslot(startTime: string, endTime: string,
               conferenceTitle: string, date: string) {
     let conference = _.find(this.conferences, conf => conf.title === conferenceTitle);
     let newTimeslot: TimeSlot = {
@@ -42,7 +42,7 @@ export class AdminService {
         start: startTime,
         end: endTime
       }
-    }
+    };
     conference.timeSlots.push(newTimeslot);
     let pkg = packageForPost(conference);
     return this.http
@@ -50,6 +50,21 @@ export class AdminService {
               .toPromise()
               .then(parseJson)
               .catch(handleError);
+  }
+
+  addRoom(conferenceTitle: string, name: string) {
+    let newRoom: Conference = {
+      title: conferenceTitle,
+      name: name
+    };
+
+    this.conferences.push(newRoom);
+    let pkg = packageForPost(newRoom);
+    return this.http
+        .post('/api/addRoom', pkg.body, pkg.opts)
+        .toPromise()
+        .then(parseJson)
+        .catch(handleError);
   }
 
   updateConference(startDate: string, endDate: string,

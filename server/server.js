@@ -88,11 +88,26 @@ app.post('/api/addtimeslot', (req, res) => {
     });
 });
 
+app.post('/api/addroom', (req, res) => {
+  let conf = req.body;
+
+  Conference
+      .findOne({title: conf.title})
+      .exec()
+      .then(serverConf => {
+        serverConf.rooms.push(conf.name);
+        serverConf.save(err => {
+          if (err) res.status(500).json({ message: 'Conference room save error'});
+          else res.status(200).json({message: 'Conference room saved'});
+        });
+  });
+});
+
 app.post('/api/updateconference', (req, res) => {
   res.status(200).json({done: true});
 });
 
-/** Pass all non-api routes to front-end router for handling **/ 
+/** Pass all non-api routes to front-end router for handling **/
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../dist', 'index.html'));
 });
