@@ -23,21 +23,41 @@
     </div>
   </div>
 
-  <h4 class="timeslotHeader">Add Timeslot</h4>
-  <div class="form-group row">
-      <div class="col-md-4 col-xs-5">
-        <label class="control-label" for="start-time">Start Time</label>
-        <input #start type="time" class="form-control" id="start-time">
-      </div>
-      <div class="col-md-4 col-xs-5">
-        <label class="control-label" for="end-time">End Time</label>
-        <input #end type="time" class="form-control" id="end-time">
-      </div>
-      <div class="col-md-4 col-xs-2">
-        <button type="submit" class="btn btn-primary" (click)="addTimeslot(start, end, conferences, dates)">Add</button>
-      </div>
-  </div>
+  <ul class="nav nav-pills">
+    <li role="presentation" class="active"><a href="#tabTimeslot" data-toggle="tab">Add Timeslot</a></li>
+    <li role="presentation"><a href="#tabRoom" data-toggle="tab">Add Room</a></li>
+  </ul>
 
+  <div class="tab-content clearfix">
+    <div class="tab-pane active" id="tabTimeslot">
+      <h4 class="timeslotHeader">Add Timeslot</h4>
+      <div class="form-group row">
+        <div class="col-md-4 col-xs-5">
+          <label class="control-label" for="start-time">Start Time</label>
+          <input #start type="time" class="form-control" id="start-time">
+        </div>
+        <div class="col-md-4 col-xs-5">
+          <label class="control-label" for="end-time">End Time</label>
+          <input #end type="time" class="form-control" id="end-time">
+        </div>
+        <div class="col-md-4 col-xs-2">
+          <button type="submit" class="btn btn-primary" (click)="addTimeslot(start, end, conferences, dates)">Add</button>
+        </div>
+      </div>
+    </div>
+    <div class="tab-pane" id="tabRoom">
+      <h4 class="timeslotHeader">Add Room</h4>
+      <div class="form-group row">
+        <div class="col-md-4 col-xs-6">
+          <label class="control-label" for="roomName">Room Name</label>
+          <input #start type="text" class="form-control" id="roomName">
+        </div>
+        <div class="col-md-4 col-xs-2">
+          <button type="submit" class="btn btn-primary" (click)="addRoom(conferences, dates, roomName)">Add</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <toast #toast></toast>
 </div>
