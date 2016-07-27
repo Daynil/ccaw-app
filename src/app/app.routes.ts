@@ -10,6 +10,9 @@ import { SessionComponent } from './admin/session/session.component';
 import { SessionListComponent } from './admin/session-list/session-list.component';
 import { SpeakerComponent } from './admin/speaker/speaker.component';
 import { SpeakerListComponent } from './admin/speaker-list/speaker-list.component';
+import { LoginComponent } from './auth/login/login.component';
+import { SignupComponent } from './auth/signup/signup.component';
+import { SettingsComponent } from './auth/settings/settings.component';
 
 export const routes: RouterConfig = [
   { path: '',               component: HomeComponent },
@@ -21,9 +24,11 @@ export const routes: RouterConfig = [
   { path: 'session',       component: SessionComponent },
   { path: 'session-list',  component: SessionListComponent },
   { path: 'speaker',       component: SpeakerComponent },
-  { path: 'speaker-list',  component: SpeakerListComponent }
+  { path: 'speaker-list',  component: SpeakerListComponent },
+  { path: 'login',         component: LoginComponent },
+  { path: 'signup',        component: SignupComponent },
+  { path: 'settings',      component: SettingsComponent }
 ];
-
 
 export const APP_ROUTER_PROVIDERS = [
   provideRouter(routes)

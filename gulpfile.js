@@ -11,11 +11,11 @@ const nodemon = require('gulp-nodemon');
 
 gulp.task('serve', ['compile-ts', 'compile-scss', 'copy-untransformed'], () => {
   nodemon({script: './server/server.js'});
-  
+
   gulp.watch(
-        ['./src/**/*.ts', 
-         './src/**/*.scss', 
-         './src/**/*.html', 
+        ['./src/**/*.ts',
+         './src/**/*.scss',
+         './src/**/*.html',
          './src/**/*.js' ], ['src-watch']);
 
 });
@@ -26,16 +26,16 @@ gulp.task('compile-scss', () => {
   let sourceScssFiles = [
     './src/**/*.scss'
   ];
-  
+
   let scssResult = gulp
     .src(sourceScssFiles)
     .pipe(sourcemaps.init())
     .pipe(sass().on('error', sass.logError));
-    
+
   let stream = scssResult
     .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest('./dist'));
-    
+
   return stream;
 });
 
@@ -44,16 +44,16 @@ gulp.task('compile-ts', () => {
     './src/**/*.ts',			    // Path to typscript files
     './typings/index.d.ts' 		// Reference to typings so tsc knows where it is
   ];
-  
+
   let tsResult = gulp
     .src(sourceTsFiles)
     .pipe(sourcemaps.init())
     .pipe(tsc(tsProjectFront));
-  
+
   let stream = tsResult
     .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest('./dist'));
-    
+
   return stream;
 });
 
@@ -81,14 +81,14 @@ gulp.task('compile-scss-prod', () => {
   let sourceScssFiles = [
     './src/**/*.scss'
   ];
-  
+
   let scssResult = gulp
     .src(sourceScssFiles)
     .pipe(sass().on('error', sass.logError));
-    
+
   let stream = scssResult
     .pipe(gulp.dest('./dist'));
-    
+
   return stream;
 });
 
@@ -97,13 +97,13 @@ gulp.task('compile-ts-prod', () => {
     './src/**/*.ts',			      // Path to typscript files
     './typings/index.d.ts'	  	// Reference to typings so tsc knows where it is
   ];
-  
+
   let tsResult = gulp
     .src(sourceTsFiles)
     .pipe(tsc(tsProjectFront));
-  
+
   let stream = tsResult
     .pipe(gulp.dest('./dist'));
-    
+
   return stream;
 });
