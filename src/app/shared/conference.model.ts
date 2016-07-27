@@ -5,7 +5,8 @@ export interface Conference {
     start: string,
     end: string
   };
-  timeSlots?: TimeSlot[]
+  timeSlots?: TimeSlot[],
+  rooms: string[]
 }
 
 export interface TimeSlot {

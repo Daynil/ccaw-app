@@ -53,12 +53,11 @@ export class AdminService {
   }
 
   addRoom(conferenceTitle: string, name: string) {
-    let newRoom: Conference = {
+    let newRoom = {
       title: conferenceTitle,
       name: name
     };
-
-    this.conferences.push(newRoom);
+    
     let pkg = packageForPost(newRoom);
     return this.http
         .post('/api/addRoom', pkg.body, pkg.opts)

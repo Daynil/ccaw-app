@@ -75,8 +75,7 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
       this.toast.message("You must enter a room name");
       return;
     } else {
-
-      this.adminService.addTimeslot(conferenceTitle, name);
+      this.adminService.addRoom(conferenceTitle, name);
       this.toast.message('Room added!');
       roomName.value = "";
     }
