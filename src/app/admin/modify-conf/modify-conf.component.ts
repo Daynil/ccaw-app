@@ -4,8 +4,9 @@ import * as moment from 'moment';
 import * as _ from 'lodash';
 
 import { AdminService } from '../../shared/admin.service';
-import { Conference } from '../../shared/conference.model';
+import { Conference, TimeSlot } from '../../shared/conference.model';
 import { DateService } from '../../shared/date.service';
+import { TimePipe } from '../../shared/time.pipe';
 import { TransitionService } from '../../shared/transition.service';
 import { ToastComponent } from '../../shared/toast.component';
 
@@ -14,7 +15,8 @@ import { ToastComponent } from '../../shared/toast.component';
   selector: 'modify-conf',
   templateUrl: 'modify-conf.component.html',
   styleUrls: ['modify-conf.component.css'],
-  directives: [ToastComponent]
+  directives: [ToastComponent],
+  pipes: [TimePipe]
 })
 export class ModifyConfComponent implements OnInit, AfterViewInit {
 
@@ -22,8 +24,11 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
 
   @ViewChild('conferences') conferencesRef: ElementRef;
   conferencesSelect: HTMLSelectElement;
+
+  // UI data streams
   selectedConf: BehaviorSubject<Conference> = new BehaviorSubject(null);
   selectedConfDates: BehaviorSubject<string[]> = new BehaviorSubject([]);
+  selectedDaySlots: BehaviorSubject<TimeSlot[]> = new BehaviorSubject([]);
 
   @ViewChild('title') title: ElementRef;
   @ViewChild('startDate') startDate: ElementRef;
@@ -31,7 +36,9 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
 
   constructor(private transitionService: TransitionService,
               private adminService: AdminService,
-              private dateService: DateService) { }
+              private dateService: DateService) {
+    
+  }
 
   ngOnInit() {
     this.transitionService.transition();
@@ -88,8 +95,8 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
     let endVal = end.value;
     let conferenceTitle = conferences.value;
     let date = this.dateService.formatDateForDatabase(dates.value);
-    let startMoment = moment(`${date} ${startVal}`, this.dateService.timeDate, true);
-    let endMoment = moment(`${date} ${endVal}`, this.dateService.timeDate, true);
+    let startMoment = moment(`${date} ${startVal}`, this.dateService.dbFormatTimeDate, true);
+    let endMoment = moment(`${date} ${endVal}`, this.dateService.dbFormatTimeDate, true);
     let startValid = startMoment.isValid();
     let endValid = endMoment.isValid();
     if (startValid && endValid) {
@@ -134,6 +141,18 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
         .then(res => this.toast.message('Room removed!'));
   }
 
+  updateSelectedDate(selectedDate: string) {
+    let dbDate = this.dateService.formatDateForDatabase(selectedDate);
+    let day = _.find(this.selectedConf.getValue().days, day => day.date === dbDate);
+    // Check if we have any timeslots yet
+    if (!(typeof day === 'undefined') && !(typeof day.timeSlots === 'undefined')) {
+      let slots = day.timeSlots;
+      this.selectedDaySlots.next(slots);
+    } else {
+      this.selectedDaySlots.next([]);
+    }
+  }
+
   refreshSelectedConf() {
     let selectedConfTitle = this.conferencesSelect.value;
     this.selectedConf.next(_.find(this.adminService.conferences, d => d.title === selectedConfTitle));
@@ -141,10 +160,11 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
     let endMoment = moment(this.selectedConf.getValue().dateRange.end);
     let dates = [];
     for (let i = startMoment; i.isSameOrBefore(endMoment); i.add(1, 'd')) {
-      dates.push(i.format(this.dateService.userFormat));
+      dates.push(i.format(this.dateService.userFormatDate));
     }
     this.selectedConfDates.next(dates.slice());
     this.fillCurrentDetails();
+    this.updateSelectedDate(this.selectedConfDates.getValue()[0]);
   }
 
   fillCurrentDetails() {

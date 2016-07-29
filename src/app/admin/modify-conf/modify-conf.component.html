@@ -15,7 +15,9 @@
     <li role="presentation" class="active">
       <a href="#tabDetails" data-toggle="tab">Change details</a>
     </li>
-    <li role="presentation"><a href="#tabTimeslot" data-toggle="tab">Add Timeslots</a></li>
+    <li role="presentation" (click)="updateSelectedDate(dates.value)">
+      <a href="#tabTimeslot" data-toggle="tab">Add Timeslots</a>
+    </li>
     <li role="presentation"><a href="#tabRoom" data-toggle="tab">Add Rooms</a></li>
   </ul>
 
@@ -49,7 +51,7 @@
         <div id="dropdown" class="row">
           <div class="col-md-4">
             <label for="dates" class="control-label">Select Date</label>
-            <select #dates class="form-control" id="dates">
+            <select #dates class="form-control" id="dates" (input)="updateSelectedDate(dates.value)">
               <option *ngFor="let date of (selectedConfDates | async)">
                 {{ date }}
               </option>
@@ -67,6 +69,13 @@
           </div>
         </div>
         <button class="btn btn-primary add" (click)="addTimeslot(startTime, endTime, conferences, dates)">Add</button>
+        <div class="current-items">
+          <h4>Current TimeSlots</h4>
+            <div *ngFor="let slot of (selectedDaySlots | async)">
+              <i class="fa fa-ban delete" (click)="deleteTimeSlot(dates.value, conferences.value, slot)"></i> 
+              {{ slot.start | time }} to {{ slot.end | time }}
+            </div>
+        </div>
       </div>
     </div>
 
@@ -78,10 +87,10 @@
         </div>
       </div>
       <button class="btn btn-primary add" (click)="addRoom(conferences, roomName)">Add</button>
-      <div id="currentRooms">
+      <div class="current-items">
         <h4>Current Rooms</h4>
           <div *ngFor="let room of (selectedConf | async)?.rooms">
-            <i class="fa fa-ban room-delete" (click)="deleteRoom(conferences, room)"></i> {{ room }}
+            <i class="fa fa-ban delete" (click)="deleteRoom(conferences, room)"></i> {{ room }}
           </div>
       </div>
     </div>

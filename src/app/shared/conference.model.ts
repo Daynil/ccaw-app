@@ -7,10 +7,12 @@ export interface Conference {
   };
   days?: {
     date: string,
-    timeSlots: {
-      start: string,
-      end: string
-    }[]
+    timeSlots: TimeSlot[]
   }[],
   rooms?: string[]
+}
+
+export interface TimeSlot {
+  start: string,
+  end: string;
 }
