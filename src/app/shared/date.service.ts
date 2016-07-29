@@ -7,7 +7,7 @@ export class DateService {
   userFormat = 'MM/DD/YYYY';
   
   dbFormat = 'YYYY-MM-DD';
-  timeDate = 'YYYY-MM-DD kk:mm'
+  timeDate = 'YYYY-MM-DD HH:mm'
 
   constructor() { }
 
@@ -16,7 +16,7 @@ export class DateService {
    * @returns YYYY-MM-DD
    */
   formatDateForDatabase(userDate: string): string {
-    return moment(userDate, this.userFormat).format(this.userFormat);
+    return moment(userDate, this.userFormat, true).format(this.dbFormat);
   }
 
   /** Format date string to human readable
@@ -24,7 +24,7 @@ export class DateService {
    * @returns MM/DD/YYYY
    */
   formatDateForUser(dbDate: string): string {
-    return moment(dbDate, this.dbFormat).format(this.userFormat);
+    return moment(dbDate, this.dbFormat, true).format(this.userFormat);
   }
 
 }

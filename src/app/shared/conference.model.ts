@@ -5,18 +5,12 @@ export interface Conference {
     start: string,
     end: string
   };
-  timeSlots?: TimeSlot[],
-  rooms: string[]
-}
-
-export interface TimeSlot {
-  /** Date format: 2016-12-30 */
-  date: String;
-  /** Time format:  */
-  timeRange: [{
-    start: string,
-    end: string
-  }];
-  /** _id of presentation */
-  presentation?: string;
+  days?: {
+    date: string,
+    timeSlots: {
+      start: string,
+      end: string
+    }[]
+  }[],
+  rooms?: string[]
 }

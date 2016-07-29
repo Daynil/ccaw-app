@@ -43,9 +43,43 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
     this.fillCurrentDetails();
   }
 
-  updateConf(conferenceTitle: string, title: HTMLInputElement, 
+  updateConf(currentTitle: string, title: HTMLInputElement, 
              start: HTMLInputElement, end: HTMLInputElement) {
-    //
+    let newTitle = title.value;
+    if (newTitle.length < 1) {
+      this.toast.message('Conference must have a title');
+      return;
+    }
+    // Input date value format: 2016-12-30
+    let startText = start.value;
+    let endText = end.value;
+    let startMoment = moment(startText);
+    let endMoment = moment(endText);
+    let startValid = startMoment.isValid();
+    let endValid = endMoment.isValid();
+    if (startValid && endValid) {
+      if (endMoment.isSameOrBefore(startMoment)) {
+        this.toast.message("The end date must be after start date");
+      } else {
+        this.adminService
+            .getAllConferences()
+            .then((conferences: Conference[]) => {
+              if (!this.isDuplicateTitle(conferences, newTitle, this.selectedConf.title)) {
+                this.adminService.updateConference(currentTitle, newTitle, startText, endText)
+                  .then(res => {
+                    this.toast.message('Conference updated!');
+                    this.refreshSelectedConf();
+                  });
+              } else {
+                this.toast.message('Conference title already exists, please choose another');
+              }
+            })
+      }
+    } else if (!startValid) {
+      this.toast.message('Start date invalid');
+    } else if (!endValid) {
+      this.toast.message('End date invalid');
+    }
   }
 
   addTimeslot(start: HTMLInputElement, end: HTMLInputElement,
@@ -54,18 +88,21 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
     let endVal = end.value;
     let conferenceTitle = conferences.value;
     let date = this.dateService.formatDateForDatabase(dates.value);
-    let startMoment = moment(`${date} ${startVal}`, this.dateService.timeDate);
-    let endMoment = moment(`${date} ${endVal}`, this.dateService.timeDate);
+    let startMoment = moment(`${date} ${startVal}`, this.dateService.timeDate, true);
+    let endMoment = moment(`${date} ${endVal}`, this.dateService.timeDate, true);
+    console.log(startMoment, endMoment);
     let startValid = startMoment.isValid();
     let endValid = endMoment.isValid();
     if (startValid && endValid) {
       if (endMoment.isSameOrBefore(startMoment)) {
         this.toast.message("The end time must be after start time");
       } else {
-          this.adminService.addTimeslot(startVal, endVal, conferenceTitle, date);
-          this.toast.message('Timeslot added!');
-          start.value = "";
-          end.value = "";
+          this.adminService.addTimeslot(startVal, endVal, conferenceTitle, date)
+              .then(res => {
+                this.toast.message('Timeslot added!');
+                start.value = "";
+                end.value = "";
+              });
       }
     } else if (!startValid) {
       console.log(startVal);
@@ -107,6 +144,14 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
     this.title.nativeElement.value = this.selectedConf.title;
     this.startDate.nativeElement.value = this.selectedConf.dateRange.start;
     this.endDate.nativeElement.value = this.selectedConf.dateRange.end;
+  }
+
+  isDuplicateTitle(conferences: Conference[], newTitle: string, currentTitle) {
+    // Ignore unchanged titles
+    if (newTitle === currentTitle) return false;
+
+    let duplicateTitle = _.find(conferences, conf => conf.title.toLowerCase() === newTitle.toLowerCase());
+    return typeof duplicateTitle !== 'undefined';
   }
 
 /*  overlappingTimeslot(startTime: string, endTime: string,

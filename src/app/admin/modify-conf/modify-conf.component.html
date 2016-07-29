@@ -1,8 +1,8 @@
 <div class="container" [class.page-transition]="transitionService.isTransitioning()">
-  <h1>Modify Conference</h1>
+  <h1>Modify Conferences</h1>
   <div id="dropdown" class="row">
     <div class="col-md-4">
-      <label for="conferences" class="control-label">Select Conference</label>
+      <label for="conferences" class="control-label">Select Conference to Modify</label>
       <select #conferences class="form-control" id="conferences" (input)="refreshSelectedConf()">
         <option *ngFor="let conf of adminService.conferences">
           {{ conf.title }}
@@ -40,7 +40,7 @@
           </div>
         </div>
       </div>
-      <button id="update" type="submit" class="btn btn-primary" 
+      <button id="update" class="btn btn-primary" 
               (click)="updateConf(conferences.value, title, startDate, endDate)">Update</button>
     </div>
 
