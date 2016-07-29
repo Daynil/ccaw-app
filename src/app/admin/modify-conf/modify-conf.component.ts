@@ -50,7 +50,6 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
 
   addTimeslot(start: HTMLInputElement, end: HTMLInputElement,
               conferences: HTMLSelectElement, dates: HTMLSelectElement) {
-    console.log(' ---- addTimeSlot -----');
     let startVal = start.value;
     let endVal = end.value;
     let conferenceTitle = conferences.value;
@@ -77,7 +76,6 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
   }
 
   addRoom(conferences: HTMLSelectElement, roomName: HTMLInputElement) {
-    console.log('****  addRoom  ****');
     let conferenceTitle = conferences.value;
     let name = roomName.value;
 
