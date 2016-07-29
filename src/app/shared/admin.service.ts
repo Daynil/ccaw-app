@@ -70,15 +70,29 @@ export class AdminService {
               .catch(handleError);
   }
 
-  addRoom(conferenceTitle: string, name: string) {
-    let newRoom = {
-      title: conferenceTitle,
-      name: name
-    };
-    
-    let pkg = packageForPost(newRoom);
+  addRoom(conferenceTitle: string, room: string) {
+    let conf = _.find(this.conferences, conf => conf.title === conferenceTitle);
+
+    // Sync front end
+    conf.rooms.push(room);
+
+    let pkg = packageForPost(conf);
     return this.http
         .post('/api/addRoom', pkg.body, pkg.opts)
+        .toPromise()
+        .then(parseJson)
+        .catch(handleError);
+  }
+
+  deleteRoom(conferenceTitle: string, room: string) {
+    let conf = _.find(this.conferences, conf => conf.title === conferenceTitle);
+    
+    // Sync front end
+    conf.rooms.splice(conf.rooms.indexOf(room), 1);
+
+    let pkg = packageForPost(conf);
+    return this.http
+        .post('/api/deleteRoom', pkg.body, pkg.opts)
         .toPromise()
         .then(parseJson)
         .catch(handleError);

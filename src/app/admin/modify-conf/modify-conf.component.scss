@@ -23,3 +23,17 @@
 #title, #dates {
   margin-bottom: 20px;
 }
+
+#currentRooms {
+  margin-top: 40px;
+  .room-delete {
+    margin-right: 5px;
+    margin-top: 10px;
+    color: $gray-light;
+    transition: 0.2s;
+    &:hover {
+      color: $brand-primary;
+      cursor: pointer;
+    }
+  }
+}

@@ -22,7 +22,7 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
 
   @ViewChild('conferences') conferencesRef: ElementRef;
   conferencesSelect: HTMLSelectElement;
-  selectedConf: Conference;
+  selectedConf: BehaviorSubject<Conference> = new BehaviorSubject(null);
   selectedConfDates: BehaviorSubject<string[]> = new BehaviorSubject([]);
 
   @ViewChild('title') title: ElementRef;
@@ -64,7 +64,7 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
         this.adminService
             .getAllConferences()
             .then((conferences: Conference[]) => {
-              if (!this.isDuplicateTitle(conferences, newTitle, this.selectedConf.title)) {
+              if (!this.isDuplicateTitle(conferences, newTitle, this.selectedConf.getValue().title)) {
                 this.adminService.updateConference(currentTitle, newTitle, startText, endText)
                   .then(res => {
                     this.toast.message('Conference updated!');
@@ -90,7 +90,6 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
     let date = this.dateService.formatDateForDatabase(dates.value);
     let startMoment = moment(`${date} ${startVal}`, this.dateService.timeDate, true);
     let endMoment = moment(`${date} ${endVal}`, this.dateService.timeDate, true);
-    console.log(startMoment, endMoment);
     let startValid = startMoment.isValid();
     let endValid = endMoment.isValid();
     if (startValid && endValid) {
@@ -120,18 +119,26 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
       this.toast.message("You must enter a room name");
       return;
     } else {
-      this.adminService.addRoom(conferenceTitle, name);
-      this.toast.message('Room added!');
-      roomName.value = "";
+      this.adminService.addRoom(conferenceTitle, name)
+          .then(res => {
+            this.toast.message('Room added!');
+            roomName.value = "";
+          });
     }
+  }
 
+  deleteRoom(conferences: HTMLSelectElement, room: string) {
+    let conferenceTitle = conferences.value;
+
+    this.adminService.deleteRoom(conferenceTitle, room)
+        .then(res => this.toast.message('Room removed!'));
   }
 
   refreshSelectedConf() {
     let selectedConfTitle = this.conferencesSelect.value;
-    this.selectedConf = _.find(this.adminService.conferences, d => d.title === selectedConfTitle);
-    let startMoment = moment(this.selectedConf.dateRange.start);
-    let endMoment = moment(this.selectedConf.dateRange.end);
+    this.selectedConf.next(_.find(this.adminService.conferences, d => d.title === selectedConfTitle));
+    let startMoment = moment(this.selectedConf.getValue().dateRange.start);
+    let endMoment = moment(this.selectedConf.getValue().dateRange.end);
     let dates = [];
     for (let i = startMoment; i.isSameOrBefore(endMoment); i.add(1, 'd')) {
       dates.push(i.format(this.dateService.userFormat));
@@ -141,9 +148,9 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
   }
 
   fillCurrentDetails() {
-    this.title.nativeElement.value = this.selectedConf.title;
-    this.startDate.nativeElement.value = this.selectedConf.dateRange.start;
-    this.endDate.nativeElement.value = this.selectedConf.dateRange.end;
+    this.title.nativeElement.value = this.selectedConf.getValue().title;
+    this.startDate.nativeElement.value = this.selectedConf.getValue().dateRange.start;
+    this.endDate.nativeElement.value = this.selectedConf.getValue().dateRange.end;
   }
 
   isDuplicateTitle(conferences: Conference[], newTitle: string, currentTitle) {

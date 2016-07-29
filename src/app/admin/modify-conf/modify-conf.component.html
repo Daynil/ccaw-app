@@ -78,6 +78,12 @@
         </div>
       </div>
       <button class="btn btn-primary add" (click)="addRoom(conferences, roomName)">Add</button>
+      <div id="currentRooms">
+        <h4>Current Rooms</h4>
+          <div *ngFor="let room of (selectedConf | async)?.rooms">
+            <i class="fa fa-ban room-delete" (click)="deleteRoom(conferences, room)"></i> {{ room }}
+          </div>
+      </div>
     </div>
     
   </div>

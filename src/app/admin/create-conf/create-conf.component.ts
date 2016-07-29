@@ -46,11 +46,13 @@ export class CreateConfComponent implements OnInit {
             .getAllConferences()
             .then((conferences: Conference[]) => {
               if (!this.isDuplicateTitle(conferences, titleText)) {
-                this.adminService.createConference(titleText, startText, endText);
-                this.toast.message('Conference created!');
-                title.value = '';
-                start.value = "";
-                end.value = "";
+                this.adminService.createConference(titleText, startText, endText)
+                    .then(res => {
+                      this.toast.message('Conference created!');
+                      title.value = '';
+                      start.value = "";
+                      end.value = "";
+                    });
               } else {
                 this.toast.message('Conference title already exists, please choose another');
               }
