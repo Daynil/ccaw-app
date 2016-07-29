@@ -24,6 +24,8 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
 
   @ViewChild('conferences') conferencesRef: ElementRef;
   conferencesSelect: HTMLSelectElement;
+  @ViewChild('dates') dates: ElementRef;
+  datesSelect: HTMLSelectElement;
 
   // UI data streams
   selectedConf: BehaviorSubject<Conference> = new BehaviorSubject(null);
@@ -116,6 +118,14 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
     } else if (!endValid) {
       this.toast.message('End time invalid');
     }
+  }
+
+  deleteTimeSlot(date: string, conf: string, slot: TimeSlot) {
+    let dbDate = this.dateService.formatDateForDatabase(date);
+    this.adminService.deleteTimeSlot(dbDate, conf, slot)
+        .then(res => {
+          this.toast.message('Timeslot deleted!')
+        });
   }
 
   addRoom(conferences: HTMLSelectElement, roomName: HTMLInputElement) {

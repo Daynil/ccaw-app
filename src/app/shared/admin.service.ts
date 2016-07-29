@@ -5,7 +5,7 @@ import "rxjs/add/operator/toPromise";
 import * as _ from 'lodash';
 
 import { handleError, parseJson, packageForPost } from './http-helpers';
-import { Conference } from './conference.model';
+import { Conference, TimeSlot } from './conference.model';
 
 @Injectable()
 export class AdminService {
@@ -64,7 +64,23 @@ export class AdminService {
     }
     let pkg = packageForPost(conference);
     return this.http
-              .post('/api/addtimeslot', pkg.body, pkg.opts)
+              .post('/api/changetimeslot', pkg.body, pkg.opts)
+              .toPromise()
+              .then(parseJson)
+              .catch(handleError);
+  }
+
+  deleteTimeSlot(date: string, confTitle: string, slot: TimeSlot) {
+    let conf = _.find(this.conferences, conf => conf.title === confTitle);
+    let confDate = _.find(conf.days, day => day.date === date);
+    
+    // Sync front end
+    let slotIndex = _.findIndex(confDate.timeSlots, existSlot => existSlot === slot);
+    confDate.timeSlots.splice(slotIndex, 1);
+
+    let pkg = packageForPost(conf);
+    return this.http
+              .post('/api/changetimeslot', pkg.body, pkg.opts)
               .toPromise()
               .then(parseJson)
               .catch(handleError);

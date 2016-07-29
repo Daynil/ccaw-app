@@ -73,7 +73,7 @@ app.post('/api/createconference', (req, res) => {
   });
 });
 
-app.post('/api/addtimeslot', (req, res) => {
+app.post('/api/changetimeslot', (req, res) => {
   let conf = req.body;
 
   Conference
