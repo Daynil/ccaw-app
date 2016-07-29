@@ -25,6 +25,10 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
   selectedConf: Conference;
   selectedConfDates: BehaviorSubject<string[]> = new BehaviorSubject([]);
 
+  @ViewChild('title') title: ElementRef;
+  @ViewChild('startDate') startDate: ElementRef;
+  @ViewChild('endDate') endDate: ElementRef;
+
   constructor(private transitionService: TransitionService,
               private adminService: AdminService,
               private dateService: DateService) { }
@@ -36,6 +40,12 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.conferencesSelect = this.conferencesRef.nativeElement;
     this.refreshSelectedConf();
+    this.fillCurrentDetails();
+  }
+
+  updateConf(conferenceTitle: string, title: HTMLInputElement, 
+             start: HTMLInputElement, end: HTMLInputElement) {
+    //
   }
 
   addTimeslot(start: HTMLInputElement, end: HTMLInputElement,
@@ -92,6 +102,13 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
       dates.push(i.format(this.dateService.userFormat));
     }
     this.selectedConfDates.next(dates.slice());
+    this.fillCurrentDetails();
+  }
+
+  fillCurrentDetails() {
+    this.title.nativeElement.value = this.selectedConf.title;
+    this.startDate.nativeElement.value = this.selectedConf.dateRange.start;
+    this.endDate.nativeElement.value = this.selectedConf.dateRange.end;
   }
 
 /*  overlappingTimeslot(startTime: string, endTime: string,
