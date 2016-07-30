@@ -48,6 +48,7 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.conferencesSelect = this.conferencesRef.nativeElement;
+    this.datesSelect = this.dates.nativeElement;
     this.refreshSelectedConf();
     this.fillCurrentDetails();
   }
@@ -107,6 +108,7 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
       } else {
           this.adminService.addTimeslot(startVal, endVal, conferenceTitle, date)
               .then(res => {
+                this.refreshSelectedConf(this.datesSelect.value);
                 this.toast.message('Timeslot added!');
                 start.value = "";
                 end.value = "";
@@ -157,13 +159,15 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
     // Check if we have any timeslots yet
     if (!(typeof day === 'undefined') && !(typeof day.timeSlots === 'undefined')) {
       let slots = day.timeSlots;
+      // Sort slots from earliest to latest by end time
+      slots = _.sortBy(slots, slot => slot.end);
       this.selectedDaySlots.next(slots);
     } else {
       this.selectedDaySlots.next([]);
     }
   }
 
-  refreshSelectedConf() {
+  refreshSelectedConf(dateSelected?: string) {
     let selectedConfTitle = this.conferencesSelect.value;
     this.selectedConf.next(_.find(this.adminService.conferences, d => d.title === selectedConfTitle));
     let startMoment = moment(this.selectedConf.getValue().dateRange.start);
@@ -174,7 +178,8 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
     }
     this.selectedConfDates.next(dates.slice());
     this.fillCurrentDetails();
-    this.updateSelectedDate(this.selectedConfDates.getValue()[0]);
+    let dateToRefresh = dateSelected ? dateSelected : this.selectedConfDates.getValue()[0];
+    this.updateSelectedDate(dateToRefresh);
   }
 
   fillCurrentDetails() {
