@@ -23,8 +23,8 @@ export class SelectActiveComponent implements OnInit {
     this.transitionService.transition();
   }
 
-  changeActiveConf(conferences) {
-    console.log(conferences);
-    this.toast.message('Active conference changed!');
+  changeActiveConf(conferenceTitle: string) {
+    this.adminService.changeActiveConf(conferenceTitle)
+        .then(res => this.toast.message('Active conference changed!'));
   }
 }

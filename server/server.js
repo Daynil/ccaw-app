@@ -22,7 +22,33 @@ const Speaker = require('./models/speaker');
 let mongoURI = process.env.MONGO_URI || 'mongodb://localhost/ccaw-app';
 mongoose.connect(mongoURI);
 
-
+function updateActiveConfs(activeConf) {
+  // If no active conf passed, make all confs inactive
+  if (activeConf === null) activeConf = {title: ''};
+  let savePromise = new Promise((resolve, reject) => {
+    Conference
+      .find({})
+      .exec()
+      .then(conferences => {
+        let allSavesSuccessful = true;
+        conferences.forEach(serverConf => {
+          if (serverConf.title === activeConf.title) {
+            serverConf.lastActive = true;
+          } else {
+            serverConf.lastActive = false;
+          }
+          serverConf.save(err => {
+            if (err) {
+              console.log(err);
+              allSavesSuccessful = false;
+            }
+          });
+          resolve(allSavesSuccessful);
+        });
+      });
+  });
+  return savePromise;
+}
 
 /** True = get response details on served node modules **/
 let verboseLogging = false;
@@ -58,20 +84,35 @@ app.get('/api/getallconferences', (req, res) => {
 app.post('/api/createconference', (req, res) => {
   let conf = req.body;
 
-  let newConf = new Conference();
-  newConf.title = conf.title;
-  newConf.dateRange = {
-    start: conf.dateRange.start,
-    end: conf.dateRange.end
-  };
-  newConf.save(err => {
-    if (err) {
-      console.log(err);
-      res.status(500).json({message: 'Conference save error'});
-    }
-    else res.status(200).json({message: 'Conference created'});
+  updateActiveConfs(null).then(saveSuccess => {
+    if (saveSuccess) {
+      let newConf = new Conference();
+      newConf.lastActive = true;
+      newConf.title = conf.title;
+      newConf.dateRange = {
+        start: conf.dateRange.start,
+        end: conf.dateRange.end
+      };
+      newConf.save(err => {
+        if (err) {
+          console.log(err);
+          res.status(500).json({message: 'Conference save error'});
+        }
+        else res.status(200).json({message: 'Conference created'});
+      });
+    } else res.status(500).json({message: 'Conferences updating error'});
   });
 });
+
+app.post('/api/changeactiveconf', (req, res) => {
+  let conf = req.body;
+
+  updateActiveConfs(conf).then(saveSuccess => {
+    if (saveSuccess) res.status(200).json({message: 'Conferences update'});
+    else res.status(500).json({message: 'Conferences updating error'});
+  });
+});
+
 
 app.post('/api/changetimeslot', (req, res) => {
   let conf = req.body;

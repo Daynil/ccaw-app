@@ -16,7 +16,9 @@ export class AdminService {
   constructor(private http: Http) { }
 
   createConference(title: string, startDate: string, endDate: string) {
+    this.resetActiveConfs();
     let newConf: Conference = {
+      lastActive: true,
       title: title,
       dateRange: {
         start: startDate,
@@ -30,6 +32,24 @@ export class AdminService {
               .toPromise()
               .then(parseJson)
               .catch(handleError);
+  }
+
+  changeActiveConf(confTitle: string) {
+    let conf = _.find(this.conferences, conf => conf.title === confTitle);
+    this.resetActiveConfs();
+    conf.lastActive = true;
+    let pkg = packageForPost(conf);
+    return this.http
+              .post('/api/changeactiveconf', pkg.body, pkg.opts)
+              .toPromise()
+              .then(parseJson)
+              .catch(handleError);
+  }
+
+  resetActiveConfs() {
+    this.conferences.forEach(conf => {
+      conf.lastActive = false;
+    });
   }
 
   updateConference(currentTitle: string, newTitle, startDate, endDate) {
