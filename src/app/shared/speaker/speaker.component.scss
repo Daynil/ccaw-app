@@ -1,0 +1,36 @@
+@import '../../shared/common-styles';
+
+h2 {
+  margin-bottom: 30px;
+}
+
+.row {
+  margin-bottom: 50px;
+}
+
+.sub-label {
+  font-size: 13px;
+  margin-top: 5px;
+}
+
+input.ng-invalid.ng-dirty.ng-touched {
+  border-bottom: none !important;
+  box-shadow: inset 0 -2px 0 $brand-warning !important;
+}
+
+#phones {
+  display: flex;
+  align-items: flex-end;
+}
+
+textarea {
+  resize: none;
+}
+
+#debug {
+  width: 25%;
+  position: absolute;
+  right: 10px;
+  top: 80px;
+  word-break: break-word;
+}

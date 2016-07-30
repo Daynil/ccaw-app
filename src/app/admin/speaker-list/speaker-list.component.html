@@ -1,6 +1,7 @@
-<div id="speaker-list" [class.page-transition]="transitionService.isTransitioning()">
+<div id="speaker-list" class="container" [class.page-transition]="transitionService.isTransitioning()">
   <h1>List of speakers</h1>
 
+  <a [routerLink]="['/speaker']"><button type="submit" class="btn btn-primary">Add Speaker</button></a>
   <ul>
     <li>Overview of speakers</li>
     <li>Filters? (assigned/unassigned)</li>

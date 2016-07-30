@@ -41,7 +41,8 @@ let speakerSchema = new mongoose.Schema({
   statusNotification: Boolean,  // After accepting/denying, whether they were notified
   title: String,
   organization: String,
-  address: String, // Do we need line1/line2? or break down to number/street? Account for PO box?
+  address1: String, // Do we need line1/line2? or break down to number/street? Account for PO box?
+  address2: String,
   city: String,
   state: String,
   zip: Number,
@@ -51,7 +52,7 @@ let speakerSchema = new mongoose.Schema({
   bioWebsite: String, // For website/app, 125 word limit
   bioProgram: String, // For pamphlet/printed program, 60 word limit
   headshot: String, // file handling ourselves (typeform has drag/drop file selection) sanitize extensions after MVP, min/max size
-  willingToBeInterviewdByMedia: Boolean,
+  mediaWilling: Boolean,
   costsCoveredByOrganization: [{  // In form: Travel/Lodging/None check all that apply
     cost: String,
     covered: Boolean

@@ -1,0 +1,172 @@
+<div class="container" [class.page-transition]="transitionService.isTransitioning()">
+  <h2>Speaker Information</h2>
+  <form (ngSubmit)="onSubmit()" #speakerForm="ngForm">
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-8 col-xs-12">
+          <label class="control-label" for="salutation">Salutation</label>
+          <input type="text" class="form-control" required 
+                 [(ngModel)]="model.salutation"
+                 name="salutation" #salutation="ngModel">
+          <div>Valid: {{ salutation.valid }} Pristine: {{ salutation.pristine }} Visited: {{ salutation.touched }}</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8 col-xs-12">
+          <label class="control-label" for="title">Title</label><br/>
+          <label class="control-label sub-label" for="title">If you have multiple titles, please choose the most relevant. This title will be included in CCAW materials.</label>
+          <input type="text" class="form-control" required 
+                  [(ngModel)]="model.title"
+                  name="title" #title="ngModel">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 col-xs-6">
+          <label class="control-label" for="nameFirst">First Name</label>
+          <input type="text" class="form-control" required 
+                 [(ngModel)]="model.nameFirst"
+                 name="nameFirst" #nameFirst="ngModel">
+        </div>
+        <div class="col-md-4 col-xs-6">
+          <label class="control-label" for="nameLast">Last Name</label>
+          <input type="text" class="form-control" required 
+                 [(ngModel)]="model.nameLast"
+                 name="nameLast" #nameLast="ngModel">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8 col-xs-12">
+          <label class="control-label" for="organization">Organization</label><br/>
+          <label class="control-label sub-label" for="organization">If you are associated with multiple organizations, please choose the most relevant. This organization will be included in CCAW materials.</label>
+          <input type="text" class="form-control" required 
+                  [(ngModel)]="model.organization"
+                  name="organization" #organization="ngModel">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8 col-xs-12">
+          <label class="control-label" for="address1">Address Line 1</label>
+          <input type="text" class="form-control" required 
+                 [(ngModel)]="model.address1"
+                 name="address1" #address1="ngModel">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8 col-xs-12">
+          <label class="control-label" for="address2">Address Line 2</label>
+          <input type="text" class="form-control" 
+                 [(ngModel)]="model.address2"
+                 name="address2" #address2="ngModel">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 col-xs-6">
+          <label class="control-label" for="city">City</label>
+          <input type="text" class="form-control" required 
+                 [(ngModel)]="model.city"
+                 name="city" #city="ngModel">
+        </div>
+        <div class="col-md-4 col-xs-6">
+          <label class="control-label" for="state">State</label>
+          <input type="text" class="form-control" required 
+                 [(ngModel)]="model.state"
+                 name="state" #state="ngModel">
+        </div>
+        <div class="col-md-4 col-xs-6">
+          <label class="control-label" for="zip">Zip Code</label>
+          <input type="text" class="form-control" required 
+                 [(ngModel)]="model.zip"
+                 name="zip" #zip="ngModel">
+        </div>
+      </div>
+      <div class="row" id="phones">
+        <div class="col-md-4 col-xs-6">
+          <label class="control-label" for="phoneWork">Work Phone</label>
+          <input type="text" class="form-control" required 
+                 [(ngModel)]="model.phoneWork"
+                 name="phoneWork" #phoneWork="ngModel">
+        </div>
+        <div class="col-md-4 col-xs-6">
+          <label class="control-label" for="phoneCell">Cell Phone</label><br/>
+          <label class="control-label sub-label" for="phoneCell">This is only for use by conference staff and will not be shared.</label>
+          <input type="text" class="form-control" required 
+                 [(ngModel)]="model.phoneCell"
+                 name="phoneCell" #phoneCell="ngModel">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8 col-xs-12">
+          <label class="control-label" for="email">Email</label>
+          <input type="text" class="form-control" required 
+                 [(ngModel)]="model.email"
+                 name="email" #email="ngModel">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8 col-xs-12">
+          <label class="control-label" for="assistantOrCC">Assistant/CC</label>
+          <input type="text" class="form-control" 
+                 [(ngModel)]="model.assistantOrCC"
+                 name="assistantOrCC" #assistantOrCC="ngModel">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8 col-xs-12">
+          <label class="control-label" for="bioWebsite">Website Bio</label><br/>
+          <label class="control-label sub-label" for="bioWebsite"><b>125 word limit.</b> This bio will appear on CCAW's website and on the conference app. Please use third person.</label>
+          <textarea class="form-control" rows="3"
+                 [(ngModel)]="model.bioWebsite"
+                 name="bioWebsite" #bioWebsite="ngModel"></textarea>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8 col-xs-12">
+          <label class="control-label" for="bioProgram">Program Bio</label><br/>
+          <label class="control-label sub-label" for="bioProgram"><b>60 word limit.</b> In order to cut down on printing costs and reduce paper waste, please shorten your bio to be included in the printed program. Bios longer than 60 words will be edited down at CCAW staff's discretion.</label>
+          <textarea class="form-control" rows="3"
+                 [(ngModel)]="model.bioProgram"
+                 name="bioProgram" #bioProgram="ngModel"></textarea>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8 col-xs-12">
+          <label class="control-label" for="headshot">***Headshot Url?</label><br/>
+          <label class="control-label sub-label" for="headshot">This photo will be displayed on CCAW's website and on the conference app.</label><br/>
+          <label class="control-label sub-label" for="headshot">If you prefer not to display a headshot, please upload your organization's logo instead.</label>
+          <input type="text" class="form-control" required 
+                 [(ngModel)]="model.headshot"
+                 name="headshot" #headshot="ngModel">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8 col-xs-12">
+          <label class="control-label" for="mediaWilling">Are you willing to be interviewed by the media, if requested?</label>
+          <div class="radio">
+            <label>
+              <input type="radio" name="mediaWilling" [(ngModel)]="model.mediaWilling"
+                     id="mediaWillingYes" [value]="true" #mediaWilling="ngModel" checked="">
+              Yes
+            </label>
+          </div>
+          <div class="radio">
+            <label>
+              <input type="radio" name="mediaWilling" [(ngModel)]="model.mediaWilling"
+                     id="mediaWillingNo" [value]="false" #mediaWilling="ngModel">
+              No
+            </label>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <button type="submit" 
+            class="btn btn-primary" [disabled]="!speakerForm.form.valid"
+            (click)="updateSpeaker()">Submit</button>
+  </form>
+  <toast #toast></toast>
+</div>
+
+<!--  DEBUG -->
+<div id="debug">
+  {{ diagnostic }}
+</div>
