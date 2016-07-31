@@ -1,5 +1,8 @@
 export interface Speaker {
 
+  // _id field, grabbed from mongoose if speaker existed
+  _id?: string;
+
   // Credentials
 
   admin: boolean,
@@ -23,7 +26,7 @@ export interface Speaker {
   address2?: string,
   city: string,
   state: string,
-  zip: number,
+  zip: string,
   phoneWork: string,
   phoneCell: string,
   assistantOrCC?: string, // Not sure what this is, not required
@@ -31,23 +34,13 @@ export interface Speaker {
   bioProgram: string, // For pamphlet/printed program, 60 word limit
   headshot: string, // file handling ourselves (typeform has drag/drop file selection) sanitize extensions after MVP, min/max size
   mediaWilling: boolean,
-  costsCoveredByOrganization: [{  // In form: Travel/Lodging/None check all that apply
-    cost: string,
-    covered: boolean
-  }],
+  costsCoveredByOrg: string[],  // In form: Travel/Lodging/None check all that apply
   speakingFees: string, // Not sure if we need a number? Selectable from dropdown?
   hasPresentedAtCCAWInPast2years: boolean,
-  recentSpeakingExperience: string,
-  speakingRefrences: [{  // At least 2
-    nameRef: string,
-    city: string,
-    state: string,
-    zip: number,
-    phone: string,
-    email: string
-  }],
+  recentSpeakingExp: string,
+  speakingReferences: string,  // At least 2
   adminNotes: string,
-  coPresenters: string,
+  coPresenters: string[],
 
   // Presentations speaker is involved in
   presentations: Presentation[]

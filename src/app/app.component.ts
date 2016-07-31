@@ -4,6 +4,7 @@ import { HTTP_PROVIDERS } from '@angular/http';
 
 import { AdminService } from './shared/admin.service';
 import { DateService } from './shared/date.service';
+import { SpeakerService } from './shared/speaker.service';
 import { TransitionService } from './shared/transition.service';
 
 @Component({
@@ -12,14 +13,16 @@ import { TransitionService } from './shared/transition.service';
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.css'],
   directives: [ROUTER_DIRECTIVES],
-  providers: [HTTP_PROVIDERS, AdminService, DateService, TransitionService]
+  providers: [HTTP_PROVIDERS, AdminService, DateService, SpeakerService, TransitionService]
 })
 export class AppComponent implements OnInit {
   
-  constructor(private adminService: AdminService) { }
+  constructor(private adminService: AdminService,
+              private speakerService: SpeakerService) { }
 
   ngOnInit() {
     this.adminService.getAllConferences();
+    this.speakerService.getAllSpeakers();
   }
 
 }

@@ -30,7 +30,6 @@ let speakerSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-    unique: true
   },
 
   // Speaker information
@@ -41,11 +40,10 @@ let speakerSchema = new mongoose.Schema({
   statusNotification: Boolean,  // After accepting/denying, whether they were notified
   title: String,
   organization: String,
-  address1: String, // Do we need line1/line2? or break down to number/street? Account for PO box?
-  address2: String,
+  address: String, // Do we need line1/line2? or break down to number/street? Account for PO box?
   city: String,
   state: String,
-  zip: Number,
+  zip: String,
   phoneWork: String,
   phoneCell: String,
   assistantOrCC: String, // Not sure what this is, not required
@@ -53,23 +51,13 @@ let speakerSchema = new mongoose.Schema({
   bioProgram: String, // For pamphlet/printed program, 60 word limit
   headshot: String, // file handling ourselves (typeform has drag/drop file selection) sanitize extensions after MVP, min/max size
   mediaWilling: Boolean,
-  costsCoveredByOrganization: [{  // In form: Travel/Lodging/None check all that apply
-    cost: String,
-    covered: Boolean
-  }],
+  costsCoveredByOrg: [String], // In form: Travel/Lodging/None check all that apply
   speakingFees: String, // Not sure if we need a number? Selectable from dropdown?
   hasPresentedAtCCAWInPast2years: Boolean,
-  recentSpeakingExperience: String,
-  speakingRefrences: [{  // At least 2
-    nameRef: String,
-    city: String,
-    state: String,
-    zip: Number,
-    phone: String,
-    email: String
-  }],
+  recentSpeakingExp: String,
+  speakingReferences: String, // At least 2
   adminNotes: String,
-  coPresenters: String,
+  coPresenters: [String],
 
   // Presentations speaker is involved in
   presentations: [{

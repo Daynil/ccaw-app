@@ -176,6 +176,94 @@ app.post('/api/updateconference', (req, res) => {
     });
 });
 
+app.post('/api/updatespeaker', (req, res) => {
+  let speaker = req.body;
+  if (speaker._id) {
+    Speaker
+      .findById(speaker._id)
+      .exec()
+      .then(serverSpeaker => {
+        console.log('serverSpeaker:', serverSpeaker);
+        if (serverSpeaker === null) {
+          console.log('Speaker not found');
+          res.status(500).json({message: 'Speaker not found'});
+        } else {
+          serverSpeaker.admin = speaker.admin;
+          serverSpeaker.password = speaker.password;
+          serverSpeaker.salutation = speaker.saluation;
+          serverSpeaker.nameFirst = speaker.nameFirst;
+          serverSpeaker.nameLast = speaker.nameLast;
+          serverSpeaker.email = speaker.email;
+          serverSpeaker.status = speaker.status;
+          serverSpeaker.statusNotification = speaker.statusNotification;
+          serverSpeaker.title = speaker.title;
+          serverSpeaker.organization = speaker.organization;
+          serverSpeaker.address = speaker.address;
+          serverSpeaker.city = speaker.city;
+          serverSpeaker.state = speaker.state;
+          serverSpeaker.zip = speaker.zip;
+          serverSpeaker.phoneWork = speaker.phoneWork;
+          serverSpeaker.phoneCell = speaker.phoneCell;
+          serverSpeaker.assistantOrCC = speaker.assistantOrCC;
+          serverSpeaker.bioWebsite = speaker.bioWebsite;
+          serverSpeaker.bioProgram = speaker.bioProgram; 
+          serverSpeaker.headshot = speaker.headshot;
+          serverSpeaker.mediaWilling = speaker.mediaWilling;
+          serverSpeaker.costsCoveredByOrg = speaker.costsCoveredByOrg;
+          serverSpeaker.speakingFees = speaker.speakingFees; 
+          serverSpeaker.hasPresentedAtCCAWInPast2years = speaker.hasPresentedAtCCAWInPast2years;
+          serverSpeaker.recentSpeakingExp = speaker.recentSpeakingExp;
+          serverSpeaker.speakingReferences = speaker.speakingReferences; 
+          serverSpeaker.adminNotes = speaker.adminNotes;
+          serverSpeaker.coPresenters = speaker.coPresenters;
+          serverSpeaker.save(err => {
+            if (err) {
+              console.log(err);
+              res.status(500).json({message: 'Speaker save error'});
+            } else res.status(200).json(serverSpeaker)
+          });
+        }
+    });
+  } else {
+    let newSpeaker = new Speaker({
+      admin: false,
+      password: 'password',
+      salutation: speaker.saluation,
+      nameFirst: speaker.nameFirst,
+      nameLast: speaker.nameLast,
+      email: speaker.email,
+      status: 'pending',
+      statusNotification: false,
+      title: speaker.title,
+      organization: speaker.organization,
+      address: speaker.address,
+      city: speaker.city,
+      state: speaker.state,
+      zip: speaker.zip,
+      phoneWork: speaker.phoneWork,
+      phoneCell: speaker.phoneCell,
+      assistantOrCC: speaker.assistantOrCC,
+      bioWebsite: speaker.bioWebsite,
+      bioProgram: speaker.bioProgram, 
+      headshot: speaker.headshot,
+      mediaWilling: speaker.mediaWilling,
+      costsCoveredByOrg: speaker.costsCoveredByOrg,
+      speakingFees: speaker.speakingFees, 
+      hasPresentedAtCCAWInPast2years: speaker.hasPresentedAtCCAWInPast2years,
+      recentSpeakingExp: speaker.recentSpeakingExp,
+      speakingReferences: speaker.speakingReferences, 
+      adminNotes: '',
+      coPresenters: []
+    });
+    newSpeaker.save(err => {
+      if (err) {
+        console.log(err);
+        res.status(500).json({message: 'Speaker save error'});
+      } else res.status(200).json(newSpeaker);
+    });
+  }
+});
+
 /** Pass all non-api routes to front-end router for handling **/
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../dist', 'index.html'));
