@@ -3,18 +3,18 @@
 const mongoose = require('mongoose');
 
 let conferenceSchema = new mongoose.Schema({
+  lastActive: Boolean,
   title: String,
   dateRange: {
     start: String, // 2016-12-30
     end: String
   },
-  // TODO restructure to new timeslots schema front and backend
-  timeSlots: [{
+  days: [{
     date: String,
-    timeRanges: [{
+    timeSlots: [{
       start: String,
       end: String
-    }],
+    }]
   }],
   rooms: [String]
 });
