@@ -40,7 +40,8 @@ let speakerSchema = new mongoose.Schema({
   statusNotification: Boolean,  // After accepting/denying, whether they were notified
   title: String,
   organization: String,
-  address: String, // Do we need line1/line2? or break down to number/street? Account for PO box?
+  address1: String,
+  address2: String,
   city: String,
   state: String,
   zip: String,
