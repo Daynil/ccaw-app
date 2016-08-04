@@ -1,5 +1,7 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import * as _ from 'lodash';
 
 import { SpeakerService } from '../speaker.service';
 import { TransitionService } from '../transition.service';
@@ -13,10 +15,11 @@ import { Speaker, Presentation } from '../speaker.model';
   styleUrls: ['speaker.component.css'],
   directives: [ToastComponent]
 })
-export class SpeakerComponent implements OnInit {
+export class SpeakerComponent implements OnInit, OnDestroy {
 
   @ViewChild('toast') toast: ToastComponent;
-  @Input('existingSpeaker') existingSpeaker;
+
+  private paramsub: any;
 
   model: Speaker;
 
@@ -28,42 +31,50 @@ export class SpeakerComponent implements OnInit {
     {
       name: 'lodging',
       covered: false
-    }/*,
-    {
-      name: 'none',
-      covered: false
-    }*/
+    }
   ];
 
   constructor(private transitionService: TransitionService,
-              private speakerService: SpeakerService) { }
+              private speakerService: SpeakerService,
+              private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.transitionService.transition();
-    if (this.existingSpeaker) this.model = this.existingSpeaker;
-    else {
-      this.model = <Speaker>{
-        mediaWilling: true,
-        costsCoveredByOrg: this.costsCovered,
-        hasPresentedAtCCAWInPast2years: false,
+
+    // Check for params
+    this.paramsub = this.route.params.subscribe(params => {
+      if (_.isEmpty(params)) {
+        this.model = <Speaker>{
+          mediaWilling: true,
+          costsCoveredByOrg: this.costsCovered,
+          hasPresentedAtCCAWInPast2years: false,
+        }
+        this.model.address2 = '';
+        this.model.assistantOrCC = '';
+      } else {
+        this.model = this.speakerService.getSpeaker(params['id']);
       }
-      this.model.address2 = '';
-      this.model.assistantOrCC = '';
-    }
+    });
+  }
+
+  ngOnDestroy() {
+    this.paramsub.unsubscribe();
   }
 
   capitalize(word: string): string {
     return word.charAt(0).toUpperCase() + word.slice(1);
   }
 
-/*  changeCostCovered(isChecked: boolean, cost: string) {
-    if (isChecked) this.model.costsCoveredByOrg.push(cost);
-    else this.model.costsCoveredByOrg.splice(this.model.costsCoveredByOrg.indexOf(cost), 1);
-  }*/
+  changeCostCovered(isChecked: boolean, costChecked) {
+    let cost = _.find(this.model.costsCoveredByOrg, cost => cost.name === costChecked.name);
+    cost.covered = isChecked;
+  }
 
   updateSpeaker(form: NgForm) {
     if (!form.valid) return;
-    this.speakerService.updateSpeaker(this.model);
+    this.speakerService
+        .updateSpeaker(this.model)
+        .then(res => this.toast.message('Speaker updated!'));
   }
 
   // DEBUG

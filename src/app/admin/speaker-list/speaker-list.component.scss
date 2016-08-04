@@ -1,2 +1,10 @@
 @import '../../shared/common-styles';
 
+#speakers {
+  display: flex;
+  flex-direction: column;
+}
+
+.speaker {
+  @extend .card;
+}

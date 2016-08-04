@@ -81,6 +81,15 @@ app.get('/api/getallconferences', (req, res) => {
     });
 });
 
+app.get('/api/getallspeakers', (req, res) => {
+  Speaker
+    .find({})
+    .exec()
+    .then(speakers => {
+      res.status(200).json(speakers);
+    })
+});
+
 app.post('/api/createconference', (req, res) => {
   let conf = req.body;
 
@@ -183,14 +192,14 @@ app.post('/api/updatespeaker', (req, res) => {
       .findById(speaker._id)
       .exec()
       .then(serverSpeaker => {
-        console.log('serverSpeaker:', serverSpeaker);
         if (serverSpeaker === null) {
           console.log('Speaker not found');
           res.status(500).json({message: 'Speaker not found'});
         } else {
+          console.log('found existing speaker');
           serverSpeaker.admin = speaker.admin;
           serverSpeaker.password = speaker.password;
-          serverSpeaker.salutation = speaker.saluation;
+          serverSpeaker.salutation = speaker.salutation;
           serverSpeaker.nameFirst = speaker.nameFirst;
           serverSpeaker.nameLast = speaker.nameLast;
           serverSpeaker.email = speaker.email;
@@ -198,7 +207,8 @@ app.post('/api/updatespeaker', (req, res) => {
           serverSpeaker.statusNotification = speaker.statusNotification;
           serverSpeaker.title = speaker.title;
           serverSpeaker.organization = speaker.organization;
-          serverSpeaker.address = speaker.address;
+          serverSpeaker.address1 = speaker.address1;
+          serverSpeaker.address2 = speaker.address2;
           serverSpeaker.city = speaker.city;
           serverSpeaker.state = speaker.state;
           serverSpeaker.zip = speaker.zip;
@@ -209,7 +219,10 @@ app.post('/api/updatespeaker', (req, res) => {
           serverSpeaker.bioProgram = speaker.bioProgram; 
           serverSpeaker.headshot = speaker.headshot;
           serverSpeaker.mediaWilling = speaker.mediaWilling;
-          serverSpeaker.costsCoveredByOrg = speaker.costsCoveredByOrg;
+          speaker.costsCoveredByOrg.forEach(cost => {
+            let serverCost = _.find(serverSpeaker.costsCoveredByOrg, servCost => servCost.name === cost.name);
+            serverCost.covered = cost.covered;
+          });
           serverSpeaker.speakingFees = speaker.speakingFees; 
           serverSpeaker.hasPresentedAtCCAWInPast2years = speaker.hasPresentedAtCCAWInPast2years;
           serverSpeaker.recentSpeakingExp = speaker.recentSpeakingExp;

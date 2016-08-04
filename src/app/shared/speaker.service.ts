@@ -27,6 +27,10 @@ export class SpeakerService {
               .catch(handleError);
   }
 
+  getSpeaker(speakerId: string) {
+    return _.find(this.speakers.getValue(), speaker => speaker._id === speakerId );
+  }
+
   updateSpeaker(speaker: Speaker) {
     let pkg = packageForPost(speaker);
     return this.http
@@ -35,7 +39,7 @@ export class SpeakerService {
               .then(parseJson)
               .then(serverSpeaker => {
                 let newSpeakers = this.speakers.getValue();
-                let existingSpeaker = _.find(newSpeakers, speaker._id === serverSpeaker._id);
+                let existingSpeaker = _.find(newSpeakers, exSpeaker => exSpeaker._id === serverSpeaker._id);
                 if (typeof existingSpeaker === 'undefined') {
                   newSpeakers.push(serverSpeaker);
                 } else {

@@ -4,8 +4,20 @@ h2 {
   margin-bottom: 30px;
 }
 
+form {
+  margin-bottom: 80px;
+}
+
 .row {
-  margin-bottom: 50px;
+  margin-bottom: 30px;
+  // background-color: hsla(0, 40%, 70%, 0.1); design decision, looks cleaner with border
+  border: 1px dashed hsl(0, 40%, 70%);
+  padding: 40px;
+  border-radius: 20px;
+}
+
+.primary-label {
+  font-weight: bold;
 }
 
 .sub-label {

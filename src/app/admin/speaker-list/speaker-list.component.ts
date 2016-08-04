@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
+import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 
+import { SpeakerService } from '../../shared/speaker.service';
 import { TransitionService } from '../../shared/transition.service';
 
 @Component({
@@ -12,10 +13,16 @@ import { TransitionService } from '../../shared/transition.service';
 })
 export class SpeakerListComponent implements OnInit {
   
-  constructor(private transitionService: TransitionService) { }
+  constructor(private transitionService: TransitionService,
+              private speakerService: SpeakerService,
+              private router: Router) { }
 
   ngOnInit() {
     this.transitionService.transition();
+  }
+
+  gotoSpeaker(speakerId: string) {
+    this.router.navigate(['/speaker', {id: speakerId}]);
   }
 
 }

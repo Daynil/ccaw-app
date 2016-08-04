@@ -15,7 +15,7 @@ import { SignupComponent } from './auth/signup/signup.component';
 import { SettingsComponent } from './auth/settings/settings.component';
 
 export const routes: RouterConfig = [
-  { path: '',               component: HomeComponent },
+  { path: '',              component: HomeComponent },
   { path: 'calendar',      component: CalendarComponent },
   { path: 'create-conf',   component: CreateConfComponent },
   { path: 'modify-conf',   component: ModifyConfComponent },
@@ -23,7 +23,7 @@ export const routes: RouterConfig = [
   { path: 'select-active', component: SelectActiveComponent },
   { path: 'session',       component: SessionComponent },
   { path: 'session-list',  component: SessionListComponent },
-  { path: 'speaker',       component: SpeakerComponent },
+  { path: 'speaker',   component: SpeakerComponent },
   { path: 'speaker-list',  component: SpeakerListComponent },
   { path: 'login',         component: LoginComponent },
   { path: 'signup',        component: SignupComponent },

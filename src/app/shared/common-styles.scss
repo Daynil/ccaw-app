@@ -39,3 +39,20 @@
   background-color: $brand-dark;
   width: 60%;
 }
+
+.card {
+  padding: 10px;
+  box-shadow: 0 -1px 0 hsl(0, 0%, 90%),
+              0 0 2px hsla(0, 0%, 0%, 0.12),
+              0 2px 4px hsla(0, 0%, 0%, 0.24);
+  border-radius: 2px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+  transition: 0.4s;
+  &:hover {
+    box-shadow: 0 0 6px hsla(0, 0%, 0%, 0.16),
+                0 6px 12px hsla(0, 0%, 0%, 0.32);
+    cursor: pointer;
+  }
+}

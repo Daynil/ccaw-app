@@ -2,9 +2,13 @@
   <h1>List of speakers</h1>
 
   <a [routerLink]="['/speaker']"><button type="submit" class="btn btn-primary">Add Speaker</button></a>
-  <ul>
-    <li>Overview of speakers</li>
-    <li>Filters? (assigned/unassigned)</li>
-    <li>Click <a [routerLink]="['/speaker']">a speaker</a> to view full details</li>
-  </ul>
+  <div id="speakers">
+    <div *ngFor="let speaker of (speakerService.speakers | async)" 
+         class="speaker" (click)="gotoSpeaker(speaker._id)">
+      <div>Name: {{ speaker.nameFirst }} {{ speaker.nameLast }}</div>
+      <div>Email: {{ speaker.email }}</div>
+      <div>Presentations: {{ speaker.presentations.length }}</div>
+    </div>
+  </div>
+  <!--<li>Click <a [routerLink]="['/speaker']">a speaker</a> to view full details</li>-->
 </div>
