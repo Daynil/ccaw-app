@@ -126,7 +126,8 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
     let dbDate = this.dateService.formatDateForDatabase(date);
     this.adminService.deleteTimeSlot(dbDate, conf, slot)
         .then(res => {
-          this.toast.message('Timeslot deleted!')
+          this.refreshSelectedConf(this.datesSelect.value);
+          this.toast.message('Timeslot deleted!');
         });
   }
 

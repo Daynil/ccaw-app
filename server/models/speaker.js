@@ -52,7 +52,10 @@ let speakerSchema = new mongoose.Schema({
   bioProgram: String, // For pamphlet/printed program, 60 word limit
   headshot: String, // file handling ourselves (typeform has drag/drop file selection) sanitize extensions after MVP, min/max size
   mediaWilling: Boolean,
-  costsCoveredByOrg: [String], // In form: Travel/Lodging/None check all that apply
+  costsCoveredByOrg: [{ // In form: Travel/Lodging/None check all that apply
+    name: String,
+    covered: Boolean
+  }],
   speakingFees: String, // Not sure if we need a number? Selectable from dropdown?
   hasPresentedAtCCAWInPast2years: Boolean,
   recentSpeakingExp: String,

@@ -159,10 +159,16 @@
       </div>
       <div class="row">
         <div class="col-md-8 col-xs-12">
-          <label class="control-label" for="costsCoveredByOrg">Please select which of the following costs your organization is able to cover (check all that apply):</label>
-          <div class="checkbox-group">
+          <label class="control-label" for="costsCoveredByOrg">Please select which of the following costs your organization is able to cover (check all that apply or none):</label>
+<!--          <div class="checkbox-group">
             <label *ngFor="let cost of costsCovered">
               <input type="checkbox" (change)="changeCostCovered($event.target.checked, cost)"> {{ capitalize(cost) }}
+            </label>
+          </div>-->
+          <div class="checkbox-group">
+            <label *ngFor="let cost of costsCovered">
+              <input type="checkbox" [(ngModel)]="cost.covered" 
+                     name="costCoveredByOrg" #costCoveredByOrg="ngModel"> {{ capitalize(cost.name) }}
             </label>
           </div>
         </div>

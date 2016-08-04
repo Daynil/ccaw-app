@@ -20,7 +20,20 @@ export class SpeakerComponent implements OnInit {
 
   model: Speaker;
 
-  costsCovered = [ 'travel', 'lodging', 'none' ];
+  costsCovered = [
+    {
+      name: 'travel',
+      covered: false
+    },
+    {
+      name: 'lodging',
+      covered: false
+    }/*,
+    {
+      name: 'none',
+      covered: false
+    }*/
+  ];
 
   constructor(private transitionService: TransitionService,
               private speakerService: SpeakerService) { }
@@ -31,7 +44,7 @@ export class SpeakerComponent implements OnInit {
     else {
       this.model = <Speaker>{
         mediaWilling: true,
-        costsCoveredByOrg: [],
+        costsCoveredByOrg: this.costsCovered,
         hasPresentedAtCCAWInPast2years: false,
       }
       this.model.address2 = '';
@@ -43,10 +56,10 @@ export class SpeakerComponent implements OnInit {
     return word.charAt(0).toUpperCase() + word.slice(1);
   }
 
-  changeCostCovered(isChecked: boolean, cost: string) {
+/*  changeCostCovered(isChecked: boolean, cost: string) {
     if (isChecked) this.model.costsCoveredByOrg.push(cost);
     else this.model.costsCoveredByOrg.splice(this.model.costsCoveredByOrg.indexOf(cost), 1);
-  }
+  }*/
 
   updateSpeaker(form: NgForm) {
     if (!form.valid) return;

@@ -34,7 +34,10 @@ export interface Speaker {
   bioProgram: string, // For pamphlet/printed program, 60 word limit
   headshot: string, // file handling ourselves (typeform has drag/drop file selection) sanitize extensions after MVP, min/max size
   mediaWilling: boolean,
-  costsCoveredByOrg: string[],  // In form: Travel/Lodging/None check all that apply
+  costsCoveredByOrg: {  // In form: Travel/Lodging/None check all that apply
+    name: string,
+    covered: boolean
+  }[], 
   speakingFees: string, // Not sure if we need a number? Selectable from dropdown?
   hasPresentedAtCCAWInPast2years: boolean,
   recentSpeakingExp: string,
