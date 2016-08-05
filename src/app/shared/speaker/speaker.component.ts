@@ -74,7 +74,7 @@ export class SpeakerComponent implements OnInit, OnDestroy {
     if (!form.valid) return;
     this.speakerService
         .updateSpeaker(this.model)
-        .then(res => this.toast.message('Speaker updated!'));
+        .then(res => this.toast.success('Speaker updated!'));
   }
 
   // DEBUG

@@ -1,10 +1,44 @@
 @import '../../shared/common-styles';
 
+#speaker-list {
+  text-align: center;
+}
+
+#subtitle {
+  font-size: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-weight: 100;
+}
+
 #speakers {
   display: flex;
   flex-direction: column;
+  margin-top: 40px;
 }
+
 
 .speaker {
   @extend .card;
+  text-align: left;
+  height: 80px;
+  padding: 0;
+  font-weight: 100;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.speaker-left {
+  display: inline-block;
+  vertical-align: top;
+  img {
+    height: 80px;
+  }
+}
+
+.speaker-right {
+  display: inline-block;
+  margin-left: 50px;
+  margin-top: 10px;
+  text-align: left;
 }

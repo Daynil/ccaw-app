@@ -1,14 +1,26 @@
 <div id="speaker-list" class="container" [class.page-transition]="transitionService.isTransitioning()">
   <h1>List of speakers</h1>
-
+  <p id="subtitle">
+    Click any existing speaker to modify their information or add a 
+    new speaker from scratch.
+  </p>
   <a [routerLink]="['/speaker']"><button type="submit" class="btn btn-primary">Add Speaker</button></a>
-  <div id="speakers">
-    <div *ngFor="let speaker of (speakerService.speakers | async)" 
-         class="speaker" (click)="gotoSpeaker(speaker._id)">
-      <div>Name: {{ speaker.nameFirst }} {{ speaker.nameLast }}</div>
-      <div>Email: {{ speaker.email }}</div>
-      <div>Presentations: {{ speaker.presentations.length }}</div>
+
+  <div class="divider"></div>
+
+  <div class="row">
+    <div id="speakers" class="col-md-8 col-xs-12 col-md-offset-2">
+      <div *ngFor="let speaker of (speakerService.speakers | async)" 
+          class="speaker" (click)="gotoSpeaker(speaker._id)">
+        <div class="speaker-left">
+          <img [src]="speaker.headshot">
+        </div>
+        <div class="speaker-right">
+          <div>Name: {{ speaker.nameFirst }} {{ speaker.nameLast }}</div>
+          <div>Email: {{ speaker.email }}</div>
+          <div>Presentations: {{ speaker.presentations.length }}</div>
+        </div>
+      </div>
     </div>
   </div>
-  <!--<li>Click <a [routerLink]="['/speaker']">a speaker</a> to view full details</li>-->
 </div>
