@@ -8,19 +8,19 @@
 
   <div class="divider"></div>
 
-<!--  <div class="row">
+  <div class="row">
     <div id="sessions" class="col-md-8 col-xs-12 col-md-offset-2">
-      <div *ngFor="let session of (sessionService.sessions | async)" 
-          class="session" (click)="gotoSession(session._id)">
-        <div class="session-left">
-          <img [src]="speaker.headshot">
+      <div *ngFor="let sessionRef of (sessionService.sessions | async)" 
+          class="session row" (click)="gotoSession(sessionRef._id)">
+        <div class="session-left col-xs-4">
+          <div><b>Title:</b></div>
+          <div class="title">{{ sessionRef.title }}</div>
+          <div><b>Length:</b></div>
+          <div>{{ sessionRef.length }} minutes</div>
         </div>
-        <div class="session-right">
-          <div>Name: {{ speaker.nameFirst }} {{ speaker.nameLast }}</div>
-          <div>Email: {{ speaker.email }}</div>
-          <div>Presentations: {{ speaker.presentations.length }}</div>
-        </div>
+        <div class="session-right col-xs-8">{{ sessionRef.descriptionProgram }}</div>
       </div>
     </div>
-  </div>-->
+  </div>
+
 </div>

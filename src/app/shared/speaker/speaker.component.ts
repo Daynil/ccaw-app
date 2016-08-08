@@ -6,7 +6,7 @@ import * as _ from 'lodash';
 import { SpeakerService } from '../speaker.service';
 import { TransitionService } from '../transition.service';
 import { ToastComponent } from '../toast.component';
-import { Speaker, Presentation } from '../speaker.model';
+import { Speaker } from '../speaker.model';
 
 @Component({
   moduleId: module.id,

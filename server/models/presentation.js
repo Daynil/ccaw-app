@@ -29,3 +29,5 @@ let presentationSchema = new mongoose.Schema({
   },
   miscRequirements: String
 });
+
+module.exports = mongoose.model('Presentation', presentationSchema);

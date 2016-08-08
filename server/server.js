@@ -19,6 +19,7 @@ let production = process.env.NODE_ENV === 'production';
 const mongoose = require('mongoose');
 const Conference = require('./models/conference');
 const Speaker = require('./models/speaker');
+const Presentation = require('./models/presentation');
 let mongoURI = process.env.MONGO_URI || 'mongodb://localhost/ccaw-app';
 mongoose.connect(mongoURI);
 
@@ -87,6 +88,15 @@ app.get('/api/getallspeakers', (req, res) => {
     .exec()
     .then(speakers => {
       res.status(200).json(speakers);
+    })
+});
+
+app.get('/api/getallsessions', (req, res) => {
+  Presentation
+    .find({})
+    .exec()
+    .then(sessions => {
+      res.status(200).json(sessions);
     })
 });
 
@@ -187,6 +197,7 @@ app.post('/api/updateconference', (req, res) => {
 
 app.post('/api/updatespeaker', (req, res) => {
   let speaker = req.body;
+  // Existing speakers have an id
   if (speaker._id) {
     Speaker
       .findById(speaker._id)
@@ -197,43 +208,12 @@ app.post('/api/updatespeaker', (req, res) => {
           res.status(500).json({message: 'Speaker not found'});
         } else {
           console.log('found existing speaker');
-          serverSpeaker.admin = speaker.admin;
-          serverSpeaker.password = speaker.password;
-          serverSpeaker.salutation = speaker.salutation;
-          serverSpeaker.nameFirst = speaker.nameFirst;
-          serverSpeaker.nameLast = speaker.nameLast;
-          serverSpeaker.email = speaker.email;
-          serverSpeaker.status = speaker.status;
-          serverSpeaker.statusNotification = speaker.statusNotification;
-          serverSpeaker.title = speaker.title;
-          serverSpeaker.organization = speaker.organization;
-          serverSpeaker.address1 = speaker.address1;
-          serverSpeaker.address2 = speaker.address2;
-          serverSpeaker.city = speaker.city;
-          serverSpeaker.state = speaker.state;
-          serverSpeaker.zip = speaker.zip;
-          serverSpeaker.phoneWork = speaker.phoneWork;
-          serverSpeaker.phoneCell = speaker.phoneCell;
-          serverSpeaker.assistantOrCC = speaker.assistantOrCC;
-          serverSpeaker.bioWebsite = speaker.bioWebsite;
-          serverSpeaker.bioProgram = speaker.bioProgram; 
-          serverSpeaker.headshot = speaker.headshot;
-          serverSpeaker.mediaWilling = speaker.mediaWilling;
-          speaker.costsCoveredByOrg.forEach(cost => {
-            let serverCost = _.find(serverSpeaker.costsCoveredByOrg, servCost => servCost.name === cost.name);
-            serverCost.covered = cost.covered;
-          });
-          serverSpeaker.speakingFees = speaker.speakingFees; 
-          serverSpeaker.hasPresentedAtCCAWInPast2years = speaker.hasPresentedAtCCAWInPast2years;
-          serverSpeaker.recentSpeakingExp = speaker.recentSpeakingExp;
-          serverSpeaker.speakingReferences = speaker.speakingReferences; 
-          serverSpeaker.adminNotes = speaker.adminNotes;
-          serverSpeaker.coPresenters = speaker.coPresenters;
+          _.merge(serverSpeaker, speaker);
           serverSpeaker.save(err => {
             if (err) {
               console.log(err);
               res.status(500).json({message: 'Speaker save error'});
-            } else res.status(200).json(serverSpeaker)
+            } else res.status(200).json(serverSpeaker);
           });
         }
     });
@@ -241,38 +221,50 @@ app.post('/api/updatespeaker', (req, res) => {
     let newSpeaker = new Speaker({
       admin: false,
       password: 'password',
-      salutation: speaker.saluation,
-      nameFirst: speaker.nameFirst,
-      nameLast: speaker.nameLast,
-      email: speaker.email,
       status: 'pending',
       statusNotification: false,
-      title: speaker.title,
-      organization: speaker.organization,
-      address: speaker.address,
-      city: speaker.city,
-      state: speaker.state,
-      zip: speaker.zip,
-      phoneWork: speaker.phoneWork,
-      phoneCell: speaker.phoneCell,
-      assistantOrCC: speaker.assistantOrCC,
-      bioWebsite: speaker.bioWebsite,
-      bioProgram: speaker.bioProgram, 
-      headshot: speaker.headshot,
-      mediaWilling: speaker.mediaWilling,
-      costsCoveredByOrg: speaker.costsCoveredByOrg,
-      speakingFees: speaker.speakingFees, 
-      hasPresentedAtCCAWInPast2years: speaker.hasPresentedAtCCAWInPast2years,
-      recentSpeakingExp: speaker.recentSpeakingExp,
-      speakingReferences: speaker.speakingReferences, 
-      adminNotes: '',
-      coPresenters: []
+      adminNotes: ''
     });
+    _.merge(newSpeaker, speaker);
     newSpeaker.save(err => {
       if (err) {
         console.log(err);
         res.status(500).json({message: 'Speaker save error'});
       } else res.status(200).json(newSpeaker);
+    });
+  }
+});
+
+app.post('/api/updatesession', (req, res) => {
+  let session = req.body;
+  // Existing sessions have an id
+  if (session._id) {
+    Presentation
+      .findById(session._id)
+      .exec()
+      .then(serverSession => {
+        if (serverSession === null) {
+          console.log('Session not found');
+          res.status(500).json({message: 'Session not found'});
+        } else {
+          console.log('found existing session');
+          _.merge(serverSession, session);
+          serverSession.save(err => {
+            if (err) {
+              console.log(err);
+              res.status(500).json({message: 'Session save error'});
+            } else res.status(200).json(serverSession);
+          });
+        }
+    });
+  } else {
+    let newSession = new Presentation();
+    _.merge(newSession, session);
+    newSession.save(err => {
+      if (err) {
+        console.log(err);
+        res.status(500).json({message: 'Session save error'});
+      } else res.status(200).json(newSession);
     });
   }
 });

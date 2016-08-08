@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
+import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 
+import { SessionService } from '../../shared/session.service';
 import { TransitionService } from '../../shared/transition.service';
 
 @Component({
@@ -12,10 +13,16 @@ import { TransitionService } from '../../shared/transition.service';
 })
 export class SessionListComponent implements OnInit {
 
-  constructor(private transitionService: TransitionService) { }
+  constructor(private transitionService: TransitionService,
+              private sessionService: SessionService,
+              private router: Router) { }
 
   ngOnInit() {
     this.transitionService.transition();
+  }
+
+  gotoSession(sessionId: string) {
+    this.router.navigate(['/session', {id: sessionId}]);
   }
 
 }

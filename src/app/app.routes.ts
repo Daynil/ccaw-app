@@ -23,7 +23,7 @@ export const routes: RouterConfig = [
   { path: 'select-active', component: SelectActiveComponent },
   { path: 'session',       component: SessionComponent },
   { path: 'session-list',  component: SessionListComponent },
-  { path: 'speaker',   component: SpeakerComponent },
+  { path: 'speaker',       component: SpeakerComponent },
   { path: 'speaker-list',  component: SpeakerListComponent },
   { path: 'login',         component: LoginComponent },
   { path: 'signup',        component: SignupComponent },

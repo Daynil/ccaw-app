@@ -7,12 +7,12 @@ import * as _ from 'lodash';
 
 import { handleError, parseJson, packageForPost } from './http-helpers';
 import { Conference, TimeSlot } from './conference.model';
-import { Presentation, Speaker } from './speaker.model';
+import { Presentation } from './presentation.model';
 
 @Injectable()
-export class SpeakerService {
+export class SessionService {
 
-  sessions: BehaviorSubject<Speaker[]> = new BehaviorSubject([]);
+  sessions: BehaviorSubject<Presentation[]> = new BehaviorSubject([]);
 
   constructor(private http: Http) { }
 
@@ -22,31 +22,32 @@ export class SpeakerService {
               .toPromise()
               .then(parseJson)
               .then(allSessions => {
+                console.log(allSessions);
                 this.sessions.next(allSessions);
               })
               .catch(handleError);
   }
 
-  getSession(speakerId: string) {
-    return _.find(this.sessions.getValue(), session => session._id === speakerId );
+  getSession(sessionId: string) {
+    return _.find(this.sessions.getValue(), session => session._id === sessionId );
   }
 
-  updateSpeaker(speaker: Speaker) {
-    let pkg = packageForPost(speaker);
+  updateSession(session: Presentation) {
+    let pkg = packageForPost(session);
     return this.http
-              .post('/api/updatespeaker', pkg.body, pkg.opts)
+              .post('/api/updatesession', pkg.body, pkg.opts)
               .toPromise()
               .then(parseJson)
-              .then(serverSpeaker => {
-                let newSpeakers = this.sessions.getValue();
-                let existingSpeaker = _.find(newSpeakers, exSpeaker => exSpeaker._id === serverSpeaker._id);
-                if (typeof existingSpeaker === 'undefined') {
-                  newSpeakers.push(serverSpeaker);
+              .then(serverSession => {
+                let newSessions = this.sessions.getValue();
+                let existingSession = _.find(newSessions, exSession => exSession._id === serverSession._id);
+                if (typeof existingSession === 'undefined') {
+                  newSessions.push(serverSession);
                 } else {
-                  existingSpeaker = serverSpeaker;
+                  existingSession = serverSession;
                 }
-                this.sessions.next(newSpeakers);
-                return serverSpeaker;
+                this.sessions.next(newSessions);
+                return serverSession;
               })
               .catch(handleError);
   }

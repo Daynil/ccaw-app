@@ -4,9 +4,10 @@ import { ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
 
 import { tags } from '../tags.data';
+import { SessionService } from '../session.service';
 import { TransitionService } from '../transition.service';
 import { ToastComponent } from '../toast.component';
-import { Speaker, Presentation } from '../speaker.model';
+import { Presentation } from '../presentation.model';
 
 @Component({
   moduleId: module.id,
@@ -40,6 +41,7 @@ export class SessionComponent implements OnInit, OnDestroy {
 
 
   constructor(private transitionService: TransitionService,
+              private sessionService: SessionService,
               private route: ActivatedRoute) { }
 
   ngOnInit() {
@@ -59,7 +61,7 @@ export class SessionComponent implements OnInit, OnDestroy {
           willingToRepeat: true
         }
       } else {
-        
+        this.model = this.sessionService.getSession(params['id']);
       }
     });
   }
@@ -72,10 +74,17 @@ export class SessionComponent implements OnInit, OnDestroy {
     return word.charAt(0).toUpperCase() + word.slice(1);
   }
 
- changeTag(isChecked: boolean, tagChecked) {
-   let tag = _.find(this.model.tags, tag => tag.name === tagChecked.name);
-   tag.checked = isChecked;
- }
+  changeTag(isChecked: boolean, tagChecked) {
+    let tag = _.find(this.model.tags, tag => tag.name === tagChecked.name);
+    tag.checked = isChecked;
+  }
+
+  updateSession(form: NgForm) {
+    if (!form.valid) return;
+    this.sessionService
+        .updateSession(this.model)
+        .then(res => this.toast.success('Session updated!'));
+  }
 
   // DEBUG
   get diagnostic() { return JSON.stringify(this.model); }

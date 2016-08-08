@@ -21,24 +21,24 @@
 .session {
   @extend .card;
   text-align: left;
-  height: 80px;
-  padding: 0;
+  height: 100px;
+  padding: 10px;
   font-weight: 100;
-  white-space: nowrap;
-  overflow: hidden;
 }
 
 .session-left {
   display: inline-block;
   vertical-align: top;
-  img {
-    height: 80px;
+  overflow: hidden;
+  .title {
+    white-space: pre;
+    overflow: hidden;
   }
 }
 
 .session-right {
   display: inline-block;
-  margin-left: 50px;
-  margin-top: 10px;
-  text-align: left;
+  white-space: pre-wrap;
+  overflow-y: hidden;
+  height: 80px;
 }

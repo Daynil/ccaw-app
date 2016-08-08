@@ -6,7 +6,7 @@ import * as _ from 'lodash';
 
 import { handleError, parseJson, packageForPost } from './http-helpers';
 import { Conference, TimeSlot } from './conference.model';
-import { Presentation, Speaker } from './speaker.model';
+import { Speaker } from './speaker.model';
 
 @Injectable()
 export class AdminService {
