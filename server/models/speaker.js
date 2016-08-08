@@ -89,13 +89,14 @@ let speakerSchema = new mongoose.Schema({
       technology: Boolean,
       tribalIssues: Boolean
     },*/
-    tags: [String], // Option to add tags after MVP
+    tags: [{ // Option to add tags after MVP
+      name: String,
+      label: String, // Optional, for long tag names
+      checked: Boolean
+    }], 
     level: String, // Beginner, Intermediate or Advanced - dropdown on frontend
-    willingToBeRecorded: {
-      audio: Boolean,
-      visual: Boolean
-    },
-    isMediaOrPressFriendly: String, // Yes, yes no photos, yes no audio rec or photos, no
+    willingToBeRecorded: String, // audio, audioVisual, no
+    isMediaOrPressFriendly: String, // yes, yesNophotos, yesNoAudioRecOrPhotos, no
     willingToRepeat: Boolean,
     hasCopresentor: Boolean,
     speakers: [Number], // _id's of presentors  

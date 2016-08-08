@@ -1,8 +1,26 @@
-<div [class.page-transition]="transitionService.isTransitioning()">
-  <h1>List of approved sessions</h1>
-  <ul>
-    <li>Overview of all approved sessions, list</li>
-    <li>Filter for certain tags? (denied/approved)</li>
-    <li>Click <a [routerLink]="['/session']">a session</a> to view full details</li>
-  </ul>
+<div id="session-list" class="container" [class.page-transition]="transitionService.isTransitioning()">
+  <h1>List of sessions</h1>
+  <p id="subtitle">
+    Click any existing session to modify its information or add a 
+    new session from scratch.
+  </p>
+  <a [routerLink]="['/session']"><button type="submit" class="btn btn-primary">Add Session</button></a>
+
+  <div class="divider"></div>
+
+<!--  <div class="row">
+    <div id="sessions" class="col-md-8 col-xs-12 col-md-offset-2">
+      <div *ngFor="let session of (sessionService.sessions | async)" 
+          class="session" (click)="gotoSession(session._id)">
+        <div class="session-left">
+          <img [src]="speaker.headshot">
+        </div>
+        <div class="session-right">
+          <div>Name: {{ speaker.nameFirst }} {{ speaker.nameLast }}</div>
+          <div>Email: {{ speaker.email }}</div>
+          <div>Presentations: {{ speaker.presentations.length }}</div>
+        </div>
+      </div>
+    </div>
+  </div>-->
 </div>

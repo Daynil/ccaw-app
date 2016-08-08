@@ -52,7 +52,7 @@ export interface Speaker {
 export interface Presentation {
     presentationID: number,  // non-mongoID ID to reference to access duplicate copies (make this a unique GUID)
     type: string, // Case study or workshop - structure of multiple choice fields? in front end, dropdown or radio fields
-    length: string, // 90 minutes, 3 hours (parts 1 and 2)
+    length: string, // 90 minutes, 3 hours(180 minutes) (parts 1 and 2)
     title: string,
     descriptionWebsite: string,  // To appear on CCAW website and conference appear 150 word limit
     descriptionProgram: string, // To be printed on pamphlet? 60 word limit
@@ -74,13 +74,14 @@ export interface Presentation {
       technology: Boolean,
       tribalIssues: Boolean
     },*/
-    tags: string[], // Option to add tags after MVP
-    level: string, // Beginner, Intermediate or Advanced - dropdown on frontend
-    willingToBeRecorded: {
-      audio: boolean,
-      visual: boolean
-    },
-    isMediaOrPressFriendly: string, // Yes, yes no photos, yes no audio rec or photos, no
+    tags: { // Option to add tags after MVP
+      name: string,
+      label?: string,
+      checked: boolean
+    }[], 
+    level: string, // beginner, intermediate or advanced - dropdown on frontend
+    willingToBeRecorded: string, // audio, audioVisual, no
+    isMediaOrPressFriendly: string, // yes, yesNophotos, yesNoAudioRecOrPhotos, no
     willingToRepeat: boolean,
     hasCopresentor: boolean,
     speakers: string[], // emails of presentors  
