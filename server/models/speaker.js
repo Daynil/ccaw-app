@@ -61,55 +61,9 @@ let speakerSchema = new mongoose.Schema({
   recentSpeakingExp: String,
   speakingReferences: String, // At least 2
   adminNotes: String,
-  coPresenters: [String],
 
-  // Presentations speaker is involved in
-  presentations: [{
-    presentationID: Number,  // non-mongoID ID to reference to access duplicate copies (make this a unique GUID)
-    type: String, // Case study or workshop - structure of multiple choice fields? in front end, dropdown or radio fields
-    length: String, // 90 minutes, 3 hours (parts 1 and 2)
-    title: String,
-    descriptionWebsite: String,  // To appear on CCAW website and conference appear 150 word limit
-    descriptionProgram: String, // To be printed on pamphlet? 60 word limit
-  /*  tags: {  // Check all that apply (only directly applicable)
-      advocacy: Boolean,
-      campusSafety: Boolean,
-      coordinatedCommunityResponse: Boolean,
-      culturallySpecific: Boolean,
-      domesticViolence: Boolean,
-      forensics: Boolean,
-      humanTrafficking: Boolean,
-      lawEnforcementOrInvestigation: Boolean,
-      medical: Boolean,
-      probationOrParole: Boolean,
-      prosecution: Boolean,
-      sexualAssault: Boolean,
-      stalking: Boolean,
-      survivorStory: Boolean,
-      technology: Boolean,
-      tribalIssues: Boolean
-    },*/
-    tags: [{ // Option to add tags after MVP
-      name: String,
-      label: String, // Optional, for long tag names
-      checked: Boolean
-    }], 
-    level: String, // Beginner, Intermediate or Advanced - dropdown on frontend
-    willingToBeRecorded: String, // audio, audioVisual, no
-    isMediaOrPressFriendly: String, // yes, yesNophotos, yesNoAudioRecOrPhotos, no
-    willingToRepeat: Boolean,
-    hasCopresentor: Boolean,
-    speakers: [Number], // _id's of presentors  
-    statusTimeLocation: {
-      conferenceTitle: String,
-      timeSlot: {
-        start: String,
-        end: String
-      },
-      room: String
-    },
-    miscRequirements: String
-  }]
+  // Presentation ids that the speaker is involved in
+  presentations: [String]
 });
 
 speakerSchema.methods.generateHash = password => {

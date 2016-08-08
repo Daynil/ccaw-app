@@ -43,55 +43,7 @@ export interface Speaker {
   recentSpeakingExp: string,
   speakingReferences: string,  // At least 2
   adminNotes: string,
-  coPresenters: string[],
 
-  // Presentations speaker is involved in
-  presentations: Presentation[]
-}
-
-export interface Presentation {
-    presentationID: number,  // non-mongoID ID to reference to access duplicate copies (make this a unique GUID)
-    type: string, // Case study or workshop - structure of multiple choice fields? in front end, dropdown or radio fields
-    length: string, // 90 minutes, 3 hours(180 minutes) (parts 1 and 2)
-    title: string,
-    descriptionWebsite: string,  // To appear on CCAW website and conference appear 150 word limit
-    descriptionProgram: string, // To be printed on pamphlet? 60 word limit
-  /*  tags: {  // Check all that apply (only directly applicable)
-      advocacy: Boolean,
-      campusSafety: Boolean,
-      coordinatedCommunityResponse: Boolean,
-      culturallySpecific: Boolean,
-      domesticViolence: Boolean,
-      forensics: Boolean,
-      humanTrafficking: Boolean,
-      lawEnforcementOrInvestigation: Boolean,
-      medical: Boolean,
-      probationOrParole: Boolean,
-      prosecution: Boolean,
-      sexualAssault: Boolean,
-      stalking: Boolean,
-      survivorStory: Boolean,
-      technology: Boolean,
-      tribalIssues: Boolean
-    },*/
-    tags: { // Option to add tags after MVP
-      name: string,
-      label?: string,
-      checked: boolean
-    }[], 
-    level: string, // beginner, intermediate or advanced - dropdown on frontend
-    willingToBeRecorded: string, // audio, audioVisual, no
-    isMediaOrPressFriendly: string, // yes, yesNophotos, yesNoAudioRecOrPhotos, no
-    willingToRepeat: boolean,
-    hasCopresentor: boolean,
-    speakers: string[], // emails of presentors  
-    statusTimeLocation: {
-      conferenceTitle: string,
-      timeSlot: {
-        start: string,
-        end: string
-      },
-      room: string
-    },
-    miscRequirements: String
+  // _id's of presentations speaker is involved in
+  presentations: string[]
 }

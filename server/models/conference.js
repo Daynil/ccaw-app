@@ -13,7 +13,9 @@ let conferenceSchema = new mongoose.Schema({
     date: String,
     timeSlots: [{
       start: String,
-      end: String
+      end: String,
+      presentation: String, // Presentation id, or none for unassigned
+      room: String
     }]
   }],
   rooms: [String]

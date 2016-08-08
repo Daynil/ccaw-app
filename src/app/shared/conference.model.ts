@@ -16,6 +16,9 @@ export interface Conference {
 
 /** Date format: 2016-12-30 */
 export interface TimeSlot {
+  _id: string,
   start: string,
-  end: string;
+  end: string,
+  presentation?: string, // Presentation id or none for unassigned
+  room?: string
 }
