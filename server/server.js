@@ -15,6 +15,10 @@ if (process.env.NODE_ENV !== 'production') {
 }
 let production = process.env.NODE_ENV === 'production';
 
+if (process.env.SEED_DB && process.env.SEED_DB==='true') {
+  require('./seed');
+}
+
 // Database
 const mongoose = require('mongoose');
 const Conference = require('./models/conference');

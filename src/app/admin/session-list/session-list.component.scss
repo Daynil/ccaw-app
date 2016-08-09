@@ -17,23 +17,33 @@
   margin-top: 40px;
 }
 
-
 .session {
   @extend .card;
+  padding: 15px !important;
   text-align: left;
-  height: 100px;
+  height: 150px;
   padding: 10px;
   font-weight: 100;
+}
+
+.divider-small {
+  height: 1px;
+  background-color: $gray-light;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+.title {
+  text-align: center;
+  white-space: pre;
+  overflow: hidden;
+  font-size: 20px;
 }
 
 .session-left {
   display: inline-block;
   vertical-align: top;
   overflow: hidden;
-  .title {
-    white-space: pre;
-    overflow: hidden;
-  }
 }
 
 .session-right {

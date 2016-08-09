@@ -38,6 +38,7 @@
     "moment": "^2.14.1",
     "mongoose": "^4.5.7",
     "morgan": "^1.7.0",
+    "node-lipsum": "^1.0.1",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "reflect-metadata": "0.1.2",

@@ -12,13 +12,19 @@
     <div id="sessions" class="col-md-8 col-xs-12 col-md-offset-2">
       <div *ngFor="let sessionRef of (sessionService.sessions | async)" 
           class="session row" (click)="gotoSession(sessionRef._id)">
-        <div class="session-left col-xs-4">
-          <div><b>Title:</b></div>
-          <div class="title">{{ sessionRef.title }}</div>
-          <div><b>Length:</b></div>
-          <div>{{ sessionRef.length }} minutes</div>
+        <div class="row">
+          <div class="col-xs-12 title"><b>{{ sessionRef.title }}</b></div>
+          <div class="divider-small col-xs-12"></div>
         </div>
-        <div class="session-right col-xs-8">{{ sessionRef.descriptionProgram }}</div>
+        <div class="row">
+          <div class="session-left col-xs-4">
+            <div><b>Length:</b></div>
+            <div>{{ sessionRef.length }} minutes</div>
+            <div><b>Type:</b></div>
+            <div>{{ sessionRef.type }}</div>
+          </div>
+          <div class="session-right col-xs-8">{{ sessionRef.descriptionProgram }}</div>
+        </div>
       </div>
     </div>
   </div>

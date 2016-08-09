@@ -120,7 +120,6 @@
       <div class="row">
         <div class="col-md-8 col-xs-12">
           <label class="control-label primary-label" for="willingToBeRecorded">Are you willing to have this presentation recorded for future use by the Conference on Crimes Against Women?</label><br/>
-          <label class="control-label sub-label" for="type">Please note that the majority of CCAW presentations will fall under the 'intermediate' and 'advanced' categories.</label>
           <div class="radio">
             <label>
               <input type="radio" name="willingToBeRecorded" [(ngModel)]="model.willingToBeRecorded"
@@ -147,8 +146,7 @@
 
       <div class="row">
         <div class="col-md-8 col-xs-12">
-          <label class="control-label primary-label" for="isMediaOrPressFriendly">Are you willing to have this presentation recorded for future use by the Conference on Crimes Against Women?</label><br/>
-          <label class="control-label sub-label" for="type">Please note that the majority of CCAW presentations will fall under the 'intermediate' and 'advanced' categories.</label>
+          <label class="control-label primary-label" for="isMediaOrPressFriendly">Is this presentation media/press friendly?</label><br/>
           <div class="radio">
             <label>
               <input type="radio" name="isMediaOrPressFriendly" [(ngModel)]="model.isMediaOrPressFriendly"
@@ -159,7 +157,7 @@
           <div class="radio">
             <label>
               <input type="radio" name="isMediaOrPressFriendly" [(ngModel)]="model.isMediaOrPressFriendly"
-                     [value]="'yesNophotos'" #isMediaOrPressFriendly="ngModel">
+                     [value]="'yesNoPhotos'" #isMediaOrPressFriendly="ngModel">
               Yes, but no photos
             </label>
           </div>

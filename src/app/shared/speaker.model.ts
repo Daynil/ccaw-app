@@ -10,7 +10,6 @@ export interface Speaker {
   salutation: string,
   nameFirst: string,
   nameLast: string,
-  /** Unique required */
   email: string,
 
   // Speaker information
@@ -45,5 +44,5 @@ export interface Speaker {
   adminNotes: string,
 
   // _id's of presentations speaker is involved in
-  presentations: string[]
+  presentations?: string[]
 }

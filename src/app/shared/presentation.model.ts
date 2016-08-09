@@ -12,17 +12,17 @@ export interface Presentation {
     }[], 
     level: string, // beginner, intermediate or advanced - dropdown on frontend
     willingToBeRecorded: string, // audio, audioVisual, no
-    isMediaOrPressFriendly: string, // yes, yesNophotos, yesNoAudioRecOrPhotos, no
+    isMediaOrPressFriendly: string, // yes, yesNoPhotos, yesNoAudioRecOrPhotos, no
     willingToRepeat: boolean,
     hasCopresentor: boolean,
-    speakers: { // _id's of presentor and copresenters
+    speakers?: { // _id's of presentor and copresenters
       mainPresenter: string,
       coPresenters: string[]
     },
-    statusTimeLocation: {
+    statusTimeLocation?: {
       conferenceTitle: string,
       date: string,
       timeSlot: string // _id of timeslot
     },
-    miscRequirements: String
+    miscRequirements?: String
 }
