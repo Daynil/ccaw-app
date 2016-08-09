@@ -9,7 +9,7 @@
   <div class="divider"></div>
 
   <div class="row">
-    <div id="sessions" class="col-md-8 col-xs-12 col-md-offset-2">
+    <div id="sessions" class="col-md-10 col-s-12 col-md-offset-1">
       <div *ngFor="let sessionRef of (sessionService.sessions | async)" 
           class="session row" (click)="gotoSession(sessionRef._id)">
         <div class="row">
@@ -17,13 +17,13 @@
           <div class="divider-small col-xs-12"></div>
         </div>
         <div class="row">
-          <div class="session-left col-xs-4">
+          <div class="session-left col-xs-2">
             <div><b>Length:</b></div>
             <div>{{ sessionRef.length }} minutes</div>
             <div><b>Type:</b></div>
             <div>{{ sessionRef.type }}</div>
           </div>
-          <div class="session-right col-xs-8">{{ sessionRef.descriptionProgram }}</div>
+          <div class="session-right col-xs-10">{{ sessionRef.descriptionProgram }}</div>
         </div>
       </div>
     </div>
