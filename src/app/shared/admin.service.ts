@@ -75,6 +75,7 @@ export class AdminService {
     let newTimeSlot = {start: startTime, end: endTime}
     // If day has no slots yet, make it and add the new slot
     if (typeof confDate === 'undefined') {
+      if (typeof conference.days === 'undefined') conference.days = [];
       let newDay = {
         date: date,
         timeSlots: [newTimeSlot]
