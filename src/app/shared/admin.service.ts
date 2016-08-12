@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import "rxjs/add/operator/toPromise";
 import * as _ from 'lodash';
 
@@ -12,7 +13,7 @@ import { Speaker } from './speaker.model';
 export class AdminService {
 
   conferences: Conference[] = [];
-  activeConference: Conference = null;
+  activeConference: BehaviorSubject<Conference> = new BehaviorSubject(null);
 
   constructor(private http: Http) { }
 
@@ -27,6 +28,7 @@ export class AdminService {
       }
     };
     this.conferences.push(newConf);
+    this.activeConference.next(newConf);
     let pkg = packageForPost(newConf);
     return this.http
               .post('/api/createconference', pkg.body, pkg.opts)
@@ -39,6 +41,7 @@ export class AdminService {
     let conf = _.find(this.conferences, conf => conf.title === confTitle);
     this.resetActiveConfs();
     conf.lastActive = true;
+    this.activeConference.next(conf);
     let pkg = packageForPost(conf);
     return this.http
               .post('/api/changeactiveconf', pkg.body, pkg.opts)
@@ -144,6 +147,8 @@ export class AdminService {
               .then(parseJson)
               .then(conferences => {
                 this.conferences = conferences;
+                let activeConf = _.find(this.conferences, conf => conf.lastActive === true);
+                this.activeConference.next(activeConf);
                 return conferences;
               })
               .catch(handleError);

@@ -22,7 +22,6 @@ export class SessionService {
               .toPromise()
               .then(parseJson)
               .then(allSessions => {
-                console.log(allSessions);
                 this.sessions.next(allSessions);
               })
               .catch(handleError);

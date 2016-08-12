@@ -28,20 +28,15 @@ let mongoURI = process.env.MONGO_URI || 'mongodb://localhost/ccaw-app';
 mongoose.connect(mongoURI);
 
 function updateActiveConfs(activeConf) {
-  console.log('update active conf called');
   // If no active conf passed, make all confs inactive
   if (activeConf === null) activeConf = {title: ''};
   let savePromise = new Promise((resolve, reject) => {
-    console.log('started on save promise');
     Conference
       .find({})
       .exec()
       .then(conferences => {
-        console.log('got to resolved conferences list');
-        console.log('typeof conf:', typeof conferences);
         let allSavesSuccessful = true;
         for (let i = 0; i < conferences.length; i++) {
-          console.log('looping conferences');
           let serverConf = conferences[i];
           if (serverConf.title === activeConf.title) {
             serverConf.lastActive = true;
@@ -56,25 +51,7 @@ function updateActiveConfs(activeConf) {
             }
           });
         }
-        console.log('all success?', allSavesSuccessful);
         resolve(allSavesSuccessful);
-/*        conferences.forEach(serverConf => {
-          console.log('looping conferences');
-          if (serverConf.title === activeConf.title) {
-            serverConf.lastActive = true;
-          } else {
-            serverConf.lastActive = false;
-          }
-          serverConf.save(err => {
-            console.log('conf saved');
-            if (err) {
-              console.log(err);
-              allSavesSuccessful = false;
-            }
-          });
-          console.log('all success?', allSavesSuccessful);
-          resolve(allSavesSuccessful);
-        });*/
       });
   });
   return savePromise;
@@ -130,11 +107,9 @@ app.get('/api/getallsessions', (req, res) => {
 });
 
 app.post('/api/createconference', (req, res) => {
-  console.log('got to create conf call in server');
   let conf = req.body;
   console.log('conf:', conf);
   updateActiveConfs(null).then(saveSuccess => {
-    console.log('got to post-update active');
     if (saveSuccess) {
       let newConf = new Conference();
       newConf.lastActive = true;

@@ -1,9 +1,22 @@
-<div [class.page-transition]="transitionService.isTransitioning()">
+<div class="container" [class.page-transition]="transitionService.isTransitioning()">
   <h1>Calendar View</h1>
 
-  <ul>
-    <li>Visual calendar display</li>
-    <li>Add/remove sessions do dates/times</li>
-    <li>Add/remove speakers from sessions</li>
-  </ul>
+  <div class="row" *ngFor="let day of (adminService.activeConference | async).days">
+    {{ day.date | date:'fullDate' }}
+    <div class="table-responsive">
+      <table class="table table-striped table-hover">
+        <thead>
+          <th>Time</th>
+          <th *ngFor="let room of (adminService.activeConference | async).rooms">
+            {{ room }}
+          </th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let slot of day.timeSlots">
+            <td>slot.start to slot.end</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
