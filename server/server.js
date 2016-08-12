@@ -38,8 +38,27 @@ function updateActiveConfs(activeConf) {
       .exec()
       .then(conferences => {
         console.log('got to resolved conferences list');
+        console.log('typeof conf:', typeof conferences);
         let allSavesSuccessful = true;
-        conferences.forEach(serverConf => {
+        for (let i = 0; i < conferences.length; i++) {
+          console.log('looping conferences');
+          let serverConf = conferences[i];
+          if (serverConf.title === activeConf.title) {
+            serverConf.lastActive = true;
+          } else {
+            serverConf.lastActive = false;
+          }
+          serverConf.save(err => {
+            console.log('conf saved');
+            if (err) {
+              console.log(err);
+              allSavesSuccessful = false;
+            }
+          });
+        }
+        console.log('all success?', allSavesSuccessful);
+        resolve(allSavesSuccessful);
+/*        conferences.forEach(serverConf => {
           console.log('looping conferences');
           if (serverConf.title === activeConf.title) {
             serverConf.lastActive = true;
@@ -55,7 +74,7 @@ function updateActiveConfs(activeConf) {
           });
           console.log('all success?', allSavesSuccessful);
           resolve(allSavesSuccessful);
-        });
+        });*/
       });
   });
   return savePromise;
