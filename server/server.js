@@ -28,21 +28,26 @@ let mongoURI = process.env.MONGO_URI || 'mongodb://localhost/ccaw-app';
 mongoose.connect(mongoURI);
 
 function updateActiveConfs(activeConf) {
+  console.log('update active conf called');
   // If no active conf passed, make all confs inactive
   if (activeConf === null) activeConf = {title: ''};
   let savePromise = new Promise((resolve, reject) => {
+    console.log('started on save promise');
     Conference
       .find({})
       .exec()
       .then(conferences => {
+        console.log('got to resolved conferences list');
         let allSavesSuccessful = true;
         conferences.forEach(serverConf => {
+          console.log('looping conferences');
           if (serverConf.title === activeConf.title) {
             serverConf.lastActive = true;
           } else {
             serverConf.lastActive = false;
           }
           serverConf.save(err => {
+            console.log('conf saved');
             if (err) {
               console.log(err);
               allSavesSuccessful = false;
