@@ -106,9 +106,11 @@ app.get('/api/getallsessions', (req, res) => {
 });
 
 app.post('/api/createconference', (req, res) => {
+  console.log('got to create conf call in server');
   let conf = req.body;
-
+  console.log('conf:', conf);
   updateActiveConfs(null).then(saveSuccess => {
+    console.log('got to post-update active');
     if (saveSuccess) {
       let newConf = new Conference();
       newConf.lastActive = true;
