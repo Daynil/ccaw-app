@@ -28,7 +28,7 @@ export class CreateConfComponent implements OnInit {
   createConf(title: HTMLInputElement, start: HTMLInputElement, end: HTMLInputElement) {
     let titleText = title.value;
     if (titleText.length < 1) {
-      this.toast.message('Create a title for your conference');
+      this.toast.error('Create a title for your conference');
       return;
     }
     // Input date value format: 2016-12-30
@@ -40,7 +40,7 @@ export class CreateConfComponent implements OnInit {
     let endValid = endMoment.isValid();
     if (startValid && endValid) {
       if (endMoment.isSameOrBefore(startMoment)) {
-        this.toast.message("The end date must be after start date");
+        this.toast.error("The end date must be after start date");
       } else {
         this.adminService
             .getAllConferences()
@@ -48,13 +48,13 @@ export class CreateConfComponent implements OnInit {
               if (!this.isDuplicateTitle(conferences, titleText)) {
                 this.adminService.createConference(titleText, startText, endText)
                     .then(res => {
-                      this.toast.message('Conference created!');
+                      this.toast.success('Conference created!');
                       title.value = '';
                       start.value = "";
                       end.value = "";
                     });
               } else {
-                this.toast.message('Conference title already exists, please choose another');
+                this.toast.error('Conference title already exists, please choose another');
               }
             })
       }

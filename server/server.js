@@ -48,6 +48,7 @@ function updateActiveConfs(activeConf) {
               allSavesSuccessful = false;
             }
           });
+          console.log('all success?', allSavesSuccessful);
           resolve(allSavesSuccessful);
         });
       });
