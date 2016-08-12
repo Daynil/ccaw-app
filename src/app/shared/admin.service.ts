@@ -111,6 +111,7 @@ export class AdminService {
   addRoom(conferenceTitle: string, room: string) {
     let conf = _.find(this.conferences, conf => conf.title === conferenceTitle);
 
+    if (typeof conf.rooms === 'undefined') conf.rooms = [];
     // Sync front end
     conf.rooms.push(room);
 
