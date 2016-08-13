@@ -27,6 +27,18 @@ export class SessionService {
               .catch(handleError);
   }
 
+  /** Find the session assigned to room and timeslot, if any */
+  findSession(slot: TimeSlot, room: string) {
+    return _.find(this.sessions.getValue(), session => {
+      // Skip sessions that haven't been assigned
+      if (!session.statusTimeLocation) return false;
+      let sameSlot = session.statusTimeLocation.timeSlot === slot._id;
+      let sameRoom = session.statusTimeLocation.room === room;
+      return sameRoom && sameSlot;
+    });
+  }
+
+  /** Get the session with a known id */
   getSession(sessionId: string) {
     return _.find(this.sessions.getValue(), session => session._id === sessionId );
   }

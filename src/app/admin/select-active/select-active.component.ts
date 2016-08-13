@@ -30,6 +30,6 @@ export class SelectActiveComponent implements OnInit, AfterViewInit {
 
   changeActiveConf(conferenceTitle: string) {
     this.adminService.changeActiveConf(conferenceTitle)
-        .then(res => this.toast.message('Active conference changed!'));
+        .then(res => this.toast.success('Active conference changed!'));
   }
 }

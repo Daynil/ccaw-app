@@ -21,8 +21,8 @@ export interface Presentation {
     },
     statusTimeLocation?: {
       conferenceTitle: string,
-      date: string,
-      timeSlot: string // _id of timeslot
+      timeSlot: string, // _id of timeslot
+      room: string
     },
     miscRequirements?: String
 }

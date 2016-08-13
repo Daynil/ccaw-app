@@ -24,8 +24,8 @@ let presentationSchema = new mongoose.Schema({
   },
   statusTimeLocation: {
     conferenceTitle: String,
-    date: String,
-    timeSlot: String
+    timeSlot: String,
+    room: String
   },
   miscRequirements: String
 });

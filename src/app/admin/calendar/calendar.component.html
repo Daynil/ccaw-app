@@ -19,12 +19,45 @@
               <div>{{ slot.end | time }}</div>
             </td>
             <td *ngFor="let room of (adminService.activeConference | async).rooms"
-                class="presentation-cell">
-              Presentation!
+                class="session-cell" (click)="setSelectedSlot(slot, room)">
+              {{ room }} {{ slot.start }} <br/>
+              session: {{ getSession(slot, room)?.title }}
             </td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
+
+  <!-- Set Session Modal -->
+  <div class="modal fade" #setSessionModal id="setSessionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Set Session</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row"><b>Room: </b>{{ selectedRoom }}</div>
+          <div class="row"><b>Time: </b>{{ selectedSlot?.start | time }} - {{ selectedSlot?.end | time }}</div>
+          <div class="row"><b>Scheduled Session: </b>{{ getSession(slot, room)?.title || "None" }}</div>
+          <div class="row">
+            <div class="col-xs-6 col-xs-offset-3 modal-select">
+              <label for="modalSessions" class="control-label">Change session for this slot</label>
+              <select #modalSessions class="form-control" id="modalSessions">
+                <option *ngFor="let session of (sessionService.sessions | async)">
+                  {{ session.title }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" (click)="setSession()">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
