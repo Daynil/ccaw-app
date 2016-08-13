@@ -23,6 +23,7 @@ $brand-danger:          #e51c23 !default;
 
 $brand-dark:              darken($brand-primary, 8%);
 $brand-light:             lighten($brand-primary, 8%);
+$brand-transparent:       hsla(0, 65%, 44%, 0.2);
 $brand-accent:           #607D8B;
 $brand-dark-bg:          #2B252C;
 $white-light:            hsl(40, 20%, 97%);

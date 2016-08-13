@@ -3,13 +3,15 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AdminService } from '../../shared/admin.service';
 import { Conference, TimeSlot } from '../../shared/conference.model';
 import { TransitionService } from '../../shared/transition.service';
+import { TimePipe } from '../../shared/time.pipe';
 import { ToastComponent } from '../../shared/toast.component';
 
 @Component({
   moduleId: module.id,
   selector: 'calendar',
   templateUrl: 'calendar.component.html',
-  styleUrls: ['calendar.component.css']
+  styleUrls: ['calendar.component.css'],
+  pipes: [TimePipe]
 })
 export class CalendarComponent implements OnInit {
 

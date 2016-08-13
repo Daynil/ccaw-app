@@ -1,10 +1,11 @@
-<div class="container" [class.page-transition]="transitionService.isTransitioning()">
+<div id="calender-wrapper" class="container-fluid" [class.page-transition]="transitionService.isTransitioning()">
   <h1>Calendar View</h1>
+  <div class="divider"></div>
 
-  <div class="row" *ngFor="let day of (adminService.activeConference | async).days">
-    {{ day.date | date:'fullDate' }}
+  <div class="row day-table" *ngFor="let day of (adminService.activeConference | async).days">
+    <div class="date">{{ day.date | date:'fullDate' }}</div>
     <div class="table-responsive">
-      <table class="table table-striped table-hover">
+      <table class="table table-striped table-hover table-bordered">
         <thead>
           <th>Time</th>
           <th *ngFor="let room of (adminService.activeConference | async).rooms">
@@ -13,7 +14,14 @@
         </thead>
         <tbody>
           <tr *ngFor="let slot of day.timeSlots">
-            <td>slot.start to slot.end</td>
+            <td class="time">
+              <div>{{ slot.start | time }} -</div>
+              <div>{{ slot.end | time }}</div>
+            </td>
+            <td *ngFor="let room of (adminService.activeConference | async).rooms"
+                class="presentation-cell">
+              Presentation!
+            </td>
           </tr>
         </tbody>
       </table>
