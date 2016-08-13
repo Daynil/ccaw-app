@@ -43,6 +43,6 @@ export interface Speaker {
   speakingReferences: string,  // At least 2
   adminNotes: string,
 
-  // _id's of presentations speaker is involved in
-  presentations?: string[]
+  // _id's of sessions speaker is involved in
+  sessions?: string[]
 }

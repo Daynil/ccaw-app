@@ -8,7 +8,7 @@
 const _ = require('lodash');
 
 const Conference = require('./models/conference');
-const Session = require('./models/presentation');
+const Session = require('./models/session');
 const Speaker = require('./models/speaker');
 
 const ipsumObj = require('./ipsumtext.json');

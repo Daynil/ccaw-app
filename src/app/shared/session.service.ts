@@ -7,12 +7,12 @@ import * as _ from 'lodash';
 
 import { handleError, parseJson, packageForPost } from './http-helpers';
 import { Conference, TimeSlot } from './conference.model';
-import { Presentation } from './presentation.model';
+import { Session } from './session.model';
 
 @Injectable()
 export class SessionService {
 
-  sessions: BehaviorSubject<Presentation[]> = new BehaviorSubject([]);
+  sessions: BehaviorSubject<Session[]> = new BehaviorSubject([]);
 
   constructor(private http: Http) { }
 
@@ -43,7 +43,7 @@ export class SessionService {
     return _.find(this.sessions.getValue(), session => session._id === sessionId );
   }
 
-  updateSession(session: Presentation) {
+  updateSession(session: Session) {
     let pkg = packageForPost(session);
     return this.http
               .post('/api/updatesession', pkg.body, pkg.opts)

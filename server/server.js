@@ -23,7 +23,7 @@ if (process.env.SEED_DB && process.env.SEED_DB==='true') {
 const mongoose = require('mongoose');
 const Conference = require('./models/conference');
 const Speaker = require('./models/speaker');
-const Presentation = require('./models/presentation');
+const Session = require('./models/session');
 let mongoURI = process.env.MONGO_URI || 'mongodb://localhost/ccaw-app';
 mongoose.connect(mongoURI);
 
@@ -98,7 +98,7 @@ app.get('/api/getallspeakers', (req, res) => {
 });
 
 app.get('/api/getallsessions', (req, res) => {
-  Presentation
+  Session
     .find({})
     .exec()
     .then(sessions => {
@@ -245,7 +245,7 @@ app.post('/api/updatesession', (req, res) => {
   let session = req.body;
   // Existing sessions have an id
   if (session._id) {
-    Presentation
+    Session
       .findById(session._id)
       .exec()
       .then(serverSession => {
@@ -264,7 +264,7 @@ app.post('/api/updatesession', (req, res) => {
         }
     });
   } else {
-    let newSession = new Presentation();
+    let newSession = new Session();
     _.merge(newSession, session);
     newSession.save(err => {
       if (err) {

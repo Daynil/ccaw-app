@@ -7,7 +7,7 @@ import { tags } from '../tags.data';
 import { SessionService } from '../session.service';
 import { TransitionService } from '../transition.service';
 import { ToastComponent } from '../toast.component';
-import { Presentation } from '../presentation.model';
+import { Session } from '../session.model';
 
 @Component({
   moduleId: module.id,
@@ -22,7 +22,7 @@ export class SessionComponent implements OnInit, OnDestroy {
 
   private paramsub: any;
 
-  model: Presentation;
+  model: Session;
 
   tags = tags;
   
@@ -51,7 +51,7 @@ export class SessionComponent implements OnInit, OnDestroy {
     this.paramsub = this.route.params.subscribe(params => {
       if (_.isEmpty(params)) {
         // Initialize default values for fields that need it
-        this.model = <Presentation>{
+        this.model = <Session>{
           type: 'casestudy',
           length: '90',
           tags: this.tags,

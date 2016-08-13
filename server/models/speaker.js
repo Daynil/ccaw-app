@@ -62,8 +62,8 @@ let speakerSchema = new mongoose.Schema({
   speakingReferences: String, // At least 2
   adminNotes: String,
 
-  // Presentation ids that the speaker is involved in
-  presentations: [String]
+  // Session ids that the speaker is involved in
+  sessions: [String]
 });
 
 speakerSchema.methods.generateHash = password => {

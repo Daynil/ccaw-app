@@ -2,7 +2,7 @@
 
 const mongoose = require('mongoose');
 
-let presentationSchema = new mongoose.Schema({
+let sessionSchema = new mongoose.Schema({
   type: String, // Case study or workshop - structure of multiple choice fields? in front end, dropdown or radio fields
   length: String, // 90 minutes, 3 hours (parts 1 and 2)
   title: String,
@@ -30,4 +30,4 @@ let presentationSchema = new mongoose.Schema({
   miscRequirements: String
 });
 
-module.exports = mongoose.model('Presentation', presentationSchema);
+module.exports = mongoose.model('Session', sessionSchema);

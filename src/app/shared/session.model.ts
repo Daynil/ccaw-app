@@ -1,4 +1,4 @@
-export interface Presentation {
+export interface Session {
     _id?: string,
     type: string, // Case study or workshop - structure of multiple choice fields? in front end, dropdown or radio fields
     length: string, // 90 minutes, 3 hours(180 minutes) (parts 1 and 2)
