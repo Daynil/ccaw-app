@@ -40,12 +40,13 @@
         <div class="modal-body">
           <div class="row"><b>Room: </b>{{ selectedRoom }}</div>
           <div class="row"><b>Time: </b>{{ selectedSlot?.start | time }} - {{ selectedSlot?.end | time }}</div>
-          <div class="row"><b>Scheduled Session: </b>{{ getSession(slot, room)?.title || "None" }}</div>
+          <div class="row"><b>Scheduled Session: </b></div>
+          <div class="row">{{ getSession(selectedSlot, selectedRoom)?.title || "None" }}</div>
           <div class="row">
             <div class="col-xs-6 col-xs-offset-3 modal-select">
               <label for="modalSessions" class="control-label">Change session for this slot</label>
-              <select #modalSessions class="form-control" id="modalSessions">
-                <option *ngFor="let session of (sessionService.sessions | async)">
+              <select #sessionSelect class="form-control" id="modalSessions">
+                <option *ngFor="let session of (sessionService.sessions | async)" [value]="session._id">
                   {{ session.title }}
                 </option>
               </select>
@@ -54,10 +55,13 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" (click)="setSession()">Save changes</button>
+          <button type="button" class="btn btn-primary" (click)="setSession(selectedSlot, selectedRoom, sessionSelect.value)">Save changes</button>
         </div>
       </div>
     </div>
   </div>
 
+
+  <div class="debug">{{ diagnostic }}</div>
+  <toast #toast></toast>
 </div>

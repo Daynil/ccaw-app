@@ -6,6 +6,7 @@ import "rxjs/add/operator/toPromise";
 import * as _ from 'lodash';
 
 import { handleError, parseJson, packageForPost } from './http-helpers';
+import { AdminService } from './admin.service';
 import { Conference, TimeSlot } from './conference.model';
 import { Session } from './session.model';
 
@@ -14,7 +15,8 @@ export class SessionService {
 
   sessions: BehaviorSubject<Session[]> = new BehaviorSubject([]);
 
-  constructor(private http: Http) { }
+  constructor(private http: Http,
+              private adminService: AdminService) { }
 
   getAllSessions() {
     return this.http
@@ -29,6 +31,10 @@ export class SessionService {
 
   /** Find the session assigned to room and timeslot, if any */
   findSession(slot: TimeSlot, room: string) {
+    if (!slot._id) {
+      console.log('no id on :', slot);
+      return;
+    }
     return _.find(this.sessions.getValue(), session => {
       // Skip sessions that haven't been assigned
       if (!session.statusTimeLocation) return false;
@@ -41,6 +47,33 @@ export class SessionService {
   /** Get the session with a known id */
   getSession(sessionId: string) {
     return _.find(this.sessions.getValue(), session => session._id === sessionId );
+  }
+
+  /** Assign a session to a slot and room and remove overlap if needed */
+  setSession(slot: TimeSlot, room: string, sessionId: string) {
+    let session = this.getSession(sessionId);
+    let activeConf = this.adminService.activeConference.getValue();
+    
+    // Check for sessions already in requested slot before adding new
+    return this.resolveOverlap(slot, room)
+               .then(res => {
+                  session.statusTimeLocation = {
+                    conferenceTitle: activeConf.title,
+                    timeSlot: slot._id,
+                    room: room
+                  };
+                  return this.updateSession(session);
+               });
+  }
+
+  resolveOverlap(slot: TimeSlot, room: string) {
+    let sessionInRequestedSlot = this.findSession(slot, room);
+    if (typeof sessionInRequestedSlot !== 'undefined') {
+      sessionInRequestedSlot.statusTimeLocation = undefined;
+      return this.updateSession(sessionInRequestedSlot);
+    } else {
+      return Promise.resolve();
+    }
   }
 
   updateSession(session: Session) {

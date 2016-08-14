@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angula
 
 import { AdminService } from '../../shared/admin.service';
 import { Conference, TimeSlot } from '../../shared/conference.model';
+import { Session } from '../../shared/session.model';
 import { SessionService } from '../../shared/session.service';
 import { TransitionService } from '../../shared/transition.service';
 import { TimePipe } from '../../shared/time.pipe';
@@ -14,6 +15,7 @@ declare var $: any;
   selector: 'calendar',
   templateUrl: 'calendar.component.html',
   styleUrls: ['calendar.component.css'],
+  directives: [ToastComponent],
   pipes: [TimePipe]
 })
 export class CalendarComponent implements OnInit, AfterViewInit {
@@ -22,10 +24,9 @@ export class CalendarComponent implements OnInit, AfterViewInit {
   @ViewChild('setSessionModal') setSessionModalRef: ElementRef;
   setSessionModal;
 
-
   selectedSlot: TimeSlot;
   selectedRoom: string;
-  
+
   constructor(private transitionService: TransitionService,
               private adminService: AdminService,
               private sessionService: SessionService) { }
@@ -40,6 +41,10 @@ export class CalendarComponent implements OnInit, AfterViewInit {
   }
 
   getSession(slot: TimeSlot, room: string) {
+    // Why is slot is missing? Angular 2 change detection quirk?
+    if (!slot) {
+      return;
+    }
     return this.sessionService.findSession(slot, room);
   }
 
@@ -49,8 +54,15 @@ export class CalendarComponent implements OnInit, AfterViewInit {
     this.setSessionModal.modal('show');
   }
 
-  setSession(slot: TimeSlot, room: string, session) {
-
+  setSession(slot: TimeSlot, room: string, sessionId: string) {
+    this.sessionService.setSession(slot, room, sessionId)
+        .then(res => {
+          this.setSessionModal.modal('hide');
+          this.toast.success('Session assigned to slot')
+        });
   }
+
+  // DEBUG
+  get diagnostic() { return JSON.stringify(this.selectedSlot); }
 
 }

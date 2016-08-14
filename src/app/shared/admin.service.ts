@@ -75,7 +75,8 @@ export class AdminService {
               conferenceTitle: string, date: string) {
     let conference = _.find(this.conferences, conf => conf.title === conferenceTitle);
     let confDate = _.find(conference.days, day => day.date === date);
-    let newTimeSlot = {start: startTime, end: endTime}
+    let newTimeSlot = {start: startTime, end: endTime};
+
     // If day has no slots yet, make it and add the new slot
     if (typeof confDate === 'undefined') {
       if (typeof conference.days === 'undefined') conference.days = [];
@@ -92,7 +93,22 @@ export class AdminService {
               .post('/api/changetimeslot', pkg.body, pkg.opts)
               .toPromise()
               .then(parseJson)
+              .then(serverConf => {
+                // Need conference ID
+                conference = serverConf;
+                conference = this.sortConferenceSlots(conference);
+                if (conference.title === this.activeConference.getValue().title) {
+                  this.activeConference.next(conference);
+                }
+              })
               .catch(handleError);
+  }
+
+  sortConferenceSlots(conf: Conference) {
+    conf.days.forEach(day => {
+      day.timeSlots = _.sortBy(day.timeSlots, slot => slot.end);
+    });
+    return conf;
   }
 
   deleteTimeSlot(date: string, confTitle: string, slot: TimeSlot) {

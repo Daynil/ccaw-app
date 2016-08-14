@@ -149,7 +149,7 @@ app.post('/api/changetimeslot', (req, res) => {
       serverConf.days = conf.days;
       serverConf.save(err => {
         if (err) res.status(500).json({message: 'Conference save error'});
-        else res.status(200).json({message: 'Conference saved'});
+        else res.status(200).json(serverConf);
       });
     });
 });
