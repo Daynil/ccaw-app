@@ -20,6 +20,7 @@ h1 {
 }
 
 /** Table */
+
 .day-table {
   margin-bottom: 50px;
 }
@@ -31,14 +32,32 @@ h1 {
 th {
   padding: 8px;
   font-size: 17px;
+  text-align: center;
+  font-weight: 500;
 }
 
-td {
+.session-cell {
+  position: relative;
   font-weight: 300;
   text-align: center;
+  &:hover .edit-slot {
+    visibility: visible;
+  }
+  .edit-slot {
+    visibility: hidden;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    cursor: pointer;
+    color: $brand-primary;
+    font-size: 25px;
+  }
+  a {
+    cursor: pointer;
+  }
 }
 
-td.time {
+.time {
   font-weight: 500;
   width: 120px;
   text-align: left;
@@ -57,15 +76,6 @@ td.time {
 }
 
 /** Modal */
-.session-cell {
-  &:hover {
-    cursor: pointer;
-    background-color: $brand-transparent;
-  }
-  &:active {
-    background-color: $brand-semi-transparent;
-  }
-}
 
 .modal-dialog {
   margin-top: 10%;

@@ -1,4 +1,5 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 
 import { AdminService } from '../../shared/admin.service';
 import { Conference, TimeSlot } from '../../shared/conference.model';
@@ -29,7 +30,8 @@ export class CalendarComponent implements OnInit, AfterViewInit {
 
   constructor(private transitionService: TransitionService,
               private adminService: AdminService,
-              private sessionService: SessionService) { }
+              private sessionService: SessionService,
+              private router: Router) { }
 
   ngOnInit() {
     this.transitionService.transition();
@@ -75,6 +77,11 @@ export class CalendarComponent implements OnInit, AfterViewInit {
         .then(res => {
           this.toast.success('Session removed');
         })
+  }
+
+  gotoSession(slot, room) {
+    let session = this.getSession(slot, room);
+    this.router.navigate(['/session', {id: session._id}]);
   }
 
   // DEBUG
