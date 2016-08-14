@@ -16,7 +16,7 @@ $gray-light:             #bbb !default;
 $gray-lighter:           lighten($gray-base, 93.5%) !default; // #eee
 
 $brand-primary:         #D32F2F !default;
-$brand-success:         #4CAF50 !default;
+$brand-success:         hsl(120, 35%, 48%) !default;
 $brand-info:            #9C27B0 !default;
 $brand-warning:         #ff9800 !default;
 $brand-danger:          #e51c23 !default;
@@ -27,6 +27,7 @@ $brand-transparent:      hsla(0, 65%, 44%, 0.2);
 $brand-semi-transparent: hsla(0, 65%, 44%, 0.5);
 $brand-accent:           #607D8B;
 $brand-dark-bg:          #2B252C;
+$brand-success-transparent: hsla(120, 35%, 48%, 0.2);
 $white-light:            hsl(40, 20%, 97%);
 
 //== Scaffolding

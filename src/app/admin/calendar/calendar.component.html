@@ -7,7 +7,7 @@
     <div class="table-responsive">
       <table class="table table-striped table-hover table-bordered">
         <thead>
-          <th>Time</th>
+          <th class="time-header">Time</th>
           <th *ngFor="let room of (adminService.activeConference | async).rooms">
             {{ room }}
           </th>
@@ -19,9 +19,13 @@
               <div>{{ slot.end | time }}</div>
             </td>
             <td *ngFor="let room of (adminService.activeConference | async).rooms"
+                [class.empty-slot]="!getSession(slot, room)"
                 class="session-cell" (click)="setSelectedSlot(slot, room)">
-              {{ room }} {{ slot.start }} <br/>
-              session: {{ getSession(slot, room)?.title }}
+              <div *ngIf="getSession(slot, room)">
+                <span class="display-type">Session: </span>{{ getSession(slot, room)?.title }} <br/>
+                <span class="display-type">Lead Presenter: </span>Lead Presenter <br/>
+                <span class="display-type">Co-presenters: </span>Co-presenter1, Co-presenter2
+              </div>
             </td>
           </tr>
         </tbody>
@@ -35,33 +39,38 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="myModalLabel">Set Session</h4>
+          <h4 class="modal-title" id="myModalLabel">Modify Slot</h4>
         </div>
         <div class="modal-body">
           <div class="row"><b>Room: </b>{{ selectedRoom }}</div>
           <div class="row"><b>Time: </b>{{ selectedSlot?.start | time }} - {{ selectedSlot?.end | time }}</div>
-          <div class="row"><b>Scheduled Session: </b></div>
-          <div class="row">{{ getSession(selectedSlot, selectedRoom)?.title || "None" }}</div>
+          <div class="row scheduled"><b>Scheduled Session: </b></div>
+          <div class="row">
+            <i *ngIf="getSession(selectedSlot, selectedRoom)" class="fa fa-ban delete" 
+               (click)="removeSession(selectedSlot, selectedRoom)"></i>
+            {{ getSession(selectedSlot, selectedRoom)?.title || "None" }}
+          </div>
           <div class="row">
             <div class="col-xs-6 col-xs-offset-3 modal-select">
-              <label for="modalSessions" class="control-label">Change session for this slot</label>
+              <label for="modalSessions" class="control-label">Change session for this slot to:</label>
               <select #sessionSelect class="form-control" id="modalSessions">
+                <option>None</option>
                 <option *ngFor="let session of (sessionService.sessions | async)" [value]="session._id">
                   {{ session.title }}
                 </option>
               </select>
+              <button type="button" class="btn btn-default change-btn" 
+                      (click)="saveSlot(selectedSlot, selectedRoom, sessionSelect.value)">Change</button>
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" (click)="setSession(selectedSlot, selectedRoom, sessionSelect.value)">Save changes</button>
+          <button type="button" class="btn btn-link" data-dismiss="modal">Done</button>
+          <!--<button type="button" class="btn btn-primary" (click)="saveSlot(selectedSlot, selectedRoom, sessionSelect.value)">Save changes</button>-->
         </div>
       </div>
     </div>
   </div>
 
-
-  <div class="debug">{{ diagnostic }}</div>
   <toast #toast></toast>
 </div>

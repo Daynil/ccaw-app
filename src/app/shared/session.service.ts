@@ -55,7 +55,7 @@ export class SessionService {
     let activeConf = this.adminService.activeConference.getValue();
     
     // Check for sessions already in requested slot before adding new
-    return this.resolveOverlap(slot, room)
+    return this.clearSlot(slot, room)
                .then(res => {
                   session.statusTimeLocation = {
                     conferenceTitle: activeConf.title,
@@ -66,16 +66,18 @@ export class SessionService {
                });
   }
 
-  resolveOverlap(slot: TimeSlot, room: string) {
+  /** Unschedule a session from a time/room slot if one exists */
+  clearSlot(slot: TimeSlot, room: string) {
     let sessionInRequestedSlot = this.findSession(slot, room);
-    if (typeof sessionInRequestedSlot !== 'undefined') {
-      sessionInRequestedSlot.statusTimeLocation = undefined;
+    if (typeof sessionInRequestedSlot !== 'undefined' || sessionInRequestedSlot) {
+      sessionInRequestedSlot.statusTimeLocation = null;
       return this.updateSession(sessionInRequestedSlot);
     } else {
-      return Promise.resolve();
+      return Promise.resolve('No scheduled session');
     }
   }
 
+  /** Update new session on server and sync response with front end */
   updateSession(session: Session) {
     let pkg = packageForPost(session);
     return this.http

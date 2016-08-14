@@ -54,12 +54,27 @@ export class CalendarComponent implements OnInit, AfterViewInit {
     this.setSessionModal.modal('show');
   }
 
-  setSession(slot: TimeSlot, room: string, sessionId: string) {
+  saveSlot(slot: TimeSlot, room: string, sessionId: string) {
+    if (sessionId === 'None') {
+      this.sessionService.clearSlot(slot, room)
+          .then(res => {
+            if (res !== 'No scheduled session') {
+              this.toast.success('Session removed');
+            }
+          });
+      return;
+    }
     this.sessionService.setSession(slot, room, sessionId)
         .then(res => {
-          this.setSessionModal.modal('hide');
-          this.toast.success('Session assigned to slot')
+          this.toast.success('Session assigned to slot');
         });
+  }
+
+  removeSession(slot: TimeSlot, room: string) {
+    this.sessionService.clearSlot(slot, room)
+        .then(res => {
+          this.toast.success('Session removed');
+        })
   }
 
   // DEBUG

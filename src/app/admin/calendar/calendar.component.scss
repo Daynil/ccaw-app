@@ -19,8 +19,13 @@ h1 {
   margin-bottom: 20px;
 }
 
+/** Table */
 .day-table {
   margin-bottom: 50px;
+}
+
+.table {
+  table-layout: fixed;
 }
 
 th {
@@ -28,11 +33,30 @@ th {
   font-size: 17px;
 }
 
-.time {
+td {
+  font-weight: 300;
+  text-align: center;
+}
+
+td.time {
   font-weight: 500;
+  width: 120px;
+  text-align: left;
+}
+
+.empty-slot {
+  background-color: $brand-success-transparent;
+}
+
+.time-header {
   width: 120px;
 }
 
+.display-type {
+  font-weight: normal;
+}
+
+/** Modal */
 .session-cell {
   &:hover {
     cursor: pointer;
@@ -45,6 +69,25 @@ th {
 
 .modal-dialog {
   margin-top: 10%;
+}
+
+.scheduled {
+  margin-top: 20px;
+}
+
+.delete {
+  margin-right: 5px;
+  margin-top: 10px;
+  color: $gray-light;
+  transition: 0.2s;
+  &:hover {
+    color: $brand-primary;
+    cursor: pointer;
+  }
+}
+
+.change-btn {
+  margin-top: 10px;
 }
 
 .modal-select {

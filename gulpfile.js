@@ -6,6 +6,7 @@ const tsc = require('gulp-typescript');
 const tsProjectFront = tsc.createProject('tsconfig.json');
 const sass = require('gulp-sass');
 const nodemon = require('gulp-nodemon');
+const del = require('del');
 
 /********** Development Builds **********/
 
@@ -55,6 +56,10 @@ gulp.task('compile-ts', () => {
     .pipe(gulp.dest('./dist'));
 
   return stream;
+});
+
+gulp.task('clean', () => {
+  return del(['./dist']);
 });
 
 
