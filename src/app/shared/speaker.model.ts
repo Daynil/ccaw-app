@@ -46,3 +46,8 @@ export interface Speaker {
   // _id's of sessions speaker is involved in
   sessions?: string[]
 }
+
+export interface Credentials {
+  loggedIn: boolean;
+  user: Speaker;
+}

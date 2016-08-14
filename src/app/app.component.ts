@@ -3,6 +3,7 @@ import { ROUTER_DIRECTIVES } from '@angular/router';
 import { HTTP_PROVIDERS } from '@angular/http';
 
 import { AdminService } from './shared/admin.service';
+import { AuthService } from './shared/auth.service';
 import { DateService } from './shared/date.service';
 import { SessionService } from './shared/session.service';
 import { SpeakerService } from './shared/speaker.service';
@@ -14,7 +15,7 @@ import { TransitionService } from './shared/transition.service';
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.css'],
   directives: [ROUTER_DIRECTIVES],
-  providers: [HTTP_PROVIDERS, AdminService, DateService, SessionService, 
+  providers: [HTTP_PROVIDERS, AdminService, AuthService, DateService, SessionService, 
               SpeakerService, TransitionService]
 })
 export class AppComponent implements OnInit {

@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
 
 import { tags } from '../tags.data';
+import { AuthService } from '../auth.service';
 import { SessionService } from '../session.service';
 import { TransitionService } from '../transition.service';
 import { ToastComponent } from '../toast.component';
@@ -42,7 +43,8 @@ export class SessionComponent implements OnInit, OnDestroy {
 
   constructor(private transitionService: TransitionService,
               private sessionService: SessionService,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute,
+              private authService: AuthService) { }
 
   ngOnInit() {
     this.transitionService.transition();

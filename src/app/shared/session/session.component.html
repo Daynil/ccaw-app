@@ -4,6 +4,18 @@
   <form #sessionForm="ngForm">
     <div class="form-group">
 
+      <div *ngIf="authService.user.admin">
+        <h3>Admin Fields</h3>
+        <div class="row">
+          <label class="control-label primary-label" for="type">Assign to slot and room</label>
+          <select #sessionSelect class="form-control" id="modalSessions">
+            <option *ngFor="let session of (sessionService.sessions | async)" [value]="session._id">
+              {{ session.title }}
+            </option>
+          </select>
+        </div>
+      </div>
+
       <div class="row">
         <div class="col-md-12 col-xs-12">
           <label class="control-label primary-label" for="type">Presentation Type</label>
