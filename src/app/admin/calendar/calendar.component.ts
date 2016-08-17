@@ -3,6 +3,7 @@ import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 
 import { AdminService } from '../../shared/admin.service';
 import { Conference, TimeSlot } from '../../shared/conference.model';
+import { DatePipe } from '../../shared/date.pipe';
 import { Session } from '../../shared/session.model';
 import { SessionService } from '../../shared/session.service';
 import { TransitionService } from '../../shared/transition.service';
@@ -17,7 +18,7 @@ declare var $: any;
   templateUrl: 'calendar.component.html',
   styleUrls: ['calendar.component.css'],
   directives: [ToastComponent],
-  pipes: [TimePipe]
+  pipes: [TimePipe, DatePipe]
 })
 export class CalendarComponent implements OnInit, AfterViewInit {
 

@@ -5,6 +5,7 @@ import * as moment from 'moment';
 export class DateService {
 
   userFormatDate = 'MM/DD/YYYY';
+  userFormatDateLong = 'dddd MMM Do, YYYY';
   userTimeFormat = 'h:mm A';
   userFormatTimeDate = 'MM/DD/YYYY hh:mm A'
 

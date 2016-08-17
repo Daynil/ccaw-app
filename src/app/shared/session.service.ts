@@ -8,6 +8,7 @@ import * as _ from 'lodash';
 import { handleError, parseJson, packageForPost } from './http-helpers';
 import { AdminService } from './admin.service';
 import { Conference, TimeSlot } from './conference.model';
+import { Speaker } from './speaker.model';
 import { Session } from './session.model';
 
 @Injectable()
@@ -66,15 +67,39 @@ export class SessionService {
                });
   }
 
-  /** Unschedule a session from a time/room slot if one exists */
-  clearSlot(slot: TimeSlot, room: string) {
-    let sessionInRequestedSlot = this.findSession(slot, room);
+  /** Unschedule a session from a time/room slot if one exists
+   * @sessionId pass this paramater by itself to clear specific session
+   */
+  clearSlot(slot: TimeSlot, room: string, sessionId?: string) {
+    let sessionInRequestedSlot: Session;
+    if (sessionId) sessionInRequestedSlot = this.getSession(sessionId);
+    else sessionInRequestedSlot = this.findSession(slot, room);
     if (typeof sessionInRequestedSlot !== 'undefined' || sessionInRequestedSlot) {
       sessionInRequestedSlot.statusTimeLocation = null;
       return this.updateSession(sessionInRequestedSlot);
     } else {
       return Promise.resolve('No scheduled session');
     }
+  }
+
+  assignSpeaker(speakerId: string, isLead: boolean, sessionId) {
+    let session = this.getSession(sessionId);
+    if (session.speakers) {
+      if (isLead) {
+        session.speakers.mainPresenter = speakerId;
+      } else session.speakers.coPresenters.push(speakerId);
+    } else {
+      session.speakers = {
+        mainPresenter: '',
+        coPresenters: []
+      };
+      if (isLead) {
+        session.speakers.mainPresenter = speakerId;
+      } else {
+        session.speakers.coPresenters.push(speakerId);
+      }
+    }
+    return this.updateSession(session);
   }
 
   /** Update new session on server and sync response with front end */

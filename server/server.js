@@ -255,6 +255,8 @@ app.post('/api/updatesession', (req, res) => {
         } else {
           console.log('found existing session');
           _.merge(serverSession, session);
+          serverSession.markModified('speakers');
+          console.log(serverSession);
           serverSession.save(err => {
             if (err) {
               console.log(err);

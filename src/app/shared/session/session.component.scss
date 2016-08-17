@@ -8,7 +8,7 @@ form {
   margin-bottom: 80px;
 }
 
-.row {
+.block {
   margin-bottom: 30px;
   // background-color: hsla(0, 40%, 70%, 0.1); design decision, looks cleaner with border
   border: 1px dashed hsl(0, 40%, 70%);
@@ -44,6 +44,38 @@ textarea {
   display: flex;
   flex-direction: column;
   margin-top: 10px;
+}
+
+/** Admin fields */
+
+.slot-display {
+  border-bottom: 1px dotted $brand-primary;
+}
+
+.slot button, .speaker button {
+  margin-top: 30px;
+}
+
+.slot p {
+  margin: 30px;
+}
+
+.lead-pres {
+  margin-left: 30px;
+}
+
+.lead-box {
+  margin-top: 10px;
+}
+
+#co-pres-label {
+  display: inline-block;
+}
+
+.co-presenters {
+  display: inline-flex;
+  flex-direction: column;
+  margin-left: 30px;
 }
 
 #debug {

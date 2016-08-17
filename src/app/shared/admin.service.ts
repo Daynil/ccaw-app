@@ -96,7 +96,7 @@ export class AdminService {
               .then(serverConf => {
                 // Need conference ID
                 conference = serverConf;
-                conference = this.sortConferenceSlots(conference);
+                conference = this.sortConfSlotsAndDays(conference);
                 if (conference.title === this.activeConference.getValue().title) {
                   this.activeConference.next(conference);
                 }
@@ -104,10 +104,12 @@ export class AdminService {
               .catch(handleError);
   }
 
-  sortConferenceSlots(conf: Conference) {
+  sortConfSlotsAndDays(conf: Conference) {
     conf.days.forEach(day => {
       day.timeSlots = _.sortBy(day.timeSlots, slot => slot.end);
     });
+    
+    conf.days = _.sortBy(conf.days, day => day.date);
     return conf;
   }
 
@@ -125,6 +127,25 @@ export class AdminService {
               .toPromise()
               .then(parseJson)
               .catch(handleError);
+  }
+
+  /** Find slot within active conference by its id */
+  findSlotById(slotId): TimeSlot {
+    let slot: TimeSlot;
+    this.activeConference.getValue().days.forEach(day => {
+      let reqSlot = _.find(day.timeSlots, slot => slot._id === slotId);
+      if (typeof reqSlot !== 'undefined') slot = reqSlot;
+    });
+    return slot;
+  }
+
+  findDateBySlot(slotId: string) {
+    let date: string;
+    this.activeConference.getValue().days.forEach(day => {
+      let reqSlot = _.find(day.timeSlots, daySlot => daySlot._id === slotId);
+      if (typeof reqSlot !== 'undefined') date = day.date;
+    });
+    return date;
   }
 
   addRoom(conferenceTitle: string, room: string) {
@@ -163,6 +184,9 @@ export class AdminService {
               .then(parseJson)
               .then(conferences => {
                 this.conferences = conferences;
+                this.conferences.forEach(conf => {
+                  conf = this.sortConfSlotsAndDays(conf);
+                });
                 let activeConf = _.find(this.conferences, conf => conf.lastActive === true);
                 this.activeConference.next(activeConf);
                 return conferences;

@@ -6,17 +6,84 @@
 
       <div *ngIf="authService.user.admin">
         <h3>Admin Fields</h3>
-        <div class="row">
-          <label class="control-label primary-label" for="type">Assign to slot and room</label>
-          <select #sessionSelect class="form-control" id="modalSessions">
-            <option *ngFor="let session of (sessionService.sessions | async)" [value]="session._id">
-              {{ session.title }}
-            </option>
-          </select>
+
+        <div class="row block speaker">
+          <h4>Assign speakers to session</h4>
+          <div>
+            <p>Current speakers:</p>
+            <p>Lead Presenter: <span class="slot-display lead-pres">{{ (sessionSpeakers | async).mainPresenter.nameFirst }} {{ (sessionSpeakers | async).mainPresenter.nameLast }}</span></p>
+            <p id="co-pres-label">Co-Presenters: </p>
+            <div class="co-presenters"> 
+              <div class="slot-display" *ngFor="let coPres of (sessionSpeakers | async).coPresenters">{{ coPres.nameFirst }} {{ coPres.nameLast }}</div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-xs-12">
+            <label class="control-label primary-label" for="speakers">Session date:</label>
+            <select #speakers class="form-control" id="speakers" (input)="updateSelectedDate(dates.value)">
+              <option value="">None</option>
+              <option *ngFor="let speaker of (speakerService.speakers | async)"
+                      [value]="speaker._id">
+                {{ speaker.nameFirst }} {{ speaker.nameLast }}
+              </option>
+            </select>
+          </div>
+          <div class="col-md-12 col-xs-12 lead-box">
+            <label>
+              <input type="checkbox" #lead> Lead presenter
+            </label>
+          </div>
+          <div class="col-xs-12">
+            <button type="submit"
+                    class="btn btn-primary" 
+                    (click)="assignSpeaker(speakers.value, lead.checked)">Add</button>
+          </div>
         </div>
+
+        <div class="row block slot">
+          <h4>Assign session to timeslot and date</h4>
+          <p>Current Slot: 
+            <span class="slot-display" *ngIf="model.statusTimeLocation">{{ getDate() | dateCustom }} from {{ slot().start | time }} to {{ slot().end | time }} in {{ model.statusTimeLocation.room }}</span>
+            <span class="slot-display" *ngIf="!model.statusTimeLocation">None</span>
+          </p>
+          <div class="col-md-4 col-xs-12">
+            <label class="control-label primary-label" for="dates">Session date:</label>
+            <select #dates class="form-control" id="dates" (input)="updateSelectedDate(dates.value)">
+              <option value="">None</option>
+              <option *ngFor="let day of (adminService.activeConference | async).days">
+                {{ day.date | dateCustom }}
+              </option>
+            </select>
+          </div>
+          <div class="col-md-4 col-xs-12">
+            <label class="control-label primary-label" for="slots">Time slot:</label>
+            <select #slots class="form-control" id="slots">
+              <option value="">None</option>
+              <option *ngFor="let slot of (selectedDaySlots | async)"
+                      [value]="slot._id">
+                {{ slot.start | time }} to {{ slot.end | time }}
+              </option>
+            </select>
+          </div>
+          <div class="col-md-4 col-xs-12">
+            <label class="control-label primary-label" for="rooms">Room:</label>
+            <select #rooms class="form-control" id="rooms">
+              <option value="">None</option>
+              <option *ngFor="let room of (adminService.activeConference | async).rooms">
+                {{ room }}
+              </option>
+            </select>
+          </div>
+          <button type="submit"
+                  class="btn btn-primary" 
+                  (click)="saveToSlot(slots.value, rooms.value)">Update</button>
+
+        </div>
+
       </div>
 
-      <div class="row">
+      <h3 *ngIf="authService.user.admin">User Fields</h3>
+      <div class="row block">
         <div class="col-md-12 col-xs-12">
           <label class="control-label primary-label" for="type">Presentation Type</label>
           <label class="control-label sub-label" for="type">{{ presentationTypeLabel }}</label>
@@ -37,7 +104,7 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="row block">
         <div class="col-md-8 col-xs-12">
           <label class="control-label primary-label" for="length">Presentation Length</label>
           <div class="radio">
@@ -57,7 +124,7 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="row block">
         <div class="col-md-8 col-xs-12">
           <label class="control-label primary-label" for="title">Title of Presentation</label>
           <input type="text" class="form-control" required 
@@ -66,7 +133,7 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="row block">
         <div class="col-md-8 col-xs-12">
           <label class="control-label primary-label" for="descriptionWebsite">Website Description</label><br/>
           <label class="control-label sub-label" for="descriptionWebsite"><b>150 word limit.</b> This description will appear on CCAW's website and on the conference app.</label><br/>
@@ -77,7 +144,7 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="row block">
         <div class="col-md-8 col-xs-12">
           <label class="control-label primary-label" for="descriptionProgram">Program Description</label><br/>
           <label class="control-label sub-label" for="descriptionProgram"><b>60 word limit.</b> In order to cut down on printing costs and reduce paper waste, please shorten your presentation description to be included in the printed program. Please use third person.</label>
@@ -87,7 +154,7 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="row block">
         <div class="col-md-8 col-xs-12">
           <label class="control-label primary-label" for="tags">Presentation Tags</label><br/>
           <label class="control-label sub-label" for="type">Please ONLY select tags that are directly applicable to the presentation. (Check all that apply)</label>
@@ -101,7 +168,7 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="row block">
         <div class="col-md-8 col-xs-12">
           <label class="control-label primary-label" for="level">Presentation Level</label><br/>
           <label class="control-label sub-label" for="type">Please note that the majority of CCAW presentations will fall under the 'intermediate' and 'advanced' categories.</label>
@@ -129,7 +196,7 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="row block">
         <div class="col-md-8 col-xs-12">
           <label class="control-label primary-label" for="willingToBeRecorded">Are you willing to have this presentation recorded for future use by the Conference on Crimes Against Women?</label><br/>
           <div class="radio">
@@ -156,7 +223,7 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="row block">
         <div class="col-md-8 col-xs-12">
           <label class="control-label primary-label" for="isMediaOrPressFriendly">Is this presentation media/press friendly?</label><br/>
           <div class="radio">
@@ -190,7 +257,7 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="row block">
         <div class="col-md-8 col-xs-12">
           <label class="control-label primary-label" for="willingToRepeat">Are you willing to repeat this presentation, if necessary?</label>
           <div class="radio">
