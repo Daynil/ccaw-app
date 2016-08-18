@@ -7,7 +7,13 @@ import * as _ from 'lodash';
 
 import { handleError, parseJson, packageForPost } from './http-helpers';
 import { Conference, TimeSlot } from './conference.model';
+import { Session } from './session.model';
 import { Speaker } from './speaker.model';
+
+export interface SpeakerList {
+  mainPresenter: Speaker;
+  coPresenters: Speaker[];
+}
 
 @Injectable()
 export class SpeakerService {
@@ -29,6 +35,17 @@ export class SpeakerService {
 
   getSpeaker(speakerId: string) {
     return _.find(this.speakers.getValue(), speaker => speaker._id === speakerId );
+  }
+
+  /** Get a list of speaker objects from a list of speaker ID's */
+  getSpeakerList(speakerIdList): SpeakerList {
+    let speakers: SpeakerList = <SpeakerList>{};
+    speakers.mainPresenter = this.getSpeaker(speakerIdList.mainPresenter);
+    speakers.coPresenters = [];
+    speakerIdList.coPresenters.forEach(coPresId => {
+      speakers.coPresenters.push(this.getSpeaker(coPresId));
+    });
+    return speakers;
   }
 
   updateSpeaker(speaker: Speaker) {

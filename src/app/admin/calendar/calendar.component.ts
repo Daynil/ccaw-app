@@ -6,6 +6,8 @@ import { Conference, TimeSlot } from '../../shared/conference.model';
 import { DatePipe } from '../../shared/date.pipe';
 import { Session } from '../../shared/session.model';
 import { SessionService } from '../../shared/session.service';
+import { Speaker } from '../../shared/speaker.model';
+import { SpeakerService, SpeakerList } from '../../shared/speaker.service';
 import { TransitionService } from '../../shared/transition.service';
 import { TimePipe } from '../../shared/time.pipe';
 import { ToastComponent } from '../../shared/toast.component';
@@ -17,7 +19,7 @@ declare var $: any;
   selector: 'calendar',
   templateUrl: 'calendar.component.html',
   styleUrls: ['calendar.component.css'],
-  directives: [ToastComponent],
+  directives: [ToastComponent, ROUTER_DIRECTIVES],
   pipes: [TimePipe, DatePipe]
 })
 export class CalendarComponent implements OnInit, AfterViewInit {
@@ -32,6 +34,7 @@ export class CalendarComponent implements OnInit, AfterViewInit {
   constructor(private transitionService: TransitionService,
               private adminService: AdminService,
               private sessionService: SessionService,
+              private speakerService: SpeakerService,
               private router: Router) { }
 
   ngOnInit() {
@@ -49,6 +52,16 @@ export class CalendarComponent implements OnInit, AfterViewInit {
       return;
     }
     return this.sessionService.findSession(slot, room);
+  }
+
+  getSpeakers(slot: TimeSlot, room: string): SpeakerList {
+    let session = this.getSession(slot, room);
+    return this.speakerService.getSpeakerList(session.speakers);
+  }
+
+  fullName(speaker: Speaker) {
+    if (typeof speaker === 'undefined') return '';
+    return `${speaker.nameFirst} ${speaker.nameLast}`;
   }
 
   setSelectedSlot(slot: TimeSlot, room: string) {

@@ -75,6 +75,15 @@ th {
   font-weight: normal;
 }
 
+.copres-list {
+  display: flex;
+  align-content: space-around;
+  flex-wrap: wrap;
+  a {
+    margin-left: 20px;
+  }
+}
+
 /** Modal */
 
 .modal-dialog {
