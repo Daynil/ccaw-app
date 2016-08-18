@@ -87,7 +87,14 @@ export class SessionService {
     if (session.speakers) {
       if (isLead) {
         session.speakers.mainPresenter = speakerId;
-      } else session.speakers.coPresenters.push(speakerId);
+      } else {
+        let duplicate = false;
+        session.speakers.coPresenters.forEach(coPresId => {
+          if (coPresId === speakerId) duplicate = true;
+        });
+        if (!duplicate) session.speakers.coPresenters.push(speakerId);
+        else return Promise.resolve({message: 'duplicate'});
+      }
     } else {
       session.speakers = {
         mainPresenter: '',
@@ -99,14 +106,33 @@ export class SessionService {
         session.speakers.coPresenters.push(speakerId);
       }
     }
-    return this.updateSession(session);
+    return this.updateSession(session, true);
   }
 
-  /** Update new session on server and sync response with front end */
-  updateSession(session: Session) {
+  removeSpeaker(speakerId: string, sessionId: string) {
+    let session = this.getSession(sessionId);
+    if (session.speakers.mainPresenter === speakerId) {
+      session.speakers.mainPresenter = '';
+    } else {
+      let coPresenters = session.speakers.coPresenters;
+      for (let i=0; i < coPresenters.length; i++) {
+        if (coPresenters[i] === speakerId) {
+          session.speakers.coPresenters.splice(i, 1);
+          break;
+        }
+      }
+    }
+    return this.updateSession(session, true);
+  }
+
+  /** Update new session on server and sync response with front end 
+   * @speakerUpdate Different server endpoint for speaker updates
+  */
+  updateSession(session: Session, speakerUpdate?: boolean) {
+    let serverUrl = speakerUpdate ? '/api/updatesessionspeakers' : '/api/updatesession';
     let pkg = packageForPost(session);
     return this.http
-              .post('/api/updatesession', pkg.body, pkg.opts)
+              .post(serverUrl, pkg.body, pkg.opts)
               .toPromise()
               .then(parseJson)
               .then(serverSession => {

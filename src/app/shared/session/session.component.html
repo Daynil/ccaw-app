@@ -12,10 +12,16 @@
           <h4>Assign speakers to session</h4>
           <div>
             <p><b>Current speakers</b></p>
-            <p>Lead Presenter: <span class="slot-display lead-pres">{{ (sessionSpeakers | async).mainPresenter?.nameFirst }} {{ (sessionSpeakers | async).mainPresenter?.nameLast }}</span></p>
+            <p>Lead Presenter: <span class="lead-pres">
+              <i class="fa fa-ban delete" (click)="removeSpeaker('main')"></i>
+              <span class="slot-display">{{ (sessionSpeakers | async).mainPresenter?.nameFirst }} {{ (sessionSpeakers | async).mainPresenter?.nameLast }}</span>
+            </span></p>
             <p id="co-pres-label">Co-Presenters: </p>
             <div class="co-presenters"> 
-              <div class="slot-display" *ngFor="let coPres of (sessionSpeakers | async).coPresenters">{{ coPres?.nameFirst }} {{ coPres?.nameLast }}</div>
+              <div *ngFor="let coPres of (sessionSpeakers | async).coPresenters">
+                <i class="fa fa-ban delete" (click)="removeSpeaker(coPres._id)"></i>
+                <span class="slot-display">{{ coPres?.nameFirst }} {{ coPres?.nameLast }}</span>
+              </div>
             </div>
           </div>
 

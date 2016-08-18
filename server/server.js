@@ -255,7 +255,6 @@ app.post('/api/updatesession', (req, res) => {
         } else {
           console.log('found existing session');
           _.merge(serverSession, session);
-          serverSession.markModified('speakers');
           serverSession.save(err => {
             if (err) {
               console.log(err);
@@ -274,6 +273,29 @@ app.post('/api/updatesession', (req, res) => {
       } else res.status(200).json(newSession);
     });
   }
+});
+
+app.post('/api/updatesessionspeakers', (req, res) => {
+  let session = req.body;
+
+  Session
+    .findById(session._id)
+    .exec()
+    .then(serverSession => {
+      if (serverSession === null) {
+        console.log('Session not found');
+        res.status(500).json({message: 'Session not found'});
+      } else {
+        console.log('found existing session');
+        serverSession.speakers = session.speakers;
+        serverSession.save(err => {
+          if (err) {
+            console.log(err);
+            res.status(500).json({message: 'Session save error'});
+          } else res.status(200).json(serverSession);
+        });
+      }
+  });
 });
 
 /** Pass all non-api routes to front-end router for handling **/

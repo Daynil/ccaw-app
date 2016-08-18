@@ -78,6 +78,17 @@ textarea {
   margin-left: 30px;
 }
 
+.delete {
+  margin-right: 5px;
+  margin-top: 10px;
+  color: $gray-light;
+  transition: 0.2s;
+  &:hover {
+    color: $brand-primary;
+    cursor: pointer;
+  }
+}
+
 #debug {
   width: 25%;
   position: fixed;

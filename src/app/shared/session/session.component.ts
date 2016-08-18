@@ -144,10 +144,19 @@ export class SessionComponent implements OnInit, OnDestroy {
   }
 
   assignSpeaker(speakerId: string, isLead: boolean) {
-    console.log(speakerId, isLead);
     this.sessionService.assignSpeaker(speakerId, isLead, this.model._id)
         .then(res => {
-          this.toast.success('Speaker assigned');
+          if (!(res.message === 'duplicate')) {
+            this.toast.success('Speaker assigned');
+          }
+        });
+  }
+
+  removeSpeaker(speakerId: string) {
+    if (speakerId === 'main') speakerId = this.model.speakers.mainPresenter;
+    this.sessionService.removeSpeaker(speakerId, this.model._id)
+        .then(res => {
+          this.toast.success('Speaker removed');
         });
   }
 
