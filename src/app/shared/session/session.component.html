@@ -14,11 +14,11 @@
             <p><b>Current speakers</b></p>
             <p>Lead Presenter: <span class="lead-pres">
               <i class="fa fa-ban delete" (click)="removeSpeaker('main')"></i>
-              <span class="slot-display">{{ (sessionSpeakers | async).mainPresenter?.nameFirst }} {{ (sessionSpeakers | async).mainPresenter?.nameLast }}</span>
+              <span class="slot-display">{{ (sessionSpeakers | async)?.mainPresenter?.nameFirst }} {{ (sessionSpeakers | async)?.mainPresenter?.nameLast }}</span>
             </span></p>
             <p id="co-pres-label">Co-Presenters: </p>
             <div class="co-presenters"> 
-              <div *ngFor="let coPres of (sessionSpeakers | async).coPresenters">
+              <div *ngFor="let coPres of (sessionSpeakers | async)?.coPresenters">
                 <i class="fa fa-ban delete" (click)="removeSpeaker(coPres._id)"></i>
                 <span class="slot-display">{{ coPres?.nameFirst }} {{ coPres?.nameLast }}</span>
               </div>
@@ -50,7 +50,7 @@
         <div class="row block slot">
           <h4>Assign session to timeslot and date</h4>
           <p>Current Slot: 
-            <span class="slot-display" *ngIf="model.statusTimeLocation">{{ getDate() | dateCustom }} from {{ slot().start | time }} to {{ slot().end | time }} in {{ model.statusTimeLocation.room }}</span>
+            <span class="slot-display" *ngIf="model.statusTimeLocation">{{ getDate() | dateCustom }} from {{ slot()?.start | time }} to {{ slot()?.end | time }} in {{ model.statusTimeLocation?.room }}</span>
             <span class="slot-display" *ngIf="!model.statusTimeLocation">None</span>
           </p>
           <div class="col-md-4 col-xs-12">
