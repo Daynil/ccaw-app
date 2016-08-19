@@ -2,13 +2,13 @@
   <h1>Calendar View</h1>
   <div class="divider"></div>
 
-  <div class="row day-table" *ngFor="let day of (adminService.activeConference | async).days">
+  <div class="row day-table" *ngFor="let day of (adminService.activeConference | async)?.days">
     <div class="date">{{ day.date | dateCustom:'long' }}</div>
     <div class="table-responsive">
       <table class="table table-hover table-bordered">
         <thead>
           <th class="time-header">Time</th>
-          <th *ngFor="let room of (adminService.activeConference | async).rooms">
+          <th *ngFor="let room of (adminService.activeConference | async)?.rooms">
             {{ room }}
           </th>
         </thead>
@@ -18,7 +18,7 @@
               <div>{{ slot.start | time }} -</div>
               <div>{{ slot.end | time }}</div>
             </td>
-            <td *ngFor="let room of (adminService.activeConference | async).rooms"
+            <td *ngFor="let room of (adminService.activeConference | async)?.rooms"
                 [class.empty-slot]="!getSession(slot, room)"
                 class="session-cell">
               <i class="fa fa-pencil edit-slot"
