@@ -1,10 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+<div class="container-fluid backgroundContainer" [class.page-transition]="transitionService.isTransitioning()">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-md-4 col-md-offset-4 authContainer">
+                <h3 class="authHeader text-center">Profile Page</h3>
+                <p class="authSubheader">Your profile below</p>
+                <form role="form">
+
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" #firstName class="form-control" id="firstName" placeholder="First Name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" #lastName class="form-control" id="lastName" placeholder="Last Name">
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+</div>
