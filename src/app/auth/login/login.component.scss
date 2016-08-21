@@ -1,6 +1,6 @@
 @import '../../shared/common-styles';
 
-.loginContainer {
+.backgroundContainer {
   background-image: url('/public/images/bg-pattern.png')!important;
   background-repeat: repeat;
   height: 100%;
@@ -17,18 +17,20 @@
   margin-top: 75px;
 }
 
-.loginHeader {
+.authHeader {
   margin-bottom: 30px;
   font-weight: 700;
   color: #cb171e;
 }
 
-.subheading {
+.authSubheader {
   font-family: 'Open Sans',Arial,Helvetica,sans-serif;
   font-size: 20px;
   color: #626a73;
 }
 
+#firstName,
+#lastName,
 #email,
 #password {
   padding: 10px;
@@ -36,17 +38,22 @@
   border-radius: 8px;
 }
 
+#firstName,
+#lastName,
 #email:focus,
 #password:focus {
   -webkit-box-shadow: none;
   box-shadow: none;
 }
 
-.loginButton {
+.authButton {
   font-size: 16px;
   font-weight: bold;
   border-radius: 8px;
   background-color: #cb171e;
+  margin-top: 30px;
+  margin-bottom: 20px;
+
 }
 
 .otherLink {
