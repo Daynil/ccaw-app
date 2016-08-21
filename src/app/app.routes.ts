@@ -13,6 +13,7 @@ import { SpeakerListComponent } from './admin/speaker-list/speaker-list.componen
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { SettingsComponent } from './auth/settings/settings.component';
+import { ProfileComponent } from './auth/profile/profile.component';
 
 export const routes: RouterConfig = [
   { path: '',              component: HomeComponent },
@@ -27,7 +28,8 @@ export const routes: RouterConfig = [
   { path: 'speaker-list',  component: SpeakerListComponent },
   { path: 'login',         component: LoginComponent },
   { path: 'signup',        component: SignupComponent },
-  { path: 'settings',      component: SettingsComponent }
+  { path: 'settings',      component: SettingsComponent },
+  { path: 'profile',       component: ProfileComponent }
 ];
 
 export const APP_ROUTER_PROVIDERS = [
