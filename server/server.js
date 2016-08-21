@@ -24,9 +24,12 @@ const mongoose = require('mongoose');
 const Conference = require('./models/conference');
 const Speaker = require('./models/speaker');
 const Session = require('./models/session');
-let mongoURI = process.env.MONGO_URI || 'mongodb://localhost/ccaw-app';
-mongoose.connect(mongoURI);
+const passport = require('passport');
+const expressSession = require('express-session');
 
+let mongoURI = process.env.MONGO_URI || 'mongodb://localhost/ccaw-app';
+
+mongoose.connect(mongoURI);
 function updateActiveConfs(activeConf) {
   // If no active conf passed, make all confs inactive
   if (activeConf === null) activeConf = {title: ''};
@@ -38,11 +41,7 @@ function updateActiveConfs(activeConf) {
         let allSavesSuccessful = true;
         for (let i = 0; i < conferences.length; i++) {
           let serverConf = conferences[i];
-          if (serverConf.title === activeConf.title) {
-            serverConf.lastActive = true;
-          } else {
-            serverConf.lastActive = false;
-          }
+          serverConf.lastActive = serverConf.title === activeConf.title;
           serverConf.save(err => {
             console.log('conf saved');
             if (err) {
@@ -66,6 +65,17 @@ if (production) {
 }
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(expressSession({
+  secret: 'cookie_secret',
+  proxy: true,
+  resave: true,
+  saveUninitialized: true
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(morgan('dev', {
   skip: (req, res) => {
@@ -138,7 +148,6 @@ app.post('/api/changeactiveconf', (req, res) => {
     else res.status(500).json({message: 'Conferences updating error'});
   });
 });
-
 
 app.post('/api/changetimeslot', (req, res) => {
   let conf = req.body;
@@ -305,4 +314,6 @@ app.get('*', (req, res) => {
 });
 
 let port = process.env.PORT || 3000;
-let server = app.listen(port, () => console.log(`Listening on port ${port}...`));
+let server = app.listen(port, () => {
+  console.log(`Listening on port ${port}...`);
+});
