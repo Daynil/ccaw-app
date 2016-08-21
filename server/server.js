@@ -78,6 +78,7 @@ app.use( express.static( path.join(__dirname, '../dist') ));
 
 app.use('/scripts', express.static( path.join(__dirname, '../node_modules') ));
 app.use('/app', express.static( path.join(__dirname, '../dist/app') ));
+app.use('/public', express.static( path.join(__dirname, '../public') ));
 
 app.get('/api/getallconferences', (req, res) => {
   Conference
