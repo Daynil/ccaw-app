@@ -24,19 +24,12 @@
               <i class="fa fa-pencil edit-slot"
                  (click)="setSelectedSlot(slot, room)" aria-hidden="true"></i>
               <div *ngIf="getSession(slot, room)">
-                <span class="display-type">Session: </span>
+                <span class="display-type">Session </span> <br/>
                 <a (click)="gotoSession(slot, room)">{{ getSession(slot, room)?.title }}</a> <br/>
-                <span class="display-type">Lead Presenter: </span> 
+                <span class="display-type">Lead Presenter </span> 
                 <a [routerLink]="['/speaker', {id: getSpeakers(slot, room).mainPresenter?._id}]">
                   {{ fullName(getSpeakers(slot, room).mainPresenter) }}
-                </a><br/>
-                <span class="display-type">Co-presenters: </span> 
-                <span class="copres-list">
-                  <a *ngFor="let coPres of getSpeakers(slot, room).coPresenters"
-                     [routerLink]="['/speaker', {id: coPres?._id}]">
-                    {{ fullName(coPres) }}
-                  </a>
-                </span>
+                </a>
               </div>
             </td>
           </tr>
