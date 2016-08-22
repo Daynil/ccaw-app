@@ -151,7 +151,13 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
     let conferenceTitle = conferences.value;
 
     this.adminService.deleteRoom(conferenceTitle, room)
-        .then(res => this.toast.message('Room removed!'));
+        .then(res => this.toast.success('Room removed!'));
+  }
+
+  moveRoom(conferences: HTMLSelectElement, room: string, direction: string) {
+    let conferenceTitle = conferences.value;
+
+    this.adminService.moveRoom(conferenceTitle, room, direction);
   }
 
   updateSelectedDate(selectedDate: string) {

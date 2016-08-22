@@ -177,6 +177,14 @@ export class AdminService {
         .catch(handleError);
   }
 
+  moveRoom(conferenceTitle: string, room: string, direction: string) {
+    let conf = _.find(this.conferences, conf => conf.title === conferenceTitle);
+
+    let roomStart = conf.rooms.indexOf(room);
+    let roomEnd = direction === '+' ? roomStart+1 : roomStart-1;
+    conf.rooms.splice(roomEnd, 0, conf.rooms.splice(roomStart, 1)[0]);
+  }
+
   getAllConferences() {
     return this.http
               .get('/api/getallconferences')
