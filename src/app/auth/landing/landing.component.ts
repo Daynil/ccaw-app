@@ -6,12 +6,12 @@ import { ToastComponent } from '../../shared/toast.component';
 
 @Component({
                moduleId: module.id,
-               selector: 'profile',
-               templateUrl: 'profile.component.html',
-               styleUrls: ['profile.component.css'],
+               selector: 'landing',
+               templateUrl: 'landing.component.html',
+               styleUrls: ['landing.component.css'],
                directives: [ToastComponent, ROUTER_DIRECTIVES]
            })
-export class ProfileComponent implements OnInit {
+export class LandingComponent implements OnInit {
 
     @ViewChild('toast') toast: ToastComponent;
 
@@ -20,6 +20,14 @@ export class ProfileComponent implements OnInit {
 
     ngOnInit() {
         this.transitionService.transition();
+    }
+
+    signup() {
+        this.router.navigate(['/signup']);
+    }
+
+    login() {
+        this.router.navigate(['/login']);
     }
 
 }

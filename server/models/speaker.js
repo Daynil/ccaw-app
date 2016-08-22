@@ -17,8 +17,10 @@ let speakerSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  password: String,
-  salutation: String,
+  password: {
+    type: String,
+    required: true
+  },
   nameFirst: {
     type: String,
     required: true
@@ -29,8 +31,10 @@ let speakerSchema = new mongoose.Schema({
   },
   email: {
     type: String,
+    unique: true,
     required: true,
   },
+  salutation: String,
 
   // Speaker information
   status: {

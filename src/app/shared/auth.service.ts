@@ -10,11 +10,7 @@ import { handleError, parseJson, packageForPost } from './http-helpers';
 @Injectable()
 export class AuthService {
 
-  // Assume admin until auth is implemented
-  user = {admin: true};
-
-  creds: Credentials = {loggedIn: false, user: null};
-  logEvent = new EventEmitter<Credentials>();
+  user: {speaker: Speaker};
 
   constructor(private http: Http,
               private router: Router) { }
@@ -24,11 +20,6 @@ export class AuthService {
               .get('/auth/checkCreds')
               .toPromise()
               .then(parseJson)
-              .then(res => {
-                this.creds = res;
-                this.logEvent.emit(this.creds);
-                return this.creds;
-              })
               .catch(handleError);
 	}
 
@@ -37,11 +28,6 @@ export class AuthService {
               .get('/auth/logout')
               .toPromise()
               .then(parseJson)
-              .then(res => {
-                this.creds = {loggedIn: false, user: null};
-                this.logEvent.emit(this.creds);
-                return res;
-              })
               .catch(handleError);
   }
 
@@ -55,6 +41,9 @@ export class AuthService {
               .post('/login', pkg.body, pkg.opts)
               .toPromise()
               .then(parseJson)
+              .then(user => {
+                this.user = user;
+              })
               .catch(handleError);
   }
   

@@ -182,6 +182,9 @@ export class AdminService {
 
     let roomStart = conf.rooms.indexOf(room);
     let roomEnd = direction === '+' ? roomStart+1 : roomStart-1;
+    if (roomEnd > conf.rooms.length-1 || 
+        roomEnd < 0) return;
+    
     conf.rooms.splice(roomEnd, 0, conf.rooms.splice(roomStart, 1)[0]);
   }
 

@@ -1,7 +1,7 @@
 'use strict';
 
 var LocalStrategy   = require('passport-local').Strategy;
-var User            = require('../models/user');
+var User            = require('../models/speaker');
 
 module.exports = function(passport) {
 
@@ -29,19 +29,19 @@ module.exports = function(passport) {
                         return done(err);
 
                     if (user) {
-                        return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
+                        return done(null, false, 'email taken');
                     } else {
-
+                        
                         var newUser            = new User();
                         newUser.email    = email;
                         newUser.password = newUser.generateHash(password);
-                        newUser.firstName = req.body.firstName;
-                        newUser.lastName = req.body.lastName;
+                        newUser.nameFirst = req.body.firstName;
+                        newUser.nameLast = req.body.lastName;
                         newUser.save(function(err) {
                             if (err) {
-                                return done(err);
+                                return done(err, null, err);
                             } else {
-                                return done(null, newUser);
+                                return done(null, newUser, 'user created successfully');
                             }
 
                         });
@@ -59,8 +59,10 @@ module.exports = function(passport) {
             passReqToCallback : true
         },
         function(req, email, password, done) {
-            console.log('eamil: ', email, 'pass', password);
+            console.log('email: ', email, 'pass', password);
             User.findOne({ 'email' :  email }, function(err, user) {
+                console.log('user', user);
+                console.log('error', err);
                 if (err){
                     console.log('email find err', err);
                     return done(err);
@@ -68,15 +70,15 @@ module.exports = function(passport) {
 
                 if (!user) {
                     console.log('no user found');
-                    return done(null, false, req.flash('loginMessage', 'No user found.'));
+                    return done(null, false, 'no user found');
                 }
 
-                if (!user.validatePassword(password)) {
+                if (!user.validatePassword(password, user.password)) {
                     console.log('wrong pass');
-                    return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.'));
+                    return done(null, false, 'wrong password');
                 }
                 console.log('good to go');
-                return done(null, user);
+                return done(null, user, 'logged in successfully');
             });
 
         }

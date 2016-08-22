@@ -22,7 +22,8 @@ export class AppComponent implements OnInit {
   
   constructor(private adminService: AdminService,
               private sessionService: SessionService,
-              private speakerService: SpeakerService) { }
+              private speakerService: SpeakerService,
+              private authService: AuthService) { }
 
   ngOnInit() {
     this.adminService.getAllConferences();

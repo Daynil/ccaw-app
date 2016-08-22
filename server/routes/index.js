@@ -254,27 +254,20 @@ module.exports = function(app, passport) {
      *  Authentication routes
      *
      ***************************************/
-    app.post('/login', passport.authenticate('local-login', {
-        successRedirect: '/profile',
-        failureRedirect: '/login',
-        failureFlash: true
-    }));
+    app.post('/login', (req, res, next) => {
+        passport.authenticate('local-login', (err, user, info) => {
+            if (err) return res.status(500).json({alert: err});
+            if (!user) return res.status(400).json({alert: info});
+            return res.status(200).json(user);
+        })(req, res, next);
+    });
 
-    app.post('/signup',function(req, res) {
-        console.log('/signup');
-        var user = new User();
-        user.firstName = req.body.firstName;
-        user.lastName = req.body.lastName;
-        user.email = req.body.email;
-        user.password = req.body.password;
-
-        user.save(function(err) {
-            if (err) {
-                res.json({ alert: 'error' });
-            } else {
-                res.json({ alert: 'success' });
-            }
-        })
+    app.post('/signup', (req, res, next) => {
+        passport.authenticate('local-signup', (err, user, info) => {
+            if (err) return res.status(500).json({alert: err});
+            if (!user) return res.status(400).json({alert: info});
+            return res.status(200).json({alert: info});
+        })(req, res, next);
     });
 
     app.get('/logout', function(req, res) {

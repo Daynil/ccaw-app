@@ -33,6 +33,15 @@ export class LoginComponent implements OnInit {
         this.authService.login(emailTxt, passTxt)
             .then(res => {
                 this.toast.success('Logged in!');
+                this.router.navigate(['/home']);
+            })
+            .catch(err => {
+                if (err.alert === 'no user found') {
+                    this.toast.error('Email not found');
+                }
+                else {
+                    this.toast.error('Login error, please try again later');
+                }
             });
     }
 

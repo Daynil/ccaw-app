@@ -13,10 +13,11 @@ import { SpeakerListComponent } from './admin/speaker-list/speaker-list.componen
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { SettingsComponent } from './auth/settings/settings.component';
-import { ProfileComponent } from './auth/profile/profile.component';
+import { LandingComponent } from './auth/landing/landing.component';
 
 export const routes: RouterConfig = [
-  { path: '',              component: HomeComponent },
+  { path: '',              component: LandingComponent },
+  { path: 'home',          component: HomeComponent },
   { path: 'calendar',      component: CalendarComponent },
   { path: 'create-conf',   component: CreateConfComponent },
   { path: 'modify-conf',   component: ModifyConfComponent },
@@ -28,8 +29,7 @@ export const routes: RouterConfig = [
   { path: 'speaker-list',  component: SpeakerListComponent },
   { path: 'login',         component: LoginComponent },
   { path: 'signup',        component: SignupComponent },
-  { path: 'settings',      component: SettingsComponent },
-  { path: 'profile',       component: ProfileComponent }
+  { path: 'settings',      component: SettingsComponent }
 ];
 
 export const APP_ROUTER_PROVIDERS = [

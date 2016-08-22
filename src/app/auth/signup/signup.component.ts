@@ -54,13 +54,16 @@ export class SignupComponent implements OnInit {
         console.log('form data',this.form.value);
         this.authService.signup(this.form.value)
             .then(res => {
-                    if (res.alert === 'error') {
-                        this.toast.message('This email address is already registered!');
-                        // this.router.navigate(['/']);
-                    } else {
-                        this.toast.message('You account is registered. Please login!');
-                        this.router.navigate(['/login']);
-                    }
+                this.toast.success('You account is registered. Please login!');
+                this.router.navigate(['/login']);
+            })
+            .catch(err => {
+                if (err.alert === 'email taken') {
+                    this.toast.error('This email address is already registered!');
+                }
+                else {
+                    this.toast.error('Unable to register, please try again later');
+                }
             });
         event.preventDefault();
     }
