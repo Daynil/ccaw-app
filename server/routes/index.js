@@ -5,6 +5,7 @@ const Conference = require('../models/conference');
 const Speaker = require('../models/speaker');
 const Session = require('../models/session');
 const User = require('../models/user');
+const _ = require('lodash');
 
 module.exports = function(app, passport) {
 
@@ -181,7 +182,6 @@ module.exports = function(app, passport) {
                         console.log('Session not found');
                         res.status(500).json({message: 'Session not found'});
                     } else {
-                        console.log('found existing session');
                         _.merge(serverSession, session);
                         serverSession.save(err => {
                             if (err) {
@@ -261,7 +261,6 @@ module.exports = function(app, passport) {
 
     /** Pass all non-api routes to front-end router for handling **/
     app.get('*', (req, res) => {
-        console.log(req);
         res.sendFile(path.resolve(__dirname, '../../dist', 'index.html'));
     });
 };
