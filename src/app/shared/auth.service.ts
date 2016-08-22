@@ -45,4 +45,26 @@ export class AuthService {
               .catch(handleError);
   }
 
+  login(email: string, pass: string) {
+    let data = {
+      email: email,
+      password: pass
+    };
+    let pkg = packageForPost(data);
+    return this.http
+              .post('/login', pkg.body, pkg.opts)
+              .toPromise()
+              .then(parseJson)
+              .catch(handleError);
+  }
+  
+  signup(formData) {
+    let pkg = packageForPost(formData);
+    return this.http
+              .post('/signup', pkg.body, pkg.opts)
+              .toPromise()
+              .then(parseJson)
+              .catch(handleError);
+  }
+
 }

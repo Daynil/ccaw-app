@@ -1,7 +1,7 @@
 'use strict';
 
 var LocalStrategy   = require('passport-local').Strategy;
-var User            = require('../server/models/user');
+var User            = require('../models/user');
 
 module.exports = function(passport) {
 
@@ -59,17 +59,23 @@ module.exports = function(passport) {
             passReqToCallback : true
         },
         function(req, email, password, done) {
-
+            console.log('eamil: ', email, 'pass', password);
             User.findOne({ 'email' :  email }, function(err, user) {
-                if (err)
+                if (err){
+                    console.log('email find err', err);
                     return done(err);
+                }
 
-                if (!user)
+                if (!user) {
+                    console.log('no user found');
                     return done(null, false, req.flash('loginMessage', 'No user found.'));
+                }
 
-                if (!user.validPassword(password))
+                if (!user.validatePassword(password)) {
+                    console.log('wrong pass');
                     return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.'));
-
+                }
+                console.log('good to go');
                 return done(null, user);
             });
 

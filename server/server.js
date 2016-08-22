@@ -9,6 +9,7 @@ const compress = require('compression');
 const _ = require('lodash');
 const passport = require('passport');
 const expressSession = require('express-session');
+require('./config/passport')(passport);
 
 const app = express();
 
@@ -62,7 +63,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 /** Get Routes  **/
-require('../routes/index.js')(app, passport);
+require('./routes/index.js')(app, passport);
 
 /**  Start Server  **/
 app.listen(port, () => {

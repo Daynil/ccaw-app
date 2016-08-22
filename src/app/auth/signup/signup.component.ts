@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { REACTIVE_FORM_DIRECTIVES, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
+
+import { AuthService } from '../../shared/auth.service';
 import { TransitionService } from '../../shared/transition.service';
 import { ToastComponent } from '../../shared/toast.component';
 import { Http } from '@angular/http';
@@ -29,7 +31,8 @@ export class SignupComponent implements OnInit {
 
     constructor(private transitionService: TransitionService,
                 private router: Router,
-                private http: Http) { }
+                private http: Http,
+                private authService: AuthService) { }
 
     ngOnInit() {
         this.firstName = new FormControl('', Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(64)]));
@@ -49,29 +52,16 @@ export class SignupComponent implements OnInit {
 
     doSignup(event) {
         console.log('form data',this.form.value);
-        const contentHeaders = new Headers();
-        contentHeaders.append('Accept', 'application/json');
-        contentHeaders.append('Content-Type', 'application/json');
-
-        let body = JSON.stringify(this.form.value);
-        this.http.post('/signup', body, { headers: contentHeaders })
-            .subscribe(
-                response => {
-                    console.log('response', response);
-                    if (response._body.alert === 'error') {
+        this.authService.signup(this.form.value)
+            .then(res => {
+                    if (res.alert === 'error') {
                         this.toast.message('This email address is already registered!');
                         // this.router.navigate(['/']);
                     } else {
                         this.toast.message('You account is registered. Please login!');
                         this.router.navigate(['/login']);
                     }
-
-                },
-                error => {
-                    alert(error.text());
-                    console.log(error.text());
-                }
-            );
+            });
         event.preventDefault();
     }
 }

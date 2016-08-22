@@ -1,10 +1,10 @@
 'use strict';
 
 const path = require('path');
-const Conference = require('../server/models/conference');
-const Speaker = require('../server/models/speaker');
-const Session = require('../server/models/session');
-const User = require('../server/models/user');
+const Conference = require('../models/conference');
+const Speaker = require('../models/speaker');
+const Session = require('../models/session');
+const User = require('../models/user');
 
 module.exports = function(app, passport) {
 
@@ -239,7 +239,7 @@ module.exports = function(app, passport) {
 
     app.post('/signup',function(req, res) {
         console.log('/signup');
-        var user = new User;
+        var user = new User();
         user.firstName = req.body.firstName;
         user.lastName = req.body.lastName;
         user.email = req.body.email;
@@ -261,7 +261,8 @@ module.exports = function(app, passport) {
 
     /** Pass all non-api routes to front-end router for handling **/
     app.get('*', (req, res) => {
-        res.sendFile(path.resolve(__dirname, '../dist', 'index.html'));
+        console.log(req);
+        res.sendFile(path.resolve(__dirname, '../../dist', 'index.html'));
     });
 };
 
