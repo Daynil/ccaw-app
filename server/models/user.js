@@ -13,9 +13,11 @@ let UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    provider: {
-        type: String,
-        defaultValue: null
+    firstName: {
+        type: String
+    },
+    lastName: {
+        type: String
     }
 });
 

@@ -65,6 +65,6 @@ app.use(passport.session());
 require('../routes/index.js')(app, passport);
 
 /**  Start Server  **/
-let server = app.listen(port, () => {
+app.listen(port, () => {
   console.log(`Listening on port ${port}...`);
 });

@@ -5,31 +5,33 @@
                 <h3 class="authHeader text-center">Member Signup</h3>
                 <p class="authSubheader">Create your account:</p>
 
-                <form role="form">
+                <form [formGroup]="form" #registerForm="ngForm" (submit)="doSignup($event)">
 
                     <div class="form-group">
                         <label for="firstName">First Name</label>
-                        <input type="text" #firstName class="form-control" id="firstName" placeholder="First Name">
+                        <input type="text" formControlName="firstName" required #firstName class="form-control" id="firstName" placeholder="First Name">
                     </div>
 
                     <div class="form-group">
                         <label for="lastName">Last Name</label>
-                        <input type="text" #lastName class="form-control" id="lastName" placeholder="Last Name">
+                        <input type="text" formControlName="lastName" required #lastName class="form-control" id="lastName" placeholder="Last Name">
                     </div>
 
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" #email class="form-control" id="email" placeholder="Email">
+                        <input type="email" formControlName="email" required #email class="form-control" id="email" placeholder="Email">
                     </div>
 
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="password" #password class="form-control" id="password" placeholder="Password">
+                        <input type="password" formControlName="password" required #password class="form-control" id="password" placeholder="Password">
                     </div>
 
-                    <button type="submit" class="btn btn-danger btn-block authButton">Signup</button>
+                    <button type="submit" [disabled]="!registerForm.form.valid" class="btn btn-danger btn-block authButton">Signup</button>
 
                 </form>
+
+                <p class="error" *ngIf="errorDiagnostic">{{errorDiagnostic}}</p>
 
                 <div class="otherLink">
                     <a [routerLink]="['/login']">Click here to Login</a>

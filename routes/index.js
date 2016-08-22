@@ -4,6 +4,7 @@ const path = require('path');
 const Conference = require('../server/models/conference');
 const Speaker = require('../server/models/speaker');
 const Session = require('../server/models/session');
+const User = require('../server/models/user');
 
 module.exports = function(app, passport) {
 
@@ -230,11 +231,28 @@ module.exports = function(app, passport) {
      *  Authentication routes
      *
      ***************************************/
-    app.post('/signup', passport.authenticate('local-signup', {
+    app.post('/login', passport.authenticate('local-login', {
         successRedirect: '/profile',
-        failureRedirect: '/signup',
+        failureRedirect: '/login',
         failureFlash: true
     }));
+
+    app.post('/signup',function(req, res) {
+        console.log('/signup');
+        var user = new User;
+        user.firstName = req.body.firstName;
+        user.lastName = req.body.lastName;
+        user.email = req.body.email;
+        user.password = req.body.password;
+
+        user.save(function(err) {
+            if (err) {
+                res.json({ alert: 'error' });
+            } else {
+                res.json({ alert: 'success' });
+            }
+        })
+    });
 
     app.get('/logout', function(req, res) {
         req.logout();
