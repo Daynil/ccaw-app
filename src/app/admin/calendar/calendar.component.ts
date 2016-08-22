@@ -82,7 +82,13 @@ export class CalendarComponent implements OnInit, AfterViewInit {
     }
     this.sessionService.setSession(slot, room, sessionId)
         .then(res => {
-          this.toast.success('Session assigned to slot');
+          if (res.occupied) {
+            this.toast.error('Time/room slot is occupied! Clear it first to add new session.')
+          }
+          else if (res.alreadyScheduled) {
+            this.toast.error('This session is already scheduled in a room for this time slot.')
+          }
+          else this.toast.success('Session assigned to slot');
         });
   }
 

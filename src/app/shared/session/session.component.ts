@@ -94,13 +94,17 @@ export class SessionComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.paramsub.unsubscribe();
   }
-
-  getDate() {
-    return this.adminService.findDateBySlot(this.model.statusTimeLocation.timeSlot);
+  
+  mainPresenter() {
+    return this.sessionSpeakers.getValue().mainPresenter;
   }
 
-  slot() {
-    return this.adminService.findSlotById(this.model.statusTimeLocation.timeSlot);
+  getDate(occurrence) {
+    return this.adminService.findDateBySlot(occurrence.timeSlot);
+  }
+
+  slot(occurrence) {
+    return this.adminService.findSlotById(occurrence.timeSlot);
   }
 
   capitalize(word: string): string {
@@ -128,19 +132,27 @@ export class SessionComponent implements OnInit, OnDestroy {
   }
 
   saveToSlot(slotId: string, room: string) {
-    if (slotId === '') {
-      this.sessionService.clearSlot(null, null, this.model._id)
-          .then(res => {
-            this.toast.success('Removed session from schedule');
-          });
-    }
-    else {
-      let slot = this.adminService.findSlotById(slotId);
-      this.sessionService.setSession(slot, room, this.model._id)
-          .then(res => {
-            this.toast.success('Session assigned to slot');
-          });
-    }
+    let slot = this.adminService.findSlotById(slotId);
+    this.sessionService.setSession(slot, room, this.model._id)
+        .then(res => {
+          if (res.occupied) {
+            this.toast.error('Time/room slot is occupied! Clear it first to add new session.')
+          }
+          else if (res.alreadyScheduled) {
+            this.toast.error('This session is already scheduled in a room for this time slot.')
+          }
+          else this.toast.success('Session assigned to slot');
+        });
+  }
+
+  clearSlot(occurrence) {
+    let slot = this.adminService.findSlotById(occurrence.timeSlot);
+    this.sessionService.clearSlot(slot, occurrence.room)
+        .then(res => {
+          if (res != 'No scheduled session') {
+            this.toast.success('Removed session from slot');
+          }
+        });
   }
 
   assignSpeaker(speakerId: string, isLead: boolean) {

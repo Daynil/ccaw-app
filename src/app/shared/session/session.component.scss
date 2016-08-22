@@ -48,6 +48,15 @@ textarea {
 
 /** Admin fields */
 
+.schedule {
+  margin: 20px;
+}
+
+#slot-list {
+  display: inline-flex;
+  flex-direction: column;
+}
+
 .slot-display {
   border-bottom: 1px dotted $brand-primary;
 }

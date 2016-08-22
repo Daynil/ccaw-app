@@ -38,10 +38,13 @@ export class SessionService {
     }
     return _.find(this.sessions.getValue(), session => {
       // Skip sessions that haven't been assigned
-      if (!session.statusTimeLocation) return false;
-      let sameSlot = session.statusTimeLocation.timeSlot === slot._id;
-      let sameRoom = session.statusTimeLocation.room === room;
-      return sameRoom && sameSlot;
+      if (!session.statusTimeLocation || session.statusTimeLocation.length < 1) return false;
+      let sameSlotAndRoom = false;
+      session.statusTimeLocation.forEach(sessionOccurence => {
+        if (sessionOccurence.timeSlot === slot._id
+            && sessionOccurence.room === room) sameSlotAndRoom = true;
+      });
+      return sameSlotAndRoom;
     });
   }
 
@@ -56,27 +59,48 @@ export class SessionService {
     let activeConf = this.adminService.activeConference.getValue();
     
     // Check for sessions already in requested slot before adding new
-    return this.clearSlot(slot, room)
-               .then(res => {
-                  session.statusTimeLocation = {
-                    conferenceTitle: activeConf.title,
-                    timeSlot: slot._id,
-                    room: room
-                  };
-                  return this.updateSession(session);
-               });
+    let slotOccupied = this.isSlotOccupied(slot, room);
+    if (slotOccupied) return Promise.resolve({occupied: true});
+    else {
+      if (!session.statusTimeLocation) session.statusTimeLocation = [];
+      if (this.isSessionInTimeslot(slot, session)) return Promise.resolve({alreadyScheduled: true});
+      let newOccurence = {
+        conferenceTitle: activeConf.title,
+        timeSlot: slot._id,
+        room: room
+      };
+      session.statusTimeLocation.push(newOccurence);
+      return this.updateSession(session, 'slots');
+    }
   }
 
-  /** Unschedule a session from a time/room slot if one exists
-   * @sessionId pass this paramater by itself to clear specific session
+  isSlotOccupied(slot: TimeSlot, room: string) {
+    let sessionInRequestedSlot = this.findSession(slot, room);
+    return typeof sessionInRequestedSlot !== 'undefined';
+  }
+
+  /** Returns true if session is already scheduled for a room in a timeslot */
+  isSessionInTimeslot(slot: TimeSlot, session: Session) {
+    let isInSlot = false;
+    session.statusTimeLocation.forEach(occurrence => {
+      if (occurrence.timeSlot === slot._id) isInSlot = true;
+    });
+    return isInSlot;
+  }
+
+  /** Unschedule a session from a time/room slot
    */
-  clearSlot(slot: TimeSlot, room: string, sessionId?: string) {
-    let sessionInRequestedSlot: Session;
-    if (sessionId) sessionInRequestedSlot = this.getSession(sessionId);
-    else sessionInRequestedSlot = this.findSession(slot, room);
-    if (typeof sessionInRequestedSlot !== 'undefined' || sessionInRequestedSlot) {
-      sessionInRequestedSlot.statusTimeLocation = null;
-      return this.updateSession(sessionInRequestedSlot);
+  clearSlot(slot: TimeSlot, room: string) {
+    let session = this.findSession(slot, room);
+    if (typeof session !== 'undefined' && session) {
+      let occurenceToRemoveIndex;
+      session.statusTimeLocation.forEach((sessionOccurence, index, arr) => {
+        if (sessionOccurence.timeSlot === slot._id && sessionOccurence.room === room) {
+          occurenceToRemoveIndex = index;
+        }
+      });
+      session.statusTimeLocation.splice(occurenceToRemoveIndex, 1);
+      return this.updateSession(session, 'slots');
     } else {
       return Promise.resolve('No scheduled session');
     }
@@ -106,7 +130,7 @@ export class SessionService {
         session.speakers.coPresenters.push(speakerId);
       }
     }
-    return this.updateSession(session, true);
+    return this.updateSession(session, 'speakers');
   }
 
   removeSpeaker(speakerId: string, sessionId: string) {
@@ -122,14 +146,15 @@ export class SessionService {
         }
       }
     }
-    return this.updateSession(session, true);
+    return this.updateSession(session, 'speakers');
   }
 
   /** Update new session on server and sync response with front end 
-   * @speakerUpdate Different server endpoint for speaker updates
+   * @updateType Different server endpoints for speaker and slot updates
   */
-  updateSession(session: Session, speakerUpdate?: boolean) {
-    let serverUrl = speakerUpdate ? '/api/updatesessionspeakers' : '/api/updatesession';
+  updateSession(session: Session, updateType?: string) {
+    let serverUrl = '/api/updatesession';
+    if (updateType) serverUrl += updateType;
     let pkg = packageForPost(session);
     return this.http
               .post(serverUrl, pkg.body, pkg.opts)

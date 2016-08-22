@@ -23,6 +23,6 @@ export interface Session {
       conferenceTitle: string,
       timeSlot: string, // _id of timeslot
       room: string
-    },
+    }[],
     miscRequirements?: String
 }

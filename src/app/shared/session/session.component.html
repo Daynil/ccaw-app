@@ -12,9 +12,9 @@
           <h4>Assign speakers to session</h4>
           <div>
             <p><b>Current speakers</b></p>
-            <p>Lead Presenter: <span class="lead-pres">
+            <p>Lead Presenter: <span class="lead-pres" *ngIf="mainPresenter()">
               <i class="fa fa-ban delete" (click)="removeSpeaker('main')"></i>
-              <span class="slot-display">{{ (sessionSpeakers | async)?.mainPresenter?.nameFirst }} {{ (sessionSpeakers | async)?.mainPresenter?.nameLast }}</span>
+              <span class="slot-display">{{ mainPresenter().nameFirst }} {{ mainPresenter().nameLast }}</span>
             </span></p>
             <p id="co-pres-label">Co-Presenters: </p>
             <div class="co-presenters"> 
@@ -47,43 +47,59 @@
           </div>
         </div>
 
-        <div class="row block slot">
-          <h4>Assign session to timeslot and date</h4>
-          <p>Current Slot: 
-            <span class="slot-display" *ngIf="model.statusTimeLocation">{{ getDate() | dateCustom }} from {{ slot()?.start | time }} to {{ slot()?.end | time }} in {{ model.statusTimeLocation?.room }}</span>
-            <span class="slot-display" *ngIf="!model.statusTimeLocation">None</span>
-          </p>
-          <div class="col-md-4 col-xs-12">
-            <label class="control-label primary-label" for="dates">Session date:</label>
-            <select #dates class="form-control" id="dates" (input)="updateSelectedDate(dates.value)">
-              <option value="">None</option>
-              <option *ngFor="let day of (adminService.activeConference | async).days">
-                {{ day.date | dateCustom }}
-              </option>
-            </select>
+        <div class="block slot">
+
+          <div class="row">
+            <h4>Schedule session for a timeslot and date</h4>
           </div>
-          <div class="col-md-4 col-xs-12">
-            <label class="control-label primary-label" for="slots">Time slot:</label>
-            <select #slots class="form-control" id="slots">
-              <option value="">None</option>
-              <option *ngFor="let slot of (selectedDaySlots | async)"
-                      [value]="slot._id">
-                {{ slot.start | time }} to {{ slot.end | time }}
-              </option>
-            </select>
+
+          <div class="row schedule">
+            <span>Currently Scheduled for: </span> 
+            <div id="slot-list">
+              <div *ngIf="model.statusTimeLocation?.length > 0">   
+                <div *ngFor="let occurrence of model.statusTimeLocation">
+                      <i class="fa fa-ban delete" (click)="clearSlot(occurrence)"></i>
+                      <span class="slot-display">{{ getDate(occurrence) | dateCustom }} from {{ slot(occurrence)?.start | time }} to {{ slot(occurrence)?.end | time }} in {{ occurrence.room }}</span>
+                </div>
+              </div>
+              <div class="slot-display" *ngIf="model.statusTimeLocation?.length === 0">None</div>
+            </div>
           </div>
-          <div class="col-md-4 col-xs-12">
-            <label class="control-label primary-label" for="rooms">Room:</label>
-            <select #rooms class="form-control" id="rooms">
-              <option value="">None</option>
-              <option *ngFor="let room of (adminService.activeConference | async).rooms">
-                {{ room }}
-              </option>
-            </select>
+
+          <div class="row">
+            <div class="col-md-4 col-xs-12">
+              <label class="control-label primary-label" for="dates">Session date:</label>
+              <select #dates class="form-control" id="dates" (input)="updateSelectedDate(dates.value)">
+                <option value="">None</option>
+                <option *ngFor="let day of (adminService.activeConference | async).days">
+                  {{ day.date | dateCustom }}
+                </option>
+              </select>
+            </div>
+            <div class="col-md-4 col-xs-12">
+              <label class="control-label primary-label" for="slots">Time slot:</label>
+              <select #slots class="form-control" id="slots">
+                <option value="">None</option>
+                <option *ngFor="let slot of (selectedDaySlots | async)"
+                        [value]="slot._id">
+                  {{ slot.start | time }} to {{ slot.end | time }}
+                </option>
+              </select>
+            </div>
+            <div class="col-md-4 col-xs-12">
+              <label class="control-label primary-label" for="rooms">Room:</label>
+              <select #rooms class="form-control" id="rooms">
+                <option value="">None</option>
+                <option *ngFor="let room of (adminService.activeConference | async).rooms">
+                  {{ room }}
+                </option>
+              </select>
+            </div>
           </div>
+
           <button type="submit"
                   class="btn btn-primary" 
-                  (click)="saveToSlot(slots.value, rooms.value)">Update</button>
+                  (click)="saveToSlot(slots.value, rooms.value)">Add</button>
 
         </div>
 

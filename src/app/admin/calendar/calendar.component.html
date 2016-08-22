@@ -18,6 +18,8 @@
               <div>{{ slot.start | time }} -</div>
               <div>{{ slot.end | time }}</div>
             </td>
+
+            <!-- Room & Time slot -->
             <td *ngFor="let room of (adminService.activeConference | async)?.rooms"
                 [class.empty-slot]="!getSession(slot, room)"
                 class="session-cell">
@@ -32,6 +34,7 @@
                 </a>
               </div>
             </td>
+
           </tr>
         </tbody>
       </table>

@@ -27,8 +27,8 @@ export class ToastComponent {
 
   toastTypes = {
     default: 'hsla(0, 0%, 0%, 0.6)',
-    error: '#BD362F',
-    success: '#51A351'
+    error: 'hsla(3, 60%, 46%, 0.8)',
+    success: 'hsla(120, 34%, 48%, 0.8)'
   }
 
   toastText: string = null;

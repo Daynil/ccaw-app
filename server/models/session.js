@@ -22,11 +22,11 @@ let sessionSchema = new mongoose.Schema({
     mainPresenter: String,
     coPresenters: [String]
   },
-  statusTimeLocation: {
+  statusTimeLocation: [{
     conferenceTitle: String,
     timeSlot: String,
     room: String
-  },
+  }],
   miscRequirements: String
 });
 
