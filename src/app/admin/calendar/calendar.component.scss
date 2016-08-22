@@ -94,6 +94,16 @@ th {
   margin-top: 20px;
 }
 
+.copres-list {
+  display: flex;
+  flex-direction: column;
+  margin-right: 5px;
+}
+
+.session-row a {
+  cursor: pointer;
+}
+
 .delete {
   margin-right: 5px;
   margin-top: 10px;
@@ -116,6 +126,10 @@ th {
   label {
     font-weight: 500;
   }
+}
+
+.item {
+  margin-bottom: 20px;
 }
 
 .debug {

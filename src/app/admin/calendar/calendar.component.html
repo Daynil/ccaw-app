@@ -50,13 +50,27 @@
           <h4 class="modal-title" id="myModalLabel">Modify Slot</h4>
         </div>
         <div class="modal-body">
-          <div class="row"><b>Room: </b>{{ selectedRoom }}</div>
-          <div class="row"><b>Time: </b>{{ selectedSlot?.start | time }} - {{ selectedSlot?.end | time }}</div>
-          <div class="row scheduled"><b>Scheduled Session: </b></div>
-          <div class="row">
+          <div class="row"><b>Room</b></div>
+          <div class="row item">{{ selectedRoom }}</div>
+
+          <div class="row"><b>Time</b></div>
+          <div class="row item">{{ selectedSlot?.start | time }} - {{ selectedSlot?.end | time }}</div>
+
+          <div class="row"><b>Lead Presenter</b></div>
+          <div class="row item"><a [routerLink]="['/speaker', {id: getSpeakers(selectedSlot, selectedRoom)?.mainPresenter?._id}]">{{ fullName(getSpeakers(selectedSlot, selectedRoom)?.mainPresenter) }}</a></div>
+
+          <div class="row"><b>Co-Presenters</b></div>
+          <div class="row item copres-list">
+            <div *ngFor="let coPres of getSpeakers(selectedSlot, selectedRoom)?.coPresenters">
+              <a [routerLink]="['/speaker', {id: coPres._id}]">{{ fullName(coPres) }}</a>
+            </div>
+          </div>
+
+          <div class="row scheduled"><b>Scheduled Session</b></div>
+          <div class="row session-row">
             <i *ngIf="getSession(selectedSlot, selectedRoom)" class="fa fa-ban delete" 
                (click)="removeSession(selectedSlot, selectedRoom)"></i>
-            {{ getSession(selectedSlot, selectedRoom)?.title || "None" }}
+            <a (click)="gotoSession(selectedSlot, selectedRoom)">{{ getSession(selectedSlot, selectedRoom)?.title }}</a>
           </div>
           <div class="row">
             <div class="col-xs-6 col-xs-offset-3 modal-select">
@@ -74,7 +88,6 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-link" data-dismiss="modal">Done</button>
-          <!--<button type="button" class="btn btn-primary" (click)="saveSlot(selectedSlot, selectedRoom, sessionSelect.value)">Save changes</button>-->
         </div>
       </div>
     </div>

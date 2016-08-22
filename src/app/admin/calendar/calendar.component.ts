@@ -56,11 +56,12 @@ export class CalendarComponent implements OnInit, AfterViewInit {
 
   getSpeakers(slot: TimeSlot, room: string): SpeakerList {
     let session = this.getSession(slot, room);
+    if (!session) return;
     return this.speakerService.getSpeakerList(session.speakers);
   }
 
   fullName(speaker: Speaker) {
-    if (typeof speaker === 'undefined') return '';
+    if (!speaker) return '';
     return `${speaker.nameFirst} ${speaker.nameLast}`;
   }
 
