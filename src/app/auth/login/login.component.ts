@@ -31,6 +31,7 @@ export class LoginComponent implements OnInit {
         if (emailTxt.length < 1 || passTxt.length < 1) return;
         this.authService.login(emailTxt, passTxt)
             .then((res: any) => {
+                // TODO: fix login errors throwing improperly
 /*                console.log('login res', res);
                 return;
                 if (res.alert === 'no user found') {
@@ -40,10 +41,12 @@ export class LoginComponent implements OnInit {
                     this.toast.error('Email or password entered incorrectly');
                 }
                 else {*/
-                    console.log('login res', res);
-                    this.toast.success('Logged in!');
-                    this.router.navigate(['/home']);
 /*                }*/
+                if (this.authService.user.getValue().admin) {
+                    this.router.navigate(['/home']);
+                } else {
+                    this.router.navigate(['/dashboard']);
+                }
             })
             .catch(err => {
                 console.log(err);
