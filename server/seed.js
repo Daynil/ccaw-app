@@ -40,7 +40,7 @@ function seedAdmin() {
         if (err) {
             throw err;
         } else {
-            Speaker.add({
+            Speaker.create({
                 admin: true,
                 password: 'password',
                 nameFirst: 'Jane',
