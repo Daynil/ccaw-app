@@ -68,7 +68,8 @@ gulp.task('copy-untransformed', () => {
   let sourceFiles = [
     './src/**/*.html',
     './src/**/*.js',
-    './src/**/*.css'
+    './src/**/*.css',
+    './public/**/*.*'
   ];
 
   let stream = gulp
