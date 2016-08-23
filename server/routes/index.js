@@ -269,7 +269,7 @@ module.exports = function(app, passport) {
         })(req, res, next);
     });
 
-    app.get('/logout', function(req, res) {
+    app.get('/logout', (req, res) => {
         req.logout();
         res.end();
     });

@@ -19,12 +19,19 @@ import { TransitionService } from './shared/transition.service';
               SpeakerService, TransitionService]
 })
 export class AppComponent implements OnInit {
+
+  user;
   
   constructor(private adminService: AdminService,
               private sessionService: SessionService,
               private speakerService: SpeakerService,
               private authService: AuthService,
-              private router: Router) { }
+              private router: Router) {
+    this.authService.user.subscribe(user => {
+      console.log('caught user event', user);
+      this.user = user;
+    });
+  }
 
   ngOnInit() {
     this.adminService.getAllConferences();
