@@ -28,14 +28,28 @@ export class LoginComponent implements OnInit {
     doLogin(email: HTMLInputElement, password: HTMLInputElement) {
         let emailTxt = email.value;
         let passTxt = password.value;
-        console.log(emailTxt, passTxt);
         if (emailTxt.length < 1 || passTxt.length < 1) return;
         this.authService.login(emailTxt, passTxt)
-            .then(res => {
-                this.toast.success('Logged in!');
-                this.router.navigate(['/home']);
+            .then((res: any) => {
+                // TODO: fix login errors throwing improperly
+/*                console.log('login res', res);
+                return;
+                if (res.alert === 'no user found') {
+                    this.toast.error('Email or password not found');
+                }
+                else if (res.alert === 'wrong password') {
+                    this.toast.error('Email or password entered incorrectly');
+                }
+                else {*/
+/*                }*/
+                if (this.authService.user.getValue().admin) {
+                    this.router.navigate(['/home']);
+                } else {
+                    this.router.navigate(['/dashboard']);
+                }
             })
             .catch(err => {
+                console.log(err);
                 if (err.alert === 'no user found') {
                     this.toast.error('Email not found');
                 }

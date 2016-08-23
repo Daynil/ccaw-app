@@ -285,9 +285,9 @@ module.exports = function(app, passport) {
         })(req, res, next);
     });
 
-    app.get('/logout', function(req, res) {
+    app.get('/logout', (req, res) => {
         req.logout();
-        res.redirect('/');
+        res.end();
     });
 
     /** Pass all non-api routes to front-end router for handling **/
