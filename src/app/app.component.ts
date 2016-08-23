@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
+import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import { HTTP_PROVIDERS } from '@angular/http';
 
 import { AdminService } from './shared/admin.service';
@@ -23,12 +23,20 @@ export class AppComponent implements OnInit {
   constructor(private adminService: AdminService,
               private sessionService: SessionService,
               private speakerService: SpeakerService,
-              private authService: AuthService) { }
+              private authService: AuthService,
+              private router: Router) { }
 
   ngOnInit() {
     this.adminService.getAllConferences();
     this.sessionService.getAllSessions();
     this.speakerService.getAllSpeakers();
+  }
+
+  logout() {
+    this.authService.logout()
+        .then(res => {
+          this.router.navigate(['/']);
+        });
   }
 
 }
