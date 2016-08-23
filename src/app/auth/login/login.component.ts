@@ -40,6 +40,7 @@ export class LoginComponent implements OnInit {
                     this.toast.error('Email or password entered incorrectly');
                 }
                 else {*/
+                    console.log('login res', res);
                     this.toast.success('Logged in!');
                     this.router.navigate(['/home']);
 /*                }*/

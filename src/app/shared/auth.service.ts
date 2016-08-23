@@ -16,15 +16,7 @@ export class AuthService {
 
   constructor(private http: Http,
               private router: Router) { }
-
-	checkCreds() {
-		return this.http
-              .get('/checkCreds')
-              .toPromise()
-              .then(parseJson)
-              .catch(handleError);
-	}
-
+              
   logout() {
     return this.http
               .get('/logout')
