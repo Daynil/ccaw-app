@@ -4,7 +4,6 @@ const path = require('path');
 const Conference = require('../models/conference');
 const Speaker = require('../models/speaker');
 const Session = require('../models/session');
-const User = require('../models/user');
 const _ = require('lodash');
 
 module.exports = function(app, passport) {
