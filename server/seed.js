@@ -6,14 +6,10 @@
  */
 
 const _ = require('lodash');
-
-const Conference = require('./models/conference');
 const Session = require('./models/session');
 const Speaker = require('./models/speaker');
-
 const ipsumObj = require('./ipsumtext.json');
 const dummyUsers = require('./dummyusers.json');
-//const ipsumObj = JSON.parse(ipsumText);
 
 function seedSessions() {
   let sessionSeeding = new Promise((resolve, reject) => {
@@ -39,6 +35,22 @@ function seedSpeakers() {
   return speakerSeeding;
 }
 
+function seedAdmin() {
+    Speaker.find({admin: true}).remove().exec(err => {
+        if (err) {
+            throw err;
+        } else {
+            Speaker.add({
+                admin: true,
+                password: 'password',
+                nameFirst: 'Jane',
+                nameLast: 'Doe',
+                email: 'admin@gmail.com'
+            });
+        }
+    });
+}
+
 function generateSessionTags() {
   return [
     {
@@ -49,7 +61,7 @@ function generateSessionTags() {
       name: 'campusSafety',
       label: 'Campus Safety',
       checked: Math.floor(Math.random()*2) === 0
-    }, 
+    },
     {
       name: 'ccr',
       label: 'Coordinated Community Response (CCR)',
@@ -86,7 +98,7 @@ function generateSessionTags() {
     {
       name: 'military',
       checked: Math.floor(Math.random()*2) === 0
-    }, 
+    },
     {
       name: 'probation',
       label: 'Probation/Parole',
@@ -182,4 +194,5 @@ function generateSpeakers(amount) {
 
 seedSessions()
   .then(res => seedSpeakers())
+  .then(res => seedAdmin())
   .then(res => console.log('Database seeded!'));
