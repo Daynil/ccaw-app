@@ -48,7 +48,7 @@ function seedAdmin() {
                 nameFirst: 'Jane',
                 nameLast: 'Doe',
                 email: 'admin@gmail.com'
-            })
+            });
         }
     });
 }
