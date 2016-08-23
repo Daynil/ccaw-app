@@ -21,7 +21,6 @@ module.exports = function(passport) {
             passReqToCallback : true
         },
         function(req, email, password, done) {
-            console.log('passport local-signup');
             process.nextTick(function() {
 
                 User.findOne({ 'email' :  email }, function(err, user) {
@@ -31,7 +30,7 @@ module.exports = function(passport) {
                     if (user) {
                         return done(null, false, 'email taken');
                     } else {
-                        
+
                         var newUser            = new User();
                         newUser.email    = email;
                         newUser.password = newUser.generateHash(password);
@@ -59,25 +58,18 @@ module.exports = function(passport) {
             passReqToCallback : true
         },
         function(req, email, password, done) {
-            console.log('email: ', email, 'pass', password);
             User.findOne({ 'email' :  email }, function(err, user) {
-                console.log('user', user);
-                console.log('error', err);
                 if (err){
-                    console.log('email find err', err);
                     return done(err);
                 }
 
                 if (!user) {
-                    console.log('no user found');
                     return done(null, false, 'no user found');
                 }
 
                 if (!user.validatePassword(password, user.password)) {
-                    console.log('wrong pass');
                     return done(null, false, 'wrong password');
                 }
-                console.log('good to go');
                 return done(null, user, 'logged in successfully');
             });
 
