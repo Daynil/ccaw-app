@@ -1,0 +1,67 @@
+<div class="container" [class.page-transition]="transitionService.isTransitioning()">
+  <div class="row">
+    <h1 class="text-center">Hello {{user.nameFirst}}!</h1>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="row block">
+    <h3 class="text-center title">My Information</h3>
+    <div class="center-block">
+      <div class="col-md-5 col-xs-11 dashboard-item">
+        <div class="row">
+          <b>My scheduled presentations</b>
+        </div>
+        <div class="row">
+          Approved and scheduled presentation list (times/dates/locations)...
+        </div>
+      </div>
+      <div class="col-md-5 col-xs-11 dashboard-item">
+        <div class="row">
+          <b>My Arrangements</b>
+        </div>
+        <div class="row">
+          Brooke's travel arrangements...<br/>
+          Brooke's hotel arrangements...
+        </div>
+      </div>
+      <div class="col-md-5 col-xs-11 dashboard-item">
+        <div class="row">
+          <b>My Todos</b>
+        </div>
+        <div class="row">
+          Incomplete fields (speaker info, copresenters)...
+        </div>
+      </div>
+      <div class="col-md-5 col-xs-11 dashboard-item">
+        <div class="row">
+          <b>My Co-presenters</b>
+        </div>
+        <div class="row">
+          Co-presenter list (clickable to modify??)...
+        </div>
+      </div>
+      <div class="col-md-5 col-xs-11 dashboard-item">
+        <div class="row">
+          <b>My Presentation Proposals</b>
+        </div>
+        <div class="row">
+          Approved and unscheduled, pending approval, denied proposals (clickable to modify)...
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row block">
+    <h3 class="text-center title">Things I can do</h3>
+    <div class="col-md-4 col-xs-12 action-item">
+      <button class="btn btn-primary center-block" (click)="goto('profile')">Modify my profile information</button>
+    </div>
+    <div class="col-md-4 col-xs-12 action-item">
+      <button class="btn btn-primary center-block" (click)="goto('proposal')">Submit Presentation Proposal</button>
+    </div>
+    <div class="col-md-4 col-xs-12 action-item">
+      <button class="btn btn-primary center-block" (click)="goto('copres')">Add co-presenters</button>
+    </div>
+  </div>
+</div>

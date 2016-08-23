@@ -18,6 +18,7 @@
           <li *ngIf="user && user.admin"><a [routerLink]="['/calendar']">Calendar</a></li>
           <li *ngIf="user && user.admin"><a [routerLink]="['/session-list']">Sessions</a></li>
           <li *ngIf="user && user.admin"><a [routerLink]="['/speaker-list']">Speakers</a></li>
+          <li *ngIf="user && !user.admin"><a [routerLink]="['/dashboard']">Dashboard</a></li>
         </ul>
 
         <ul class="nav navbar-nav navbar-right">
