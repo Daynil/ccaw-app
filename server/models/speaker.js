@@ -3,13 +3,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt-nodejs');
 
-let addressSchema = new mongoose.Schema({
-  address: String,
-  city: String,
-  state: String,
-  zip: String
-});
-
 let speakerSchema = new mongoose.Schema({
 
   // Credentials
