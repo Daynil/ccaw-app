@@ -25,8 +25,8 @@
               <i class="fa fa-cog" aria-hidden="true"></i>
             </a>
             <ul class="dropdown-menu" role="menu">
-              <li><a>Edit Profile</a></li>
-              <li><a>Change Password</a></li>
+              <li><a [routerLink]="['/speaker', { id: authService.user._id }]">Edit Profile</a></li>
+              <li><a href="/settings">Change Password</a></li>
               <li><a href="/logout">Logout</a></li>
             </ul>
           </li>

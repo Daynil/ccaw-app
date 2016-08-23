@@ -28,7 +28,6 @@ export class LoginComponent implements OnInit {
     doLogin(email: HTMLInputElement, password: HTMLInputElement) {
         let emailTxt = email.value;
         let passTxt = password.value;
-        console.log(emailTxt, passTxt);
         if (emailTxt.length < 1 || passTxt.length < 1) return;
         this.authService.login(emailTxt, passTxt)
             .then(res => {
