@@ -180,12 +180,22 @@ export class AdminService {
   moveRoom(conferenceTitle: string, room: string, direction: string) {
     let conf = _.find(this.conferences, conf => conf.title === conferenceTitle);
 
-    let roomStart = conf.rooms.indexOf(room);
-    let roomEnd = direction === '+' ? roomStart+1 : roomStart-1;
-    if (roomEnd > conf.rooms.length-1 || 
-        roomEnd < 0) return;
+    let roomStarti = conf.rooms.indexOf(room);
+    let roomEndi = direction === '+' ? roomStarti+1 : roomStarti-1;
+    if (roomEndi > conf.rooms.length-1 || 
+        roomEndi < 0) return;
+    let roomsDupe = conf.rooms.slice();
+    let displacedRoom = roomsDupe[roomEndi];
     
-    conf.rooms.splice(roomEnd, 0, conf.rooms.splice(roomStart, 1)[0]);
+    conf.rooms[roomStarti] = displacedRoom;
+    conf.rooms[roomEndi] = room;
+
+    let pkg = packageForPost(conf);
+    return this.http
+              .post('/api/updateconfrooms', pkg.body, pkg.opts)
+              .toPromise()
+              .then(parseJson)
+              .catch(handleError);
   }
 
   getAllConferences() {
