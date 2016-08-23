@@ -26,10 +26,9 @@
               <i class="fa fa-cog" aria-hidden="true"></i>
             </a>
             <ul class="dropdown-menu" role="menu">
-              
               <li><a [routerLink]="['/speaker', { id: user?._id }]">Edit Profile</a></li>
               <li><a [routerLink]="['/settings']">Change Password</a></li>
-              <li><a (click)="logout()">Logout</a></li>
+              <li><a id="logout" (click)="logout()">Logout</a></li>
             </ul>
           </li>
 

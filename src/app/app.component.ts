@@ -28,7 +28,6 @@ export class AppComponent implements OnInit {
               private authService: AuthService,
               private router: Router) {
     this.authService.user.subscribe(user => {
-      console.log('caught user event', user);
       this.user = user;
     });
   }
