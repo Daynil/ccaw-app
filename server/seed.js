@@ -40,13 +40,15 @@ function seedAdmin() {
         if (err) {
             throw err;
         } else {
+          var user = new Speaker();
+          const hashPass = user.generateHash('password');
             Speaker.create({
                 admin: true,
-                password: 'password',
+                password: hashPass,
                 nameFirst: 'Jane',
                 nameLast: 'Doe',
                 email: 'admin@gmail.com'
-            });
+            })
         }
     });
 }
