@@ -269,17 +269,9 @@ module.exports = function(app, passport) {
         })(req, res, next);
     });
 
-    app.get('/logout', function(req, res) {
+    app.get('/logout', (req, res) => {
         req.logout();
         res.end();
-    });
-
-    app.get('/checkCreds', (req, res) => {
-        res.json({msg: 'user?', user: req.user});
-        return;
-        if (req.isAuthenticated()) {
-            res.json(req.user);
-        } else res.json({user: null});
     });
 
     /** Pass all non-api routes to front-end router for handling **/

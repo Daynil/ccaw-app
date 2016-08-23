@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
-import { HTTP_PROVIDERS } from '@angular/http';
 
 import { AdminService } from './shared/admin.service';
 import { AuthService } from './shared/auth.service';
@@ -15,16 +14,22 @@ import { TransitionService } from './shared/transition.service';
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.css'],
   directives: [ROUTER_DIRECTIVES],
-  providers: [HTTP_PROVIDERS, AdminService, AuthService, DateService, SessionService, 
+  providers: [AdminService, DateService, SessionService, 
               SpeakerService, TransitionService]
 })
 export class AppComponent implements OnInit {
+
+  user;
   
   constructor(private adminService: AdminService,
               private sessionService: SessionService,
               private speakerService: SpeakerService,
               private authService: AuthService,
-              private router: Router) { }
+              private router: Router) {
+    this.authService.user.subscribe(user => {
+      this.user = user;
+    });
+  }
 
   ngOnInit() {
     this.adminService.getAllConferences();
