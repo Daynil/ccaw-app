@@ -75,6 +75,8 @@ export class SessionService {
       default:
         break;
     }
+
+    this.sessions.next(filtered);
   }
 
   getSessionMoment(session: Session) {
@@ -220,6 +222,7 @@ export class SessionService {
                   existingSession = serverSession;
                 }
                 this.sessions.next(newSessions);
+                this.setFiltering();
                 return serverSession;
               })
               .catch(handleError);
