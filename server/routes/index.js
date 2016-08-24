@@ -129,6 +129,22 @@ module.exports = function(app, passport) {
             });
     });
 
+    app.post('/api/updateconfrooms', (req, res) => {
+        let conf = req.body;
+
+        Conference
+            .findOne({ title: conf.title })
+            .exec()
+            .then(serverConf => {
+                serverConf.rooms = conf.rooms;
+                serverConf.save(err => {
+                    if (err) res.status(500).json({message: 'Conference save error'});
+                    else res.status(200).json({message: 'Conference saved'});
+                });
+            });
+    });
+
+
     app.post('/api/updatespeaker', (req, res) => {
         let speaker = req.body;
         // Existing speakers have an id

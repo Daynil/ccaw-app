@@ -91,7 +91,8 @@
         <h4>Current Rooms</h4>
           <div *ngFor="let room of (selectedConf | async)?.rooms">
             <i class="fa fa-ban delete" (click)="deleteRoom(conferences, room)"></i> {{ room }}
-            <i class="fa fa-arrow-up" aria-hidden="true" (click)="moveRoom(conferences, room, '+')"></i>
+            <i class="fa fa-arrow-up arrow" aria-hidden="true" (click)="moveRoom(conferences, room, '-')"></i>
+            <i class="fa fa-arrow-down arrow" aria-hidden="true" (click)="moveRoom(conferences, room, '+')"></i>
           </div>
       </div>
     </div>

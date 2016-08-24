@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import "rxjs/add/operator/toPromise";
 import * as _ from 'lodash';
+import * as moment from 'moment';
 
 import { handleError, parseJson, packageForPost } from './http-helpers';
 import { AdminService } from './admin.service';
@@ -11,13 +12,31 @@ import { Conference, TimeSlot } from './conference.model';
 import { Speaker } from './speaker.model';
 import { Session } from './session.model';
 
+enum SessionOrder {
+  Alphabetical,
+  DateAdded
+}
+
+enum SessionFilter {
+  None,
+  Pending,
+  Completed,
+  Upcoming
+}
+
 @Injectable()
 export class SessionService {
 
+  sessionsUnfiltered: Session[] = [];
   sessions: BehaviorSubject<Session[]> = new BehaviorSubject([]);
 
+  currentFilters: BehaviorSubject<{order: SessionOrder, filter: SessionFilter}> 
+                  = new BehaviorSubject({order: SessionOrder.Alphabetical, filter: SessionFilter.None}); 
+
   constructor(private http: Http,
-              private adminService: AdminService) { }
+              private adminService: AdminService) {
+    this.currentFilters.subscribe(filter => this.setFiltering());
+  }
 
   getAllSessions() {
     return this.http
@@ -25,9 +44,43 @@ export class SessionService {
               .toPromise()
               .then(parseJson)
               .then(allSessions => {
-                this.sessions.next(allSessions);
+                this.sessionsUnfiltered = allSessions;
+                this.setFiltering();
               })
               .catch(handleError);
+  }
+
+  /** Update session display filters */
+  setFiltering() {
+    let unfilteredCopy = this.sessionsUnfiltered.slice();
+    let filtered: Session[];
+
+    switch (this.currentFilters.getValue().order) {
+      case SessionOrder.Alphabetical:
+        filtered = _.sortBy(unfilteredCopy, session => session.title);
+        break;
+      case SessionOrder.DateAdded:
+        // Implementation
+        break;
+      default:
+        break;
+    }
+
+    switch (this.currentFilters.getValue().filter) {
+      case SessionFilter.Upcoming:
+        let today = moment();
+        filtered = _.filter(filtered, session => this.getSessionMoment(session))
+        break;
+      
+      default:
+        break;
+    }
+
+    this.sessions.next(filtered);
+  }
+
+  getSessionMoment(session: Session) {
+    
   }
 
   /** Find the session assigned to room and timeslot, if any */
@@ -169,6 +222,7 @@ export class SessionService {
                   existingSession = serverSession;
                 }
                 this.sessions.next(newSessions);
+                this.setFiltering();
                 return serverSession;
               })
               .catch(handleError);

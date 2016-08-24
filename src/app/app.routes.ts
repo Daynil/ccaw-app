@@ -6,6 +6,7 @@ import { SpeakerGuard } from './shared/speaker-guard.service';
 import { HomeComponent } from './admin/home/home.component';
 import { CalendarComponent } from './admin/calendar/calendar.component';
 import { CreateConfComponent } from './admin/create-conf/create-conf.component';
+import { DashboardComponent } from './user/dashboard/dashboard.component';
 import { ModifyConfComponent } from './admin/modify-conf/modify-conf.component';
 import { SelectActiveComponent } from './admin/select-active/select-active.component';
 import { SessionComponent } from './shared/session/session.component';
@@ -22,6 +23,7 @@ export const routes: RouterConfig = [
   { path: 'home',          component: HomeComponent, canActivate: [AdminGuard] },
   { path: 'calendar',      component: CalendarComponent, canActivate: [AdminGuard] },
   { path: 'create-conf',   component: CreateConfComponent, canActivate: [AdminGuard] },
+  { path: 'dashboard',     component: DashboardComponent, canActivate: [SpeakerGuard] },
   { path: 'modify-conf',   component: ModifyConfComponent, canActivate: [AdminGuard] },
   { path: 'select-active', component: SelectActiveComponent, canActivate: [AdminGuard] },
   { path: 'session',       component: SessionComponent, canActivate: [SpeakerGuard] },

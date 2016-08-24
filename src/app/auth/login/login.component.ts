@@ -39,9 +39,12 @@ export class LoginComponent implements OnInit {
     doLogin(event) {
         this.authService.login(this.form.value)
             .then((res: any) => {
-                    console.log('login res', res);
-                    this.toast.success('Logged in!');
+
+                if (this.authService.user.getValue().admin) {
                     this.router.navigate(['/home']);
+                } else {
+                    this.router.navigate(['/dashboard']);
+                }
             })
             .catch(err => {
                 console.log(err);
