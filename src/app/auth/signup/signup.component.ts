@@ -1,12 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { REACTIVE_FORM_DIRECTIVES, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
-
 import { AuthService } from '../../shared/auth.service';
 import { TransitionService } from '../../shared/transition.service';
 import { ToastComponent } from '../../shared/toast.component';
-import { Http } from '@angular/http';
-import { Headers } from '@angular/http';
 
 @Component({
                moduleId: module.id,
@@ -26,12 +23,8 @@ export class SignupComponent implements OnInit {
     password: FormControl;
     form: FormGroup;
 
-    submitted: boolean = false;
-    errorDiagnostic: string;
-
     constructor(private transitionService: TransitionService,
                 private router: Router,
-                private http: Http,
                 private authService: AuthService) { }
 
     ngOnInit() {
@@ -51,7 +44,6 @@ export class SignupComponent implements OnInit {
     }
 
     doSignup(event) {
-        console.log('form data',this.form.value);
         this.authService.signup(this.form.value)
             .then(res => {
                 this.toast.success('You account is registered. Please login!');
