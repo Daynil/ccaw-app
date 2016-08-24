@@ -15,12 +15,30 @@ export interface SpeakerList {
   coPresenters: Speaker[];
 }
 
+enum SpeakerOrder {
+  Alphabetical,
+  DateJoined
+}
+
+enum SpeakerFilter {
+  None,
+  HasPresentations,
+  IncompleteProfile
+}
+
 @Injectable()
 export class SpeakerService {
 
+  speakersUnfiltered: Speaker[] = [];
   speakers: BehaviorSubject<Speaker[]> = new BehaviorSubject([]);
 
-  constructor(private http: Http) { }
+  currentFilters: BehaviorSubject<{order: SpeakerOrder, filter: SpeakerFilter}>
+                  = new BehaviorSubject({order: SpeakerOrder.Alphabetical, filter: SpeakerFilter.None}); 
+
+
+  constructor(private http: Http) {
+    this.currentFilters.subscribe(filter => this.setFiltering());
+  }
 
   getAllSpeakers() {
     return this.http
@@ -28,7 +46,8 @@ export class SpeakerService {
               .toPromise()
               .then(parseJson)
               .then(allSpeakers => {
-                this.speakers.next(allSpeakers);
+                this.speakersUnfiltered = allSpeakers;
+                this.setFiltering();
               })
               .catch(handleError);
   }
@@ -36,6 +55,34 @@ export class SpeakerService {
   getSpeaker(speakerId: string) {
     return _.find(this.speakers.getValue(), speaker => speaker._id === speakerId );
   }
+
+  /** Update speaker display filters */
+  setFiltering() {
+    let unfilteredCopy = this.speakersUnfiltered.slice();
+    let filtered: Speaker[];
+
+    switch (this.currentFilters.getValue().order) {
+      case SpeakerOrder.Alphabetical:
+        filtered = _.sortBy(unfilteredCopy, speaker => speaker.nameLast);
+        break;
+      case SpeakerOrder.DateJoined:
+        // Implementation
+        break;
+      default:
+        break;
+    }
+
+    switch (this.currentFilters.getValue().filter) {
+      case SpeakerFilter.HasPresentations:
+        break;
+      
+      default:
+        break;
+    }
+
+    this.speakers.next(filtered);
+  }
+
 
   /** Get a list of speaker objects from a list of speaker ID's */
   getSpeakerList(speakerIdList): SpeakerList {
@@ -63,6 +110,7 @@ export class SpeakerService {
                   existingSpeaker = serverSpeaker;
                 }
                 this.speakers.next(newSpeakers);
+                this.setFiltering();
                 return serverSpeaker;
               })
               .catch(handleError);
