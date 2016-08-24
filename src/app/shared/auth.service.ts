@@ -16,7 +16,7 @@ export class AuthService {
 
   constructor(private http: Http,
               private router: Router) { }
-              
+
   logout() {
     return this.http
               .get('/logout')
@@ -28,12 +28,8 @@ export class AuthService {
               .catch(handleError);
   }
 
-  login(email: string, pass: string) {
-    let data = {
-      email: email,
-      password: pass
-    };
-    let pkg = packageForPost(data);
+  login(formData) {
+    let pkg = packageForPost(formData);
     return this.http
               .post('/login', pkg.body, pkg.opts)
               .toPromise()
@@ -44,7 +40,7 @@ export class AuthService {
               })
               .catch(handleError);
   }
-  
+
   signup(formData) {
     let pkg = packageForPost(formData);
     return this.http
