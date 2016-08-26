@@ -290,6 +290,27 @@ module.exports = function(app, passport) {
         res.end();
     });
 
+    app.post('/changePassword', (req, res, next) => {
+        //TODO save new password to database
+        // how do I find the user_id
+        // Speaker.find({user._id}, function(err, user) {
+        //     if (err) {
+        //         return res.status(404).json({alert: user not found});
+        //     } else {
+        //         const hashPass = user.generateHash(req.body.password);
+        //         user.password = hashPass;
+        //         user.save(function(err, user) {
+        //             if (err) {
+        //                 return res.status(400).json({alert: 'not saved'});
+        //             } else {
+        //                 return res.status(200).json({alert: 'password saved'});
+        //             }
+        //         });
+        //     }
+        // });
+        return res.status(200).json({alert: 'password changed'});
+    });
+
     /** Pass all non-api routes to front-end router for handling **/
     app.get('*', (req, res) => {
         res.sendFile(path.resolve(__dirname, '../../dist', 'index.html'));
