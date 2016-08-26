@@ -17,6 +17,22 @@ export class AuthService {
   constructor(private http: Http,
               private router: Router) { }
 
+  checkSession() {
+    return this.http
+              .get('/checkSession')
+              .toPromise()
+              .then(parseJson)
+              .then(res => {
+                console.log('do we have user?', res);
+                if (res.user) {
+                  console.log('still logged in!');
+                  this.user.next(res.user);
+                }
+                return res.user;
+              })
+              .catch(handleError);
+  }
+
   logout() {
     return this.http
               .get('/logout')
@@ -51,13 +67,17 @@ export class AuthService {
   }
 
   changePassword(formData) {
-      let pkg = packageForPost(formData);
-      console.log('this.user', this.user);
-      return this.http
-          .post('/changePassword', pkg.body, pkg.opts)
-          .toPromise()
-          .then(parseJson)
-          .catch(handleError);
+    let data = {
+      formData: formData,
+      userId: this.user.getValue()._id
+    }
+    let pkg = packageForPost(data);
+
+    return this.http
+              .post('/changePassword', pkg.body, pkg.opts)
+              .toPromise()
+              .then(parseJson)
+              .catch(handleError);
   }
 
 }

@@ -58,11 +58,6 @@ gulp.task('compile-ts', () => {
   return stream;
 });
 
-gulp.task('clean', () => {
-  return del(['./dist']);
-});
-
-
 /** Copy untransformed files to destination folder */
 gulp.task('copy-untransformed', () => {
   let sourceFiles = [
@@ -77,6 +72,11 @@ gulp.task('copy-untransformed', () => {
     .pipe(gulp.dest('./dist'));
 
   return stream;
+});
+
+/** Delete compiled folder */
+gulp.task('clean', () => {
+  return del(['./dist']);
 });
 
 /********** Production Builds **********/

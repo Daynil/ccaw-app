@@ -269,6 +269,18 @@ module.exports = function(app, passport) {
      *  Authentication routes
      *
      ***************************************/
+
+    /** Check for existing session on front-end reload */
+    app.get('/checkSession', (req, res) => {
+        console.log('req auth?', req.isAuthenticated());
+        console.log('req user?', req.user);
+        if (req.isAuthenticated()) {
+            res.status(200).json({user: req.user});
+        } else {
+            res.status(200).json({user: null});
+        }
+    });
+
     app.post('/login', (req, res, next) => {
         passport.authenticate('local-login', (err, user, info) => {
             if (err) return res.status(500).json({alert: err});
@@ -291,24 +303,28 @@ module.exports = function(app, passport) {
     });
 
     app.post('/changePassword', (req, res, next) => {
-        //TODO save new password to database
-        // how do I find the user_id
-        // Speaker.find({user._id}, function(err, user) {
-        //     if (err) {
-        //         return res.status(404).json({alert: user not found});
-        //     } else {
-        //         const hashPass = user.generateHash(req.body.password);
-        //         user.password = hashPass;
-        //         user.save(function(err, user) {
-        //             if (err) {
-        //                 return res.status(400).json({alert: 'not saved'});
-        //             } else {
-        //                 return res.status(200).json({alert: 'password saved'});
-        //             }
-        //         });
-        //     }
-        // });
-        return res.status(200).json({alert: 'password changed'});
+        let formData = req.body.formData;
+        let userId = req.body.userId;
+
+        Speaker
+            .findById(userId)
+            .exec()
+            .then(user => {
+                if (!user) {
+                    return res.status(404).json({alert: 'user not found'});
+                } else {
+                    const hashPass = user.generateHash(formData.password);
+                    user.password = hashPass;
+                    user.save(err => {
+                        if (err) {
+                            return res.status(400).json({alert: 'not saved'});
+                        } else {
+                            console.log('pass changed');
+                            return res.status(200).json({alert: 'password changed'});
+                        }
+                    });
+                }
+            });
     });
 
     /** Pass all non-api routes to front-end router for handling **/

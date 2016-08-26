@@ -32,6 +32,12 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    // Check session for credentials to skip login splash screen
+    this.authService.checkSession()
+        .then(user => {
+          if (user.admin) this.router.navigate(['/home']);
+          else if (user && !user.admin) this.router.navigate(['/dashboard']);
+        });
     this.adminService.getAllConferences();
     this.sessionService.getAllSessions();
     this.speakerService.getAllSpeakers();

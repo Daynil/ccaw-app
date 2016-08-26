@@ -55,8 +55,7 @@ app.use('/public', express.static( path.join(__dirname, '../public') ));
 /** Configure Passport **/
 app.use(expressSession({
                          secret: 'cookie_secret',
-                         proxy: true,
-                         resave: true,
+                         resave: false,
                          saveUninitialized: true
                        }));
 app.use(passport.initialize());

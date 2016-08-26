@@ -21,7 +21,8 @@
                 </form>
 
                 <div class="otherLink">
-                    <a [routerLink]="['/dashboard']">Return to Dashboard</a>
+                    <a *ngIf="!authService.user.getValue().admin" [routerLink]="['/dashboard']">Return to Dashboard</a>
+                    <a *ngIf="authService.user.getValue().admin" [routerLink]="['/home']">Return to Dashboard</a>
                 </div>
 
             </div>
