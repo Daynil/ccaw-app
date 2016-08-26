@@ -269,6 +269,18 @@ module.exports = function(app, passport) {
      *  Authentication routes
      *
      ***************************************/
+
+    /** Check for existing session on front-end reload */
+    app.get('/checkSession', (req, res) => {
+        console.log('req auth?', req.isAuthenticated());
+        console.log('req user?', req.user);
+        if (req.isAuthenticated()) {
+            res.status(200).json({user: req.user});
+        } else {
+            res.status(200).json({user: null});
+        }
+    });
+
     app.post('/login', (req, res, next) => {
         passport.authenticate('local-login', (err, user, info) => {
             if (err) return res.status(500).json({alert: err});

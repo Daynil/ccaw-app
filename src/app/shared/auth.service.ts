@@ -17,6 +17,22 @@ export class AuthService {
   constructor(private http: Http,
               private router: Router) { }
 
+  checkSession() {
+    return this.http
+              .get('/checkSession')
+              .toPromise()
+              .then(parseJson)
+              .then(res => {
+                console.log('do we have user?', res);
+                if (res.user) {
+                  console.log('still logged in!');
+                  this.user.next(res.user);
+                }
+                return res.user;
+              })
+              .catch(handleError);
+  }
+
   logout() {
     return this.http
               .get('/logout')
