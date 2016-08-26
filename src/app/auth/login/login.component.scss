@@ -37,7 +37,8 @@ label {
 #firstName,
 #lastName,
 #email,
-#password {
+#password,
+#password2 {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -46,7 +47,8 @@ label {
 #firstName,
 #lastName,
 #email:focus,
-#password:focus {
+#password:focus,
+#password2:focus {
   -webkit-box-shadow: none;
   box-shadow: none;
 }
