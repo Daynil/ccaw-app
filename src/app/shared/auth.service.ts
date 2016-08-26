@@ -56,7 +56,7 @@ export class AuthService {
       userId: this.user.getValue()._id
     }
     let pkg = packageForPost(data);
-    console.log('this.user', this.user);
+
     return this.http
               .post('/changePassword', pkg.body, pkg.opts)
               .toPromise()

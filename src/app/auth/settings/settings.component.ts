@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { REACTIVE_FORM_DIRECTIVES, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import { AuthService } from '../../shared/auth.service';
@@ -15,6 +15,8 @@ import { ToastComponent } from '../../shared/toast.component';
 export class SettingsComponent implements OnInit {
 
     @ViewChild('toast') toast: ToastComponent;
+    @ViewChild('password') pass1Input: ElementRef;
+    @ViewChild('password2') pass2Input: ElementRef;
 
     password: FormControl;
     password2: FormControl;
@@ -38,16 +40,20 @@ export class SettingsComponent implements OnInit {
 
     doChangePassword(event) {
         event.preventDefault();
+        let pass = this.pass1Input.nativeElement.value;
+        let pass2 = this.pass2Input.nativeElement.value;
 
-        if (this.password.value !== this.password2.value) {
-            this.password.value = '';
-            this.password2.value = '';
-            this.toast.error('Passwords do not match. Please try again!');
+        if (pass !== pass2) {
+            this.toast.error('Passwords do not match');
         } else {
             this.authService.changePassword(this.form.value)
                 .then(res => {
                     this.toast.success('Your password has been changed');
-                    this.router.navigate(['/dashboard']);
+                    if (this.authService.user.getValue().admin) {
+                        this.router.navigate(['/home']);
+                    } else {
+                        this.router.navigate(['/dashboard']);
+                    }
                 })
                 .catch(err => {
                     this.toast.error('Unable to change password. Please try again later!');

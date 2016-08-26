@@ -294,21 +294,25 @@ module.exports = function(app, passport) {
         let formData = req.body.formData;
         let userId = req.body.userId;
 
-        Speaker.find({_id: userId}, function(err, user) {
-            if (err) {
-                return res.status(404).json({alert: 'user not found'});
-            } else {
-                const hashPass = user.generateHash(formData.password);
-                user.password = hashPass;
-                user.save(function(err, user) {
-                    if (err) {
-                        return res.status(400).json({alert: 'not saved'});
-                    } else {
-                        return res.status(200).json({alert: 'password changed'});
-                    }
-                });
-            }
-        });
+        Speaker
+            .findById(userId)
+            .exec()
+            .then(user => {
+                if (!user) {
+                    return res.status(404).json({alert: 'user not found'});
+                } else {
+                    const hashPass = user.generateHash(formData.password);
+                    user.password = hashPass;
+                    user.save(err => {
+                        if (err) {
+                            return res.status(400).json({alert: 'not saved'});
+                        } else {
+                            console.log('pass changed');
+                            return res.status(200).json({alert: 'password changed'});
+                        }
+                    });
+                }
+            });
     });
 
     /** Pass all non-api routes to front-end router for handling **/
