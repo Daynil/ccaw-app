@@ -50,4 +50,14 @@ export class AuthService {
               .catch(handleError);
   }
 
+  changePassword(formData) {
+      let pkg = packageForPost(formData);
+      console.log('this.user', this.user);
+      return this.http
+          .post('/changePassword', pkg.body, pkg.opts)
+          .toPromise()
+          .then(parseJson)
+          .catch(handleError);
+  }
+
 }
