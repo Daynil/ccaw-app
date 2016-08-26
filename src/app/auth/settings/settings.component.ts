@@ -39,9 +39,9 @@ export class SettingsComponent implements OnInit {
     doChangePassword(event) {
         event.preventDefault();
 
-        if (this.password._value !== this.password2._value) {
-            this.password._value = '';
-            this.password2._value = '';
+        if (this.password.value !== this.password2.value) {
+            this.password.value = '';
+            this.password2.value = '';
             this.toast.error('Passwords do not match. Please try again!');
         } else {
             this.authService.changePassword(this.form.value)

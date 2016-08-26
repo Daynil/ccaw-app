@@ -51,13 +51,17 @@ export class AuthService {
   }
 
   changePassword(formData) {
-      let pkg = packageForPost(formData);
-      console.log('this.user', this.user);
-      return this.http
-          .post('/changePassword', pkg.body, pkg.opts)
-          .toPromise()
-          .then(parseJson)
-          .catch(handleError);
+    let data = {
+      formData: formData,
+      userId: this.user.getValue()._id
+    }
+    let pkg = packageForPost(data);
+    console.log('this.user', this.user);
+    return this.http
+              .post('/changePassword', pkg.body, pkg.opts)
+              .toPromise()
+              .then(parseJson)
+              .catch(handleError);
   }
 
 }
