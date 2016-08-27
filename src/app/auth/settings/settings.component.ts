@@ -45,8 +45,8 @@ export class SettingsComponent implements OnInit {
 
         if (pass !== pass2) {
             this.toast.error('Passwords do not match. Try again!');
-            this.form.reset();
-
+            this.pass1Input.nativeElement.value = '';
+            this.pass2Input.nativeElement.value = '';
         } else {
             this.authService.changePassword(this.form.value)
                 .then(res => {
