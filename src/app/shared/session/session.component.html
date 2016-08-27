@@ -5,7 +5,7 @@
   <form #sessionForm="ngForm">
     <div class="form-group">
 
-      <div *ngIf="authService.user.admin">
+      <div *ngIf="(authService.user | async) && (authService.user | async).admin">
         <h3>Admin Fields</h3>
 
         <div class="row block speaker">
@@ -59,7 +59,7 @@
               <div *ngIf="model.statusTimeLocation?.length > 0">   
                 <div *ngFor="let occurrence of model.statusTimeLocation">
                       <i class="fa fa-ban delete" (click)="clearSlot(occurrence)"></i>
-                      <span class="slot-display">{{ getDate(occurrence) | dateCustom }} from {{ slot(occurrence)?.start | time }} to {{ slot(occurrence)?.end | time }} in {{ occurrence.room }}</span>
+                      <span class="slot-display">{{ getPart(occurrence) }}{{ getDate(occurrence) | dateCustom }} from {{ slot(occurrence)?.start | time }} to {{ slot(occurrence)?.end | time }} in {{ occurrence.room }}</span>
                 </div>
               </div>
               <div class="slot-display" *ngIf="model.statusTimeLocation?.length === 0">None</div>
@@ -93,6 +93,12 @@
                 <option *ngFor="let room of (adminService.activeConference | async).rooms">
                   {{ room }}
                 </option>
+              </select>
+            </div>
+            <div *ngIf="model.length === '180'" class="col-xs-4">
+              <select #partSelect class="form-control" id="modalParts">
+                <option value="1">Part 1</option>
+                <option value="2">Part 2</option>
               </select>
             </div>
           </div>

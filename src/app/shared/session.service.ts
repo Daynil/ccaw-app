@@ -83,22 +83,29 @@ export class SessionService {
     
   }
 
-  /** Find the session assigned to room and timeslot, if any */
+  /** Find the session assigned to room and timeslot, if any
+   * @returns The session and which part for 2-parters
+   */
   findSession(slot: TimeSlot, room: string) {
     if (!slot._id) {
       console.log('no id on :', slot);
       return;
     }
-    return _.find(this.sessions.getValue(), session => {
+    let part = '';
+    let session = _.find(this.sessions.getValue(), session => {
       // Skip sessions that haven't been assigned
       if (!session.statusTimeLocation || session.statusTimeLocation.length < 1) return false;
       let sameSlotAndRoom = false;
       session.statusTimeLocation.forEach(sessionOccurence => {
         if (sessionOccurence.timeSlot === slot._id
-            && sessionOccurence.room === room) sameSlotAndRoom = true;
+            && sessionOccurence.room === room) {
+          sameSlotAndRoom = true;
+          part = sessionOccurence.part;
+        }
       });
       return sameSlotAndRoom;
     });
+    return {session: session, part: part};
   }
 
   /** Get the session with a known id */
@@ -107,7 +114,7 @@ export class SessionService {
   }
 
   /** Assign a session to a slot and room and remove overlap if needed */
-  setSession(slot: TimeSlot, room: string, sessionId: string) {
+  setSession(slot: TimeSlot, room: string, sessionId: string, part: string) {
     let session = this.getSession(sessionId);
     let activeConf = this.adminService.activeConference.getValue();
     
@@ -120,6 +127,7 @@ export class SessionService {
       let newOccurence = {
         conferenceTitle: activeConf.title,
         timeSlot: slot._id,
+        part: part,
         room: room
       };
       session.statusTimeLocation.push(newOccurence);
@@ -128,7 +136,7 @@ export class SessionService {
   }
 
   isSlotOccupied(slot: TimeSlot, room: string) {
-    let sessionInRequestedSlot = this.findSession(slot, room);
+    let sessionInRequestedSlot = this.findSession(slot, room).session;
     return typeof sessionInRequestedSlot !== 'undefined';
   }
 
@@ -144,7 +152,7 @@ export class SessionService {
   /** Unschedule a session from a time/room slot
    */
   clearSlot(slot: TimeSlot, room: string) {
-    let session = this.findSession(slot, room);
+    let session = this.findSession(slot, room).session;
     if (typeof session !== 'undefined' && session) {
       let occurenceToRemoveIndex;
       session.statusTimeLocation.forEach((sessionOccurence, index, arr) => {

@@ -1,7 +1,7 @@
 export interface Session {
     _id?: string,
     type: string, // Case study or workshop - structure of multiple choice fields? in front end, dropdown or radio fields
-    length: string, // 90 minutes, 3 hours(180 minutes) (parts 1 and 2)
+    length: string, // 90 minutes('90''), 3 hours('180') (parts 1 and 2)
     title: string,
     descriptionWebsite: string,  // To appear on CCAW website and conference appear 150 word limit
     descriptionProgram: string, // To be printed on pamphlet? 60 word limit
@@ -22,7 +22,15 @@ export interface Session {
     statusTimeLocation?: {
       conferenceTitle: string,
       timeSlot: string, // _id of timeslot
+      part: string, 
       room: string
     }[],
     miscRequirements?: String
+}
+
+interface StatusTimeLocation {
+  conferenceTitle: string,
+  timeSlot: string, // _id of timeslot
+  part: string, // 1 or 2 - for two parters, which part is being scheduled else 0
+  room: string 
 }
