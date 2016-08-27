@@ -47,7 +47,7 @@ export class AuthService {
   login(formData) {
     let pkg = packageForPost(formData);
     return this.http
-              .post('/login', pkg.body, pkg.opts)
+              .post('/auth/login', pkg.body, pkg.opts)
               .toPromise()
               .then(parseJson)
               .then(user => {
@@ -60,7 +60,7 @@ export class AuthService {
   signup(formData) {
     let pkg = packageForPost(formData);
     return this.http
-              .post('/signup', pkg.body, pkg.opts)
+              .post('/auth/signup', pkg.body, pkg.opts)
               .toPromise()
               .then(parseJson)
               .catch(handleError);
@@ -74,7 +74,7 @@ export class AuthService {
     let pkg = packageForPost(data);
 
     return this.http
-              .post('/changePassword', pkg.body, pkg.opts)
+              .post('/auth/changePassword', pkg.body, pkg.opts)
               .toPromise()
               .then(parseJson)
               .catch(handleError);

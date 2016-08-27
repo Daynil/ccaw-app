@@ -31,11 +31,11 @@ module.exports = function(passport) {
                         return done(null, false, 'email taken');
                     } else {
 
-                        var newUser            = new User();
-                        newUser.email    = email;
-                        newUser.password = newUser.generateHash(password);
+                        var newUser       = new User();
+                        newUser.email     = email;
+                        newUser.password  = newUser.generateHash(password);
                         newUser.nameFirst = req.body.firstName;
-                        newUser.nameLast = req.body.lastName;
+                        newUser.nameLast  = req.body.lastName;
                         newUser.save(function(err) {
                             if (err) {
                                 return done(err, null, err);
