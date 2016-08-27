@@ -62,7 +62,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 /** Get Routes  **/
-require('./routes/index.js')(app, passport);
+app.use('/', require('./routes'));
 
 /**  Start Server  **/
 app.listen(port, () => {
