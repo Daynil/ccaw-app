@@ -26,10 +26,9 @@
               <i class="fa fa-pencil edit-slot"
                  (click)="setSelectedSlot(slot, room)" aria-hidden="true"></i>
               <div *ngIf="getSession(slot, room)">
-                <span class="display-type">Session </span> <br/>
-                <a (click)="gotoSession(slot, room)">{{ getSession(slot, room)?.title }}</a> <br/>
-                <span class="display-type">Lead Presenter </span> 
-                <a [routerLink]="['/speaker', {id: getSpeakers(slot, room).mainPresenter?._id}]">
+                <a class="slot-title" (click)="gotoSession(slot, room)">{{ getSessionTitle(slot, room) }}</a> <br/>
+                <div class="divider"></div>
+                <a class="slot-name" [routerLink]="['/speaker', {id: getSpeakers(slot, room).mainPresenter?._id}]">
                   {{ fullName(getSpeakers(slot, room).mainPresenter) }}
                 </a>
               </div>

@@ -27,6 +27,7 @@ h1 {
 
 .table {
   table-layout: fixed;
+  overflow-wrap: break-word;
 }
 
 th {
@@ -40,6 +41,9 @@ th {
   position: relative;
   font-weight: 300;
   text-align: center;
+  padding: 0 !important;
+  line-height: 18px !important;
+  vertical-align: middle !important;
   &:hover .edit-slot {
     visibility: visible;
   }
@@ -54,6 +58,12 @@ th {
   }
   a {
     cursor: pointer;
+  }
+  .divider {
+    margin: 0 auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: hsl(0, 0%, 60%);
   }
 }
 

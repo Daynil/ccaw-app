@@ -5,7 +5,7 @@
   <form #sessionForm="ngForm">
     <div class="form-group">
 
-      <div *ngIf="authService.user.admin">
+      <div *ngIf="(authService.user | async) && (authService.user | async).admin">
         <h3>Admin Fields</h3>
 
         <div class="row block speaker">

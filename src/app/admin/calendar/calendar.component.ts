@@ -62,7 +62,18 @@ export class CalendarComponent implements OnInit, AfterViewInit {
 
   fullName(speaker: Speaker) {
     if (!speaker) return '';
-    return `${speaker.nameFirst} ${speaker.nameLast}`;
+    let fullName = `${speaker.nameFirst} ${speaker.nameLast}`; 
+    if (fullName.length > 23) {
+      return fullName.slice(0, 22) + '...';
+    } else return fullName;
+  }
+
+  getSessionTitle(slot: TimeSlot, room: string): string {
+    let session = this.getSession(slot, room);
+    if (!session) return '';
+    if (session.title.length > 23) {
+      return session.title.slice(0, 22) + '...';
+    } else return session.title;
   }
 
   setSelectedSlot(slot: TimeSlot, room: string) {
