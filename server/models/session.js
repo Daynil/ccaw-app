@@ -25,6 +25,7 @@ let sessionSchema = new mongoose.Schema({
   statusTimeLocation: [{
     conferenceTitle: String,
     timeSlot: String,
+    part: String, // 1 or 2 - for two parters, which part is being scheduled else 0
     room: String
   }],
   miscRequirements: String

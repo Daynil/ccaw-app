@@ -33,6 +33,8 @@ export class SessionComponent implements OnInit, OnDestroy {
   @ViewChild('dates') dates: ElementRef;
   datesSelect: HTMLSelectElement;
 
+  @ViewChild('partSelect') partSelect: ElementRef;
+
   selectedDaySlots: BehaviorSubject<TimeSlot[]> = new BehaviorSubject([]);
 
   private paramsub: any;
@@ -99,6 +101,11 @@ export class SessionComponent implements OnInit, OnDestroy {
     return this.sessionSpeakers.getValue().mainPresenter;
   }
 
+  getPart(occurrence) {
+    if (this.model.length === '90') return '';
+    else return `Part ${occurrence.part}: `
+  }
+
   getDate(occurrence) {
     return this.adminService.findDateBySlot(occurrence.timeSlot);
   }
@@ -132,8 +139,12 @@ export class SessionComponent implements OnInit, OnDestroy {
   }
 
   saveToSlot(slotId: string, room: string) {
+    let part = '0';
+    if (this.model.length === '180') {
+      part = this.partSelect.nativeElement.value;
+    }
     let slot = this.adminService.findSlotById(slotId);
-    this.sessionService.setSession(slot, room, this.model._id)
+    this.sessionService.setSession(slot, room, this.model._id, part)
         .then(res => {
           if (res.occupied) {
             this.toast.error('Time/room slot is occupied! Clear it first to add new session.')

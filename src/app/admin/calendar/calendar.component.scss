@@ -100,6 +100,11 @@ th {
   margin-top: 10%;
 }
 
+.modal-body {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
 .scheduled {
   margin-top: 20px;
 }
@@ -110,7 +115,7 @@ th {
   margin-right: 5px;
 }
 
-.session-row a {
+a {
   cursor: pointer;
 }
 
@@ -130,12 +135,20 @@ th {
 }
 
 .modal-select {
-  margin-top: 40px;
-  margin-bottom: 20px;
   text-align: left;
   label {
     font-weight: 500;
   }
+}
+
+#modalParts {
+  margin-bottom: 10px;
+  width: 60px;
+}
+
+.session-row {
+  margin-top: 30px;
+  margin-bottom: 20px;
 }
 
 .item {
