@@ -73,4 +73,9 @@ router.post('/changePassword', (req, res) => {
     //     });
 });
 
+router.post('/forgotpassword', (req, res) => {
+    //TODO create new password for user, save new password as hash in database, email user new password
+    return res.status(200).json({alert: 'password sent'});
+});
+
 module.exports = router;
