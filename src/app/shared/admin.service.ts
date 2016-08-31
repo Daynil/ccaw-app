@@ -113,22 +113,6 @@ export class AdminService {
     return conf;
   }
 
-  deleteTimeSlot(date: string, confTitle: string, slot: TimeSlot) {
-    let conf = _.find(this.conferences, conf => conf.title === confTitle);
-    let confDate = _.find(conf.days, day => day.date === date);
-    
-    // Sync front end
-    let slotIndex = _.findIndex(confDate.timeSlots, existSlot => existSlot === slot);
-    confDate.timeSlots.splice(slotIndex, 1);
-
-    let pkg = packageForPost(conf);
-    return this.http
-              .post('/api/changetimeslot', pkg.body, pkg.opts)
-              .toPromise()
-              .then(parseJson)
-              .catch(handleError);
-  }
-
   /** Find slot within active conference by its id */
   findSlotById(slotId): TimeSlot {
     let slot: TimeSlot;
@@ -158,20 +142,6 @@ export class AdminService {
     let pkg = packageForPost(conf);
     return this.http
         .post('/api/addRoom', pkg.body, pkg.opts)
-        .toPromise()
-        .then(parseJson)
-        .catch(handleError);
-  }
-
-  deleteRoom(conferenceTitle: string, room: string) {
-    let conf = _.find(this.conferences, conf => conf.title === conferenceTitle);
-    
-    // Sync front end
-    conf.rooms.splice(conf.rooms.indexOf(room), 1);
-
-    let pkg = packageForPost(conf);
-    return this.http
-        .post('/api/deleteRoom', pkg.body, pkg.opts)
         .toPromise()
         .then(parseJson)
         .catch(handleError);

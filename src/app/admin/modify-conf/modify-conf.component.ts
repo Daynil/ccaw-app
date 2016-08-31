@@ -6,6 +6,7 @@ import * as _ from 'lodash';
 import { AdminService } from '../../shared/admin.service';
 import { Conference, TimeSlot } from '../../shared/conference.model';
 import { DateService } from '../../shared/date.service';
+import { SessionService } from '../../shared/session.service';
 import { TimePipe } from '../../shared/time.pipe';
 import { TransitionService } from '../../shared/transition.service';
 import { ToastComponent } from '../../shared/toast.component';
@@ -38,7 +39,8 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
 
   constructor(private transitionService: TransitionService,
               private adminService: AdminService,
-              private dateService: DateService) {
+              private dateService: DateService,
+              private sessionService: SessionService) {
     
   }
 
@@ -57,7 +59,7 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
              start: HTMLInputElement, end: HTMLInputElement) {
     let newTitle = title.value;
     if (newTitle.length < 1) {
-      this.toast.message('Conference must have a title');
+      this.toast.error('Conference must have a title');
       return;
     }
     // Input date value format: 2016-12-30
@@ -69,7 +71,7 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
     let endValid = endMoment.isValid();
     if (startValid && endValid) {
       if (endMoment.isSameOrBefore(startMoment)) {
-        this.toast.message("The end date must be after start date");
+        this.toast.error("The end date must be after start date");
       } else {
         this.adminService
             .getAllConferences()
@@ -77,18 +79,18 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
               if (!this.isDuplicateTitle(conferences, newTitle, this.selectedConf.getValue().title)) {
                 this.adminService.updateConference(currentTitle, newTitle, startText, endText)
                   .then(res => {
-                    this.toast.message('Conference updated!');
+                    this.toast.success('Conference updated!');
                     this.refreshSelectedConf();
                   });
               } else {
-                this.toast.message('Conference title already exists, please choose another');
+                this.toast.error('Conference title already exists, please choose another');
               }
             })
       }
     } else if (!startValid) {
-      this.toast.message('Start date invalid');
+      this.toast.error('Start date invalid');
     } else if (!endValid) {
-      this.toast.message('End date invalid');
+      this.toast.error('End date invalid');
     }
   }
 
@@ -104,30 +106,34 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
     let endValid = endMoment.isValid();
     if (startValid && endValid) {
       if (endMoment.isSameOrBefore(startMoment)) {
-        this.toast.message("The end time must be after start time");
+        this.toast.error("The end time must be after start time");
       } else {
           this.adminService.addTimeslot(startVal, endVal, conferenceTitle, date)
               .then(res => {
                 this.refreshSelectedConf(this.datesSelect.value);
-                this.toast.message('Timeslot added!');
+                this.toast.success('Timeslot added!');
                 start.value = "";
                 end.value = "";
               });
       }
     } else if (!startValid) {
       console.log(startVal);
-      this.toast.message('Start time invalid');
+      this.toast.error('Start time invalid');
     } else if (!endValid) {
-      this.toast.message('End time invalid');
+      this.toast.error('End time invalid');
     }
   }
 
   deleteTimeSlot(date: string, conf: string, slot: TimeSlot) {
     let dbDate = this.dateService.formatDateForDatabase(date);
-    this.adminService.deleteTimeSlot(dbDate, conf, slot)
+    this.sessionService.deleteTimeSlot(dbDate, conf, slot)
         .then(res => {
-          this.refreshSelectedConf(this.datesSelect.value);
-          this.toast.message('Timeslot deleted!');
+          if (res.message && res.message === 'slot has sessions') {
+            this.toast.error('This slot has scheduled sessions! Remove them first to delete it.');
+          } else {
+            this.refreshSelectedConf(this.datesSelect.value);
+            this.toast.success('Timeslot deleted!');
+          }
         });
   }
 
@@ -136,12 +142,12 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
     let name = roomName.value;
 
     if (name.length < 1) {
-      this.toast.message("You must enter a room name");
+      this.toast.error("You must enter a room name");
       return;
     } else {
       this.adminService.addRoom(conferenceTitle, name)
           .then(res => {
-            this.toast.message('Room added!');
+            this.toast.success('Room added!');
             roomName.value = "";
           });
     }
@@ -150,8 +156,14 @@ export class ModifyConfComponent implements OnInit, AfterViewInit {
   deleteRoom(conferences: HTMLSelectElement, room: string) {
     let conferenceTitle = conferences.value;
 
-    this.adminService.deleteRoom(conferenceTitle, room)
-        .then(res => this.toast.success('Room removed!'));
+    this.sessionService.deleteRoom(conferenceTitle, room)
+        .then(res => {
+          if (res.message && res.message === 'room has sessions') {
+            this.toast.error('This room has scheduled sessions! Remove them first to delete it.');
+          } else {
+            this.toast.success('Room removed!');
+          }
+        });
   }
 
   moveRoom(conferences: HTMLSelectElement, room: string, direction: string) {

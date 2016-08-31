@@ -59,9 +59,9 @@ export class CreateConfComponent implements OnInit {
             })
       }
     } else if (!startValid) {
-      this.toast.message('Start date invalid');
+      this.toast.error('Start date invalid');
     } else if (!endValid) {
-      this.toast.message('End date invalid');
+      this.toast.error('End date invalid');
     }
   }
 
