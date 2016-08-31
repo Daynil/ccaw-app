@@ -210,6 +210,70 @@ export class SessionService {
     return this.updateSession(session, 'speakers');
   }
 
+  deleteTimeSlot(date: string, confTitle: string, slot: TimeSlot) {
+    let conf = _.find(this.adminService.conferences, conf => conf.title === confTitle);
+    let confDate = _.find(conf.days, day => day.date === date);
+    
+    // Sync front end
+    let slotIndex = _.findIndex(confDate.timeSlots, existSlot => existSlot === slot);
+
+    if (this.slotHasScheduledSessions(conf, confDate, slotIndex)) {
+      return Promise.resolve({message: 'slot has sessions'});
+    }
+
+    confDate.timeSlots.splice(slotIndex, 1);
+
+    let pkg = packageForPost(conf);
+    return this.http
+              .post('/api/changetimeslot', pkg.body, pkg.opts)
+              .toPromise()
+              .then(parseJson)
+              .catch(handleError);
+  }
+
+  slotHasScheduledSessions(conf: Conference, 
+                           confDate: {date: string, timeSlots: TimeSlot[]},
+                           slotIndex: number): boolean {
+    let slot = confDate.timeSlots[slotIndex];
+    let sessions = this.sessions.getValue();
+    let hasScheduledSession = false;
+    sessions.forEach(session => {
+      session.statusTimeLocation.forEach(occurrence => {
+        if (occurrence.timeSlot === slot._id) hasScheduledSession = true;
+      });
+    });
+    return hasScheduledSession;
+  }
+
+  deleteRoom(conferenceTitle: string, room: string) {
+    let conf = _.find(this.adminService.conferences, conf => conf.title === conferenceTitle);
+    
+    
+    if (this.roomHasScheduledSessions(conf, room)) {
+      return Promise.resolve({message: 'room has sessions'});
+    }
+
+    conf.rooms.splice(conf.rooms.indexOf(room), 1);
+
+    let pkg = packageForPost(conf);
+    return this.http
+        .post('/api/deleteRoom', pkg.body, pkg.opts)
+        .toPromise()
+        .then(parseJson)
+        .catch(handleError);
+  }
+
+  roomHasScheduledSessions(conf: Conference, room: string): boolean {
+    let sessions = this.sessions.getValue();
+    let hasScheduledSession = false;
+    sessions.forEach(session => {
+      session.statusTimeLocation.forEach(occurrence => {
+        if (occurrence.room === room) hasScheduledSession = true;
+      });
+    });
+    return hasScheduledSession;
+  }
+
   /** Update new session on server and sync response with front end 
    * @updateType Different server endpoints for speaker and slot updates
   */
