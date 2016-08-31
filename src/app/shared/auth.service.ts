@@ -66,6 +66,15 @@ export class AuthService {
               .catch(handleError);
   }
 
+  forgotPassword(formData) {
+      let pkg = packageForPost(formData);
+      return this.http
+          .post('/auth/forgotpassword', pkg.body, pkg.opts)
+          .toPromise()
+          .then(parseJson)
+          .catch(handleError);
+  }
+
   changePassword(formData) {
     let data = {
       formData: formData,
