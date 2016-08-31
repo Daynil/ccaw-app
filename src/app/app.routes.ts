@@ -17,22 +17,24 @@ import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { SettingsComponent } from './auth/settings/settings.component';
 import { LandingComponent } from './auth/landing/landing.component';
+import { AdministrationComponent } from './admin/administration/administration.component';
 
 export const routes: RouterConfig = [
-  { path: '',              component: LandingComponent },
-  { path: 'home',          component: HomeComponent, canActivate: [AdminGuard] },
-  { path: 'calendar',      component: CalendarComponent, canActivate: [AdminGuard] },
-  { path: 'create-conf',   component: CreateConfComponent, canActivate: [AdminGuard] },
-  { path: 'dashboard',     component: DashboardComponent, canActivate: [SpeakerGuard] },
-  { path: 'modify-conf',   component: ModifyConfComponent, canActivate: [AdminGuard] },
-  { path: 'select-active', component: SelectActiveComponent, canActivate: [AdminGuard] },
-  { path: 'session',       component: SessionComponent, canActivate: [SpeakerGuard] },
-  { path: 'session-list',  component: SessionListComponent, canActivate: [AdminGuard] },
-  { path: 'speaker',       component: SpeakerComponent, canActivate: [SpeakerGuard] },
-  { path: 'speaker-list',  component: SpeakerListComponent, canActivate: [AdminGuard] },
-  { path: 'login',         component: LoginComponent },
-  { path: 'signup',        component: SignupComponent },
-  { path: 'settings',      component: SettingsComponent, canActivate: [SpeakerGuard] }
+  { path: '',                 component: LandingComponent },
+  { path: 'home',             component: HomeComponent, canActivate: [AdminGuard] },
+  { path: 'calendar',         component: CalendarComponent, canActivate: [AdminGuard] },
+  { path: 'create-conf',      component: CreateConfComponent, canActivate: [AdminGuard] },
+  { path: 'dashboard',        component: DashboardComponent, canActivate: [SpeakerGuard] },
+  { path: 'modify-conf',      component: ModifyConfComponent, canActivate: [AdminGuard] },
+  { path: 'select-active',    component: SelectActiveComponent, canActivate: [AdminGuard] },
+  { path: 'session',          component: SessionComponent, canActivate: [SpeakerGuard] },
+  { path: 'session-list',     component: SessionListComponent, canActivate: [AdminGuard] },
+  { path: 'speaker',          component: SpeakerComponent, canActivate: [SpeakerGuard] },
+  { path: 'speaker-list',     component: SpeakerListComponent, canActivate: [AdminGuard] },
+  { path: 'login',            component: LoginComponent },
+  { path: 'signup',           component: SignupComponent },
+  { path: 'settings',         component: SettingsComponent, canActivate: [SpeakerGuard] },
+  { path: 'administration',   component: AdministrationComponent, canActivate: [AdminGuard] },
 ];
 
 export const APP_ROUTER_PROVIDERS = [
