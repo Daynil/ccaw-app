@@ -18,6 +18,7 @@ import { SignupComponent } from './auth/signup/signup.component';
 import { SettingsComponent } from './auth/settings/settings.component';
 import { LandingComponent } from './auth/landing/landing.component';
 import { AdministrationComponent } from './admin/administration/administration.component';
+import { ForgotPasswordComponent } from './auth/forgotpassword/forgotpassword.component';
 
 export const routes: RouterConfig = [
   { path: '',                 component: LandingComponent },
@@ -35,6 +36,7 @@ export const routes: RouterConfig = [
   { path: 'signup',           component: SignupComponent },
   { path: 'settings',         component: SettingsComponent, canActivate: [SpeakerGuard] },
   { path: 'administration',   component: AdministrationComponent, canActivate: [AdminGuard] },
+  { path: 'forgotpassword',    component: ForgotPasswordComponent }
 ];
 
 export const APP_ROUTER_PROVIDERS = [
