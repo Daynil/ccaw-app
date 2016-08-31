@@ -13,25 +13,34 @@
 
 #speakers {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
   margin-top: 40px;
 }
 
 .speaker {
   @extend .card;
+  display: inline-block;
   text-align: left;
-  height: 80px;
+  height: 100px;
   padding: 0;
+  margin: 10px;
   font-weight: 100;
   white-space: nowrap;
   overflow: hidden;
+  width: 400px;
+  .name {
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
 }
 
 .speaker-left {
   display: inline-block;
   vertical-align: top;
   img {
-    height: 80px;
+    height: 100px;
   }
 }
 
