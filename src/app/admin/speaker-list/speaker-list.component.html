@@ -10,15 +10,17 @@
 
   <div class="row">
     <div id="speakers" class="col-md-8 col-xs-12 col-md-offset-2">
-      <div *ngFor="let speaker of (speakerService.speakers | async)" 
-          class="speaker" (click)="gotoSpeaker(speaker._id)">
-        <div class="speaker-left">
-          <img [src]="speaker.headshot">
-        </div>
-        <div class="speaker-right">
-          <div><b>Name:</b> {{ speaker.nameFirst }} {{ speaker.nameLast }}</div>
-          <div><b>Email:</b> {{ speaker.email }}</div>
-          <div><b>Sessions:</b> {{ speaker.sessions.length }}</div>
+      <div *ngFor="let speaker of (speakerService.speakers | async)">
+        <div *ngIf="!speaker.admin"
+              class="speaker" (click)="gotoSpeaker(speaker._id)">
+          <div class="speaker-left">
+            <img [src]="speaker.headshot">
+          </div>
+          <div class="speaker-right">
+            <div><b>Name:</b> {{ speaker.nameFirst }} {{ speaker.nameLast }}</div>
+            <div><b>Email:</b> {{ speaker.email }}</div>
+            <div><b>Sessions:</b> {{ speaker.sessions.length }}</div>
+          </div>
         </div>
       </div>
     </div>
