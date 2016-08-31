@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 
+import { SpeakerService } from '../../shared/speaker.service';
 import { TransitionService } from '../../shared/transition.service';
 import { ToastComponent } from '../../shared/toast.component';
 
@@ -15,20 +16,29 @@ import { ToastComponent } from '../../shared/toast.component';
 export class AdministrationComponent implements OnInit {
 
     @ViewChild('toast') toast: ToastComponent;
+    addFlag = false;
+    deleteFlag = false;
 
     constructor(private transitionService: TransitionService,
+                private speakerService: SpeakerService,
                 private router: Router) { }
 
     ngOnInit() {
         this.transitionService.transition();
     }
 
-    addAdmin() {
-        this.router.navigate(['/signup']);
+    showAddAdmin() {
+        this.addFlag = true;
+        this.deleteFlag = false;
     }
 
-    deleteAdmin() {
-        this.router.navigate(['/login']);
+    showDeleteAdmin() {
+        this.addFlag = false;
+        this.deleteFlag = true;
+    }
+
+    addAdmin(speakerId: string) {
+        this.router.navigate(['/speaker', {id: speakerId}]);
     }
 
 }
