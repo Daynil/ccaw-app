@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { REACTIVE_FORM_DIRECTIVES, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
+
 import { AuthService } from '../../shared/auth.service';
+import { SpeakerService } from '../../shared/speaker.service';
 import { TransitionService } from '../../shared/transition.service';
 import { ToastComponent } from '../../shared/toast.component';
 
@@ -25,7 +27,8 @@ export class SignupComponent implements OnInit {
 
     constructor(private transitionService: TransitionService,
                 private router: Router,
-                private authService: AuthService) { }
+                private authService: AuthService,
+                private speakerService: SpeakerService) { }
 
     ngOnInit() {
         this.firstName = new FormControl('', Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(64)]));
@@ -46,6 +49,9 @@ export class SignupComponent implements OnInit {
     doSignup(event) {
         this.authService.signup(this.form.value)
             .then(res => {
+                // Refresh speaker list to get new speakers
+                this.speakerService.getAllSpeakers();
+                
                 this.toast.success('You account is registered. Please login!');
                 this.router.navigate(['/login']);
             })
