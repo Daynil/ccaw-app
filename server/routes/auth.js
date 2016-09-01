@@ -1,8 +1,20 @@
 'use strict';
 
-var router = require('express').Router();
-var passport = require('passport');
+const router = require('express').Router();
+const passport = require('passport');
 const Speaker = require('../models/speaker');
+const async = require('async');
+const nodemailer = require('nodemailer');
+
+var transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+     user: process.env.EMAIL,
+     pass: process.env.PASSWORD
+    }
+});
+
+
 
 router.get('/checkSession', (req, res) => {
     console.log('req auth?', req.isAuthenticated());
@@ -53,29 +65,46 @@ router.post('/changePassword', (req, res) => {
             });
         }
     });
-    // Speaker
-    //     .findById(userId)
-    //     .exec()
-    //     .then(user => {
-    //         if (!user) {
-    //             return res.status(404).json({alert: 'user not found'});
-    //         } else {
-    //             user.password = user.generateHash(formData.password);
-    //             user.save(err => {
-    //                 if (err) {
-    //                     return res.status(400).json({alert: 'not saved'});
-    //                 } else {
-    //                     console.log('pass changed');
-    //                     return res.status(200).json({alert: 'password changed'});
-    //                 }
-    //             });
-    //         }
-    //     });
 });
 
 router.post('/forgotpassword', (req, res) => {
-    //TODO create new password for user, save new password as hash in database, email user new password
-    return res.status(200).json({alert: 'password sent'});
+    let formData = req.body.formData;
+    let chars = "abcdefghijklmnopqrstuvwxyz123456789";
+    let newPass = '';
+
+    for (var i = 0; i < 10; i++){
+        newPass += chars.charAt(Math.floor(Math.random() * chars.length))
+    }
+
+    Speaker.findOne({email: formData.email}, function (err, user) {
+        if (err) {
+            return res.status(404).json({alert: 'email not found'})
+        }
+        user.password = user.generateHash(newPass);
+        user.save(function(err) {
+            if (err){
+                return res.status(400).json({alert: 'password not saved'});
+            } else {
+                var mailOptions = {
+                    from: 'Jennifer Bland <ratracegrad@gmail.com>', // TODO update with CCAW sender address
+                    to: formData.email,
+                    subject: 'New CCAW password.', // Subject line
+                    html: '<b>Your new password is ' + newPass + '.  </b><a href="http://localhost:3000/login">Login here.</a>' // TODO change to URL for deployment
+                };
+
+                transporter.sendMail(mailOptions, function(error, info){
+                    if(error){
+                        return res.status(400).json({alert: 'not sent'});
+                    }else{
+                        return res.status(200).json({alert: 'password sent'});
+                    }
+                });
+            }
+        });
+    });
+
+    return newPass;
+
 });
 
 module.exports = router;
