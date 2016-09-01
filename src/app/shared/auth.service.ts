@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import "rxjs/add/operator/toPromise";
 
-import { Speaker, Credentials } from './speaker.model';
+import { Speaker } from './speaker.model';
 import { handleError, parseJson, packageForPost } from './http-helpers';
 
 @Injectable()
@@ -67,7 +67,8 @@ export class AuthService {
   }
 
   forgotPassword(formData) {
-      let pkg = packageForPost(formData);
+      let data = { formData: formData };
+      let pkg = packageForPost(data);
       return this.http
           .post('/auth/forgotpassword', pkg.body, pkg.opts)
           .toPromise()
@@ -79,7 +80,7 @@ export class AuthService {
     let data = {
       formData: formData,
       userId: this.user.getValue()._id
-    }
+    };
     let pkg = packageForPost(data);
 
     return this.http

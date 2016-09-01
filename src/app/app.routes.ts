@@ -36,7 +36,7 @@ export const routes: RouterConfig = [
   { path: 'signup',           component: SignupComponent },
   { path: 'settings',         component: SettingsComponent, canActivate: [SpeakerGuard] },
   { path: 'administration',   component: AdministrationComponent, canActivate: [AdminGuard] },
-  { path: 'forgotpassword',    component: ForgotPasswordComponent }
+  { path: 'forgotpassword',   component: ForgotPasswordComponent }
 ];
 
 export const APP_ROUTER_PROVIDERS = [
