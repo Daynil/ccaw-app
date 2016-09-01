@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 
+import { CapitalizePipe } from '../../shared/capitalize.pipe';
 import { SpeakerService } from '../../shared/speaker.service';
 import { TransitionService } from '../../shared/transition.service';
 
@@ -9,7 +10,8 @@ import { TransitionService } from '../../shared/transition.service';
   selector: 'speaker-list',
   templateUrl: 'speaker-list.component.html',
   styleUrls: ['speaker-list.component.css'],
-  directives: [ROUTER_DIRECTIVES]
+  directives: [ROUTER_DIRECTIVES],
+  pipes: [CapitalizePipe]
 })
 export class SpeakerListComponent implements OnInit {
   
