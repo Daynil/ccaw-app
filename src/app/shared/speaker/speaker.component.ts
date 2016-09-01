@@ -53,9 +53,6 @@ export class SpeakerComponent implements OnInit, OnDestroy {
         this.model.assistantOrCC = '';
       } else {
         this.model = this.speakerService.getSpeaker(params['id']);
-        if (this.model.costsCoveredByOrg = []) {
-          this.model.costsCoveredByOrg = this.costsCovered;
-        }
       }
     });
   }

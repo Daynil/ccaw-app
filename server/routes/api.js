@@ -156,6 +156,12 @@ router.post('/updatespeaker', (req, res) => {
                 } else {
                     console.log('found existing speaker');
                     _.merge(serverSpeaker, speaker);
+                    console.log('serverspeaker', serverSpeaker);
+                    console.log('userspeaker', speaker);
+                    if (serverSpeaker.costsCoveredByOrg !== speaker.costsCoveredByOrg) {
+                        serverSpeaker.costsCoveredByOrg = speaker.costsCoveredByOrg;
+                        serverSpeaker.markModified('costsCoveredByOrg');
+                    }
                     serverSpeaker.save(err => {
                         if (err) {
                             console.log(err);
@@ -165,12 +171,17 @@ router.post('/updatespeaker', (req, res) => {
                 }
             });
     } else {
+        // TODO this happens when Brooke makes a speaker herself,
+        // do we need to generate an account for the folks that
+        // need this done for them?
         let newSpeaker = new Speaker({
             admin: false,
             password: 'password',
             status: 'pending',
             statusNotification: false,
-            adminNotes: ''
+            mediaWilling: false,
+            costsCoveredByOrg: [],
+            hasPresentedAtCCAWInPast2years: false,
         });
         _.merge(newSpeaker, speaker);
         newSpeaker.save(err => {

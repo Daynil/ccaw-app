@@ -1,7 +1,7 @@
 'use strict';
 
 var LocalStrategy   = require('passport-local').Strategy;
-var User            = require('../models/speaker');
+var Speaker            = require('../models/speaker');
 
 module.exports = function(passport) {
 
@@ -10,7 +10,7 @@ module.exports = function(passport) {
     });
 
     passport.deserializeUser(function(id, done) {
-        User.findById(id, function(err, user) {
+        Speaker.findById(id, function(err, user) {
             done(err, user);
         });
     });
@@ -23,24 +23,43 @@ module.exports = function(passport) {
         function(req, email, password, done) {
             process.nextTick(function() {
 
-                User.findOne({ 'email' :  email }, function(err, user) {
+                Speaker.findOne({ 'email' :  email }, function(err, user) {
                     if (err)
                         return done(err, null, err);
 
                     if (user) {
                         return done(null, false, 'email taken');
                     } else {
+                        var newSpeaker       = new Speaker({
+                            // Signup fields
+                            admin: false,
+                            email: email,
+                            nameFirst: req.body.firstName,
+                            nameLast: req.body.lastName,
 
-                        var newUser       = new User();
-                        newUser.email     = email;
-                        newUser.password  = newUser.generateHash(password);
-                        newUser.nameFirst = req.body.firstName;
-                        newUser.nameLast  = req.body.lastName;
-                        newUser.save(function(err) {
+                            // Fields to initialize
+                            status: 'pending',
+                            adminNotes: '',
+                            statusNotification: false,
+                            mediaWilling: false,
+                            costsCoveredByOrg: [
+                                {
+                                name: 'travel',
+                                covered: false
+                                },
+                                {
+                                name: 'lodging',
+                                covered: false
+                                }
+                            ],
+                            hasPresentedAtCCAWInPast2years: false
+                        });
+                        newSpeaker.password  = newSpeaker.generateHash(password);
+                        newSpeaker.save(function(err) {
                             if (err) {
                                 return done(err, null, err);
                             } else {
-                                return done(null, newUser, 'user created successfully');
+                                return done(null, newSpeaker, 'user created successfully');
                             }
 
                         });
@@ -58,7 +77,7 @@ module.exports = function(passport) {
             passReqToCallback : true
         },
         function(req, email, password, done) {
-            User.findOne({ 'email' :  email }, function(err, user) {
+            Speaker.findOne({ 'email' :  email }, function(err, user) {
                 if (err){
                     return done(err);
                 }
