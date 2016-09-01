@@ -15,6 +15,7 @@ import { ToastComponent } from '../../shared/toast.component';
 export class ForgotPasswordComponent implements OnInit {
 
     @ViewChild('toast') toast: ToastComponent;
+    @ViewChild('email') emailInput: ElementRef;
 
     email: FormControl;
     form: FormGroup;
@@ -34,6 +35,9 @@ export class ForgotPasswordComponent implements OnInit {
     }
 
     doForgotPassword(event) {
+        event.preventDefault();
+        let pass = this.emailInput.nativeElement.value;
+
         this.authService.forgotPassword(this.form.value)
             .then((res: any) => {
                 this.toast.success('An email with your new password has been sent to your email address.');
@@ -41,14 +45,15 @@ export class ForgotPasswordComponent implements OnInit {
             })
             .catch(err => {
                 console.log(err);
-                if (err.alert === 'no user found') {
-                    this.toast.error('Email not found');
-                }
-                else {
+                if (err.alert === 'not sent') {
+                    this.toast.error('Unbale to send new password at this time. Try again later!');
+                } else if (err.alert === 'email not found') {
+                    this.toast.error('Could not find a user with that email address. Please try again!');
+                } else {
                     this.toast.error('Reset password error, please try again later');
                 }
             });
-        event.preventDefault();
+
     }
 
 }
