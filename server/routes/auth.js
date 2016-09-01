@@ -3,7 +3,6 @@
 const router = require('express').Router();
 const passport = require('passport');
 const Speaker = require('../models/speaker');
-const async = require('async');
 const nodemailer = require('nodemailer');
 
 var transporter = nodemailer.createTransport({
