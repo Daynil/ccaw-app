@@ -11,8 +11,7 @@ import { ToastComponent } from '../../shared/toast.component';
   moduleId: module.id,
   selector: 'create-conf',
   templateUrl: 'create-conf.component.html',
-  styleUrls: ['create-conf.component.css'],
-  directives: [ToastComponent]
+  styleUrls: ['create-conf.component.css']
 })
 export class CreateConfComponent implements OnInit {
 

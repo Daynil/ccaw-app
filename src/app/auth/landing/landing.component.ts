@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ROUTER_DIRECTIVES, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { TransitionService } from '../../shared/transition.service';
 import { ToastComponent } from '../../shared/toast.component';
@@ -8,8 +8,7 @@ import { ToastComponent } from '../../shared/toast.component';
                moduleId: module.id,
                selector: 'landing',
                templateUrl: 'landing.component.html',
-               styleUrls: ['landing.component.css'],
-               directives: [ToastComponent, ROUTER_DIRECTIVES]
+               styleUrls: ['landing.component.css']
            })
 export class LandingComponent implements OnInit {
 

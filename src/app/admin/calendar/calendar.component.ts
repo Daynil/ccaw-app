@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
-import { ROUTER_DIRECTIVES, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { AdminService } from '../../shared/admin.service';
 import { Conference, TimeSlot } from '../../shared/conference.model';
@@ -18,9 +18,7 @@ declare var $: any;
   moduleId: module.id,
   selector: 'calendar',
   templateUrl: 'calendar.component.html',
-  styleUrls: ['calendar.component.css'],
-  directives: [ToastComponent, ROUTER_DIRECTIVES],
-  pipes: [TimePipe, DatePipe]
+  styleUrls: ['calendar.component.css']
 })
 export class CalendarComponent implements OnInit, AfterViewInit {
 

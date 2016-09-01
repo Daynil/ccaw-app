@@ -22,9 +22,7 @@ import { Session } from '../session.model';
   moduleId: module.id,
   selector: 'session',
   templateUrl: 'session.component.html',
-  styleUrls: ['session.component.css'],
-  directives: [ToastComponent],
-  pipes: [TimePipe, DatePipe]
+  styleUrls: ['session.component.css']
 })
 export class SessionComponent implements OnInit, OnDestroy {
 

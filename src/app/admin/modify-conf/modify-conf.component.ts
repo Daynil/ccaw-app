@@ -15,9 +15,7 @@ import { ToastComponent } from '../../shared/toast.component';
   moduleId: module.id,
   selector: 'modify-conf',
   templateUrl: 'modify-conf.component.html',
-  styleUrls: ['modify-conf.component.css'],
-  directives: [ToastComponent],
-  pipes: [TimePipe]
+  styleUrls: ['modify-conf.component.css']
 })
 export class ModifyConfComponent implements OnInit, AfterViewInit {
 
