@@ -12,8 +12,7 @@ import { Speaker } from '../speaker.model';
   moduleId: module.id,
   selector: 'speaker',
   templateUrl: 'speaker.component.html',
-  styleUrls: ['speaker.component.css'],
-  directives: [ToastComponent]
+  styleUrls: ['speaker.component.css']
 })
 export class SpeakerComponent implements OnInit, OnDestroy {
 

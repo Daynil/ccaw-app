@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { REACTIVE_FORM_DIRECTIVES, FormGroup, FormControl, Validators } from '@angular/forms';
-import { ROUTER_DIRECTIVES, Router } from '@angular/router';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { AuthService } from '../../shared/auth.service';
 import { SpeakerService } from '../../shared/speaker.service';
@@ -11,8 +11,7 @@ import { ToastComponent } from '../../shared/toast.component';
                moduleId: module.id,
                selector: 'signup',
                templateUrl: 'signup.component.html',
-               styleUrls: ['signup.component.css'],
-               directives: [ToastComponent, ROUTER_DIRECTIVES, REACTIVE_FORM_DIRECTIVES]
+               styleUrls: ['signup.component.css']
            })
 
 export class SignupComponent implements OnInit {

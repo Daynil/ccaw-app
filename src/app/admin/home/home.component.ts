@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
 
 import { TransitionService } from '../../shared/transition.service';
 
@@ -7,8 +6,7 @@ import { TransitionService } from '../../shared/transition.service';
   moduleId: module.id,
   selector: 'home',
   templateUrl: 'home.component.html',
-  styleUrls: ['home.component.css'],
-  directives: [ROUTER_DIRECTIVES]
+  styleUrls: ['home.component.css']
 })
 export class HomeComponent implements OnInit {
 
