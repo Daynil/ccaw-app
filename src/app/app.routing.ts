@@ -1,8 +1,10 @@
-import { provideRouter, RouterConfig } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 
+/** Route authorization guards */
 import { AdminGuard } from './shared/admin-guard.service';
 import { SpeakerGuard } from './shared/speaker-guard.service';
 
+/** Routes */
 import { HomeComponent } from './admin/home/home.component';
 import { CalendarComponent } from './admin/calendar/calendar.component';
 import { CreateConfComponent } from './admin/create-conf/create-conf.component';
@@ -20,7 +22,7 @@ import { LandingComponent } from './auth/landing/landing.component';
 import { AdministrationComponent } from './admin/administration/administration.component';
 import { ForgotPasswordComponent } from './auth/forgotpassword/forgotpassword.component';
 
-export const routes: RouterConfig = [
+const appRoutes: Routes = [
   { path: '',                 component: LandingComponent },
   { path: 'home',             component: HomeComponent, canActivate: [AdminGuard] },
   { path: 'calendar',         component: CalendarComponent, canActivate: [AdminGuard] },
@@ -39,6 +41,8 @@ export const routes: RouterConfig = [
   { path: 'forgotpassword',   component: ForgotPasswordComponent }
 ];
 
-export const APP_ROUTER_PROVIDERS = [
-  provideRouter(routes)
+export const appRoutingProviders: any[] = [
+
 ];
+
+export const routing = RouterModule.forRoot(appRoutes);
