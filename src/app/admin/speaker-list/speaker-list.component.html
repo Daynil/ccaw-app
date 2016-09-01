@@ -9,16 +9,19 @@
   <div class="divider"></div>
 
   <div class="row">
-    <div id="speakers" class="col-md-8 col-xs-12 col-md-offset-2">
-      <div *ngFor="let speaker of (speakerService.speakers | async)" 
-          class="speaker" (click)="gotoSpeaker(speaker._id)">
-        <div class="speaker-left">
-          <img [src]="speaker.headshot">
-        </div>
-        <div class="speaker-right">
-          <div><b>Name:</b> {{ speaker.nameFirst }} {{ speaker.nameLast }}</div>
-          <div><b>Email:</b> {{ speaker.email }}</div>
-          <div><b>Sessions:</b> {{ speaker.sessions.length }}</div>
+    <div id="speakers" class="col-md-10 col-xs-12 col-md-offset-1">
+      <div *ngFor="let speaker of (speakerService.speakers | async)">
+        <div *ngIf="!speaker.admin"
+             class="speaker row" (click)="gotoSpeaker(speaker._id)">
+          <div class="speaker-left">
+            <img [src]="speaker.headshot">
+          </div>
+          <div class="speaker-right">
+            <div class="name">{{ speaker.title | capitalize }} {{ speaker.nameFirst | capitalize }} {{ speaker.nameLast | capitalize }}</div>
+            <div>{{ speaker.organization }}</div>
+            <div>{{ speaker.email }}</div>
+            <div>{{ speaker.sessions.length }} scheduled sessions</div>
+          </div>
         </div>
       </div>
     </div>

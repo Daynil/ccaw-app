@@ -60,10 +60,11 @@ export class SpeakerService {
   setFiltering() {
     let unfilteredCopy = this.speakersUnfiltered.slice();
     let filtered: Speaker[];
+    filtered = _.filter(unfilteredCopy, speaker => !speaker.admin);
 
     switch (this.currentFilters.getValue().order) {
       case SpeakerOrder.Alphabetical:
-        filtered = _.sortBy(unfilteredCopy, speaker => speaker.nameLast);
+        filtered = _.sortBy(filtered, speaker => speaker.nameLast);
         break;
       case SpeakerOrder.DateJoined:
         // Implementation
