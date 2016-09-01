@@ -31,6 +31,7 @@ export class SpeakerService {
 
   speakersUnfiltered: Speaker[] = [];
   speakers: BehaviorSubject<Speaker[]> = new BehaviorSubject([]);
+  admins: BehaviorSubject<Speaker[]> = new BehaviorSubject([]);
 
   currentFilters: BehaviorSubject<{order: SpeakerOrder, filter: SpeakerFilter}>
                   = new BehaviorSubject({order: SpeakerOrder.Alphabetical, filter: SpeakerFilter.None}); 
@@ -61,6 +62,7 @@ export class SpeakerService {
     let unfilteredCopy = this.speakersUnfiltered.slice();
     let filtered: Speaker[];
     filtered = _.filter(unfilteredCopy, speaker => !speaker.admin);
+    this.admins.next(_.filter(unfilteredCopy, speaker => speaker.admin));
 
     switch (this.currentFilters.getValue().order) {
       case SpeakerOrder.Alphabetical:
