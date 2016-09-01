@@ -29,7 +29,7 @@ enum SpeakerFilter {
 @Injectable()
 export class SpeakerService {
 
-  speakersUnfiltered: Speaker[] = [];
+  speakersUnfiltered: BehaviorSubject<Speaker[]> = new BehaviorSubject([]);
   speakers: BehaviorSubject<Speaker[]> = new BehaviorSubject([]);
   admins: BehaviorSubject<Speaker[]> = new BehaviorSubject([]);
 
@@ -47,19 +47,19 @@ export class SpeakerService {
               .toPromise()
               .then(parseJson)
               .then(allSpeakers => {
-                this.speakersUnfiltered = allSpeakers;
+                this.speakersUnfiltered.next(allSpeakers);
                 this.setFiltering();
               })
               .catch(handleError);
   }
 
   getSpeaker(speakerId: string) {
-    return _.find(this.speakers.getValue(), speaker => speaker._id === speakerId );
+    return _.find(this.speakersUnfiltered.getValue(), speaker => speaker._id === speakerId );
   }
 
   /** Update speaker display filters */
   setFiltering() {
-    let unfilteredCopy = this.speakersUnfiltered.slice();
+    let unfilteredCopy = this.speakersUnfiltered.getValue();
     let filtered: Speaker[];
     filtered = _.filter(unfilteredCopy, speaker => !speaker.admin);
     this.admins.next(_.filter(unfilteredCopy, speaker => speaker.admin));
@@ -105,7 +105,7 @@ export class SpeakerService {
               .toPromise()
               .then(parseJson)
               .then(serverSpeaker => {
-                let newSpeakers = this.speakers.getValue();
+                let newSpeakers = this.speakersUnfiltered.getValue();
                 let existingSpeaker = _.find(newSpeakers, exSpeaker => exSpeaker._id === serverSpeaker._id);
                 if (typeof existingSpeaker === 'undefined') {
                   newSpeakers.push(serverSpeaker);

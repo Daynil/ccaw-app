@@ -177,7 +177,7 @@
             <label *ngFor="let cost of model.costsCoveredByOrg">
               <input type="checkbox" [checked]="cost.covered" 
                      (change)="changeCostCovered($event.target.checked, cost)"
-                     name="costCoveredByOrg"> {{ capitalize(cost.name) }} {{ cost.covered }}
+                     name="costCoveredByOrg"> {{ capitalize(cost.name) }}
             </label>
           </div>
         </div>
