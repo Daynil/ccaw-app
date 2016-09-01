@@ -39,17 +39,15 @@ export class LoginComponent implements OnInit {
     doLogin(event) {
         this.authService.login(this.form.value)
             .then((res: any) => {
-
-                if (this.authService.user.getValue().admin) {
+                if (this.authService.user.getValue() && this.authService.user.getValue().admin) {
                     this.router.navigate(['/home']);
                 } else {
                     this.router.navigate(['/dashboard']);
                 }
             })
             .catch(err => {
-                console.log(err);
-                if (err.alert === 'no user found') {
-                    this.toast.error('Email not found');
+                if (err.status === 401) {
+                    this.toast.error('Email or password do not match records');
                 }
                 else {
                     this.toast.error('Login error, please try again later');

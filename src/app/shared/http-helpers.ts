@@ -8,11 +8,12 @@ export function parseJson(res: Response) {
 
 /** Log error any errors */
 export function handleError(error: Response) {
+  let origError = error;
   let errorBody = '';
   try {
     errorBody = error.json();
   } catch (jsonParseError) {
-    errorBody = error.toString();
+    errorBody = origError.toString();
   }
   let errorParsed = {
     status: error.status,

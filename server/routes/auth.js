@@ -29,7 +29,7 @@ router.get('/checkSession', (req, res) => {
 router.post('/login', (req, res, next) => {
     passport.authenticate('local-login', (err, user, info) => {
         if (err) return res.status(500).json({alert: err});
-        if (!user) return res.status(400).json({alert: info});
+        if (!user) return res.status(401).json({alert: info});
         return res.status(200).json(user);
     })(req, res, next);
 });
@@ -37,7 +37,11 @@ router.post('/login', (req, res, next) => {
 router.post('/signup', (req, res, next) => {
     passport.authenticate('local-signup', (err, user, info) => {
         if (err) return res.status(500).json({alert: err});
-        if (!user) return res.status(400).json({alert: info});
+        if (!user) {
+            if (info === 'email taken') {
+                return res.status(409).json({alert: info});
+            } else return res.status(400).json({alert: info});
+        }
         return res.status(200).json({alert: info});
     })(req, res, next);
 });

@@ -50,7 +50,7 @@ export class SignupComponent implements OnInit {
                 this.router.navigate(['/login']);
             })
             .catch(err => {
-                if (err.alert === 'email taken') {
+                if (err.status === 409) {
                     this.toast.error('This email address is already registered!');
                 }
                 else {

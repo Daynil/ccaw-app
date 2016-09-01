@@ -25,7 +25,7 @@ module.exports = function(passport) {
 
                 User.findOne({ 'email' :  email }, function(err, user) {
                     if (err)
-                        return done(err);
+                        return done(err, null, err);
 
                     if (user) {
                         return done(null, false, 'email taken');
