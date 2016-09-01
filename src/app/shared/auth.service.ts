@@ -53,8 +53,7 @@ export class AuthService {
               .then(user => {
                 this.user.next(user);
                 return user;
-              })
-              .catch(handleError);
+              });
   }
 
   signup(formData) {
@@ -62,8 +61,7 @@ export class AuthService {
     return this.http
               .post('/auth/signup', pkg.body, pkg.opts)
               .toPromise()
-              .then(parseJson)
-              .catch(handleError);
+              .then(parseJson);
   }
 
   forgotPassword(formData) {
