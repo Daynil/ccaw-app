@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ROUTER_DIRECTIVES, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { AdminService } from './shared/admin.service';
 import { AuthService } from './shared/auth.service';
@@ -12,10 +12,7 @@ import { TransitionService } from './shared/transition.service';
   moduleId: module.id,
   selector: 'my-app',
   templateUrl: 'app.component.html',
-  styleUrls: ['app.component.css'],
-  directives: [ROUTER_DIRECTIVES],
-  providers: [AdminService, DateService, SessionService, 
-              SpeakerService, TransitionService]
+  styleUrls: ['app.component.css']
 })
 export class AppComponent implements OnInit {
 

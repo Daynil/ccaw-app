@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ROUTER_DIRECTIVES, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { SpeakerService } from '../../shared/speaker.service';
 import { TransitionService } from '../../shared/transition.service';
@@ -9,8 +9,7 @@ import { ToastComponent } from '../../shared/toast.component';
                moduleId: module.id,
                selector: 'administration',
                templateUrl: 'administration.component.html',
-               styleUrls: ['administration.component.css'],
-               directives: [ToastComponent, ROUTER_DIRECTIVES]
+               styleUrls: ['administration.component.css']
            })
 
 export class AdministrationComponent implements OnInit {

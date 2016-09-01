@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { REACTIVE_FORM_DIRECTIVES, FormGroup, FormControl, Validators } from '@angular/forms';
-import { ROUTER_DIRECTIVES, Router } from '@angular/router';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from '../../shared/auth.service';
 import { TransitionService } from '../../shared/transition.service';
 import { ToastComponent } from '../../shared/toast.component';
@@ -9,8 +9,7 @@ import { ToastComponent } from '../../shared/toast.component';
                moduleId: module.id,
                selector: 'settings',
                templateUrl: 'settings.component.html',
-               styleUrls: ['settings.component.css'],
-               directives: [ToastComponent, ROUTER_DIRECTIVES, REACTIVE_FORM_DIRECTIVES]
+               styleUrls: ['settings.component.css']
            })
 export class SettingsComponent implements OnInit {
 

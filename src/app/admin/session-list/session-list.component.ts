@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ROUTER_DIRECTIVES, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { SessionService } from '../../shared/session.service';
 import { TransitionService } from '../../shared/transition.service';
@@ -8,8 +8,7 @@ import { TransitionService } from '../../shared/transition.service';
   moduleId: module.id,
   selector: 'session-list',
   templateUrl: 'session-list.component.html',
-  styleUrls: ['session-list.component.css'],
-  directives: [ROUTER_DIRECTIVES]
+  styleUrls: ['session-list.component.css']
 })
 export class SessionListComponent implements OnInit {
 
