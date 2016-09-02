@@ -6,6 +6,7 @@ const tsc = require('gulp-typescript');
 const tsProjectFront = tsc.createProject('tsconfig.json');
 const sass = require('gulp-sass');
 const nodemon = require('gulp-nodemon');
+const runSequence = require('run-sequence');
 const del = require('del');
 
 /********** Development Builds **********/
@@ -81,7 +82,11 @@ gulp.task('clean', () => {
 
 /********** Production Builds **********/
 
-gulp.task('build-production', ['compile-ts-prod', 'compile-scss-prod', 'copy-untransformed']);
+gulp.task('build-production', (cb) => {
+  runSequence('clean', 
+              ['compile-ts-prod', 'compile-scss-prod', 'copy-untransformed'],
+              cb);
+});
 
 gulp.task('compile-scss-prod', () => {
   let sourceScssFiles = [
