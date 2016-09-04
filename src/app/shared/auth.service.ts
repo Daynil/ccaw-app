@@ -14,8 +14,7 @@ export class AuthService {
   //user: {speaker: Speaker};
   user: BehaviorSubject<Speaker> = new BehaviorSubject(null);
 
-  constructor(private http: Http,
-              private router: Router) { }
+  constructor(private http: Http) { }
 
   checkSession() {
     return this.http
@@ -86,6 +85,22 @@ export class AuthService {
               .toPromise()
               .then(parseJson)
               .catch(handleError);
+  }
+
+  addAdmin(speakerId) {
+    return this.http
+        .get('/auth/addadmin/' + speakerId)
+        .toPromise()
+        .then(parseJson)
+        .catch(handleError);
+  }
+
+  deleteAdmin(speakerId) {
+    return this.http
+        .get('/auth/deleteadmin/' + speakerId)
+        .toPromise()
+        .then(parseJson)
+        .catch(handleError);
   }
 
 }

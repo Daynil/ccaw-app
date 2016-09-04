@@ -13,8 +13,6 @@ var transporter = nodemailer.createTransport({
     }
 });
 
-
-
 router.get('/checkSession', (req, res) => {
     console.log('req auth?', req.isAuthenticated());
     console.log('req user?', req.user);
@@ -54,16 +52,16 @@ router.post('/changePassword', (req, res) => {
     let formData = req.body.formData;
     let userId = req.body.userId;
 
-    Speaker.findById(userId, function(err, user) {
+    Speaker.findById(userId, (err, user) => {
         if (err) {
-            return res.status(400).json({alert: 'user not found'});
+            return res.status(400).json({ alert: 'user not found' });
         } else {
             user.password = user.generateHash(formData.password);
-            user.save(function(err) {
+            user.save( err => {
                 if (err) {
-                    return res.status(400).json({alert: 'not saved'});
+                    return res.status(400).json({ alert: 'not saved' });
                 } else {
-                    return res.status(200).json({alert: 'password changed'});
+                    return res.status(200).json({ alert: 'password changed' });
                 }
             });
         }
@@ -109,5 +107,30 @@ router.post('/forgotpassword', (req, res) => {
     return newPass;
 
 });
+
+router.get('/addadmin/:id', (req, res) => {
+    let id = req.params.id;
+    Speaker.findById(id, (err, user) => {
+        if (err) { return res.status(404).json({ alert: 'not found' }); }
+        user.admin = true;
+        user.save( err => {
+            if (err) {  return res.status(400).json({ alert: 'not saved' }); }
+            return res.status(200).json({ alert: 'saved' });
+        });
+    });
+});
+
+router.get('/deleteadmin/:id', (req, res) => {
+    let id = req.params.id;
+    Speaker.findById(id, (err, user) => {
+        if (err) { return res.status(404).json({ alert: 'not found' }); }
+        user.admin = false;
+        user.save( err => {
+            if (err) {  return res.status(400).json({ alert: 'not saved' }); }
+            return res.status(200).json({ alert: 'saved' });
+        });
+    });
+});
+
 
 module.exports = router;
