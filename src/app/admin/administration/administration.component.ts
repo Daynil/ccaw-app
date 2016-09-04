@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
-
+import { AuthService } from '../../shared/auth.service';
 import { SpeakerService } from '../../shared/speaker.service';
 import { TransitionService } from '../../shared/transition.service';
 import { ToastComponent } from '../../shared/toast.component';
@@ -19,8 +18,8 @@ export class AdministrationComponent implements OnInit {
     deleteFlag = false;
 
     constructor(private transitionService: TransitionService,
-                private speakerService: SpeakerService,
-                private router: Router) { }
+                private authService: AuthService,
+                private speakerService: SpeakerService) { }
 
     ngOnInit() {
         this.transitionService.transition();
@@ -37,7 +36,39 @@ export class AdministrationComponent implements OnInit {
     }
 
     addAdmin(speakerId: string) {
-        this.router.navigate(['/speaker', {id: speakerId}]);
+        event.preventDefault();
+
+        this.authService.addAdmin(speakerId)
+            .then( res => {
+                this.speakerService.getAllSpeakers();
+                this.toast.success('User has been made an admin');
+            })
+            .catch( err => {
+                if (err.status === 404) {
+                    this.toast.error('User not found!');
+                }
+                else {
+                    this.toast.error('Unable to make speaker an admin, please try again later');
+                }
+            });
+    }
+
+    deleteAdmin(speakerId: string) {
+        event.preventDefault();
+
+        this.authService.deleteAdmin(speakerId)
+            .then( res => {
+                this.speakerService.getAllSpeakers();
+                this.toast.success('User has been removed as an admin');
+            })
+            .catch( err => {
+                if (err.status === 404) {
+                    this.toast.error('User not found!');
+                }
+                else {
+                    this.toast.error('Unable to remove admin, please try again later');
+                }
+            });
     }
 
 }
