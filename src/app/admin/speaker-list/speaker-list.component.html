@@ -16,7 +16,8 @@
             <div *ngIf="!speaker.admin"
                  class="speaker row" (click)="gotoSpeaker(speaker._id)">
               <div class="speaker-left text-center">
-                <img [src]="speaker.headshot" class="img-responsive" alt="No\nImage\nFound">
+                <img *ngIf="speaker.headshot" [src]="speaker.headshot" class="img-responsive">
+                <p *ngIf="!speaker.headshot">No<br/>Image<br />Found</p>
               </div>
               <div class="speaker-right">
                 <div class="name">{{ speaker.salutation | capitalize }} {{ speaker.nameFirst | capitalize }} {{ speaker.nameLast | capitalize }}</div>
