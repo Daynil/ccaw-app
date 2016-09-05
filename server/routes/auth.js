@@ -14,8 +14,6 @@ var transporter = nodemailer.createTransport({
 });
 
 router.get('/checkSession', (req, res) => {
-    console.log('req auth?', req.isAuthenticated());
-    console.log('req user?', req.user);
     if (req.isAuthenticated()) {
         res.status(200).json({user: req.user});
     } else {

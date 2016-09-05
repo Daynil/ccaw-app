@@ -2,7 +2,13 @@ import { Response, Headers, RequestOptions } from '@angular/http';
 
 /** Parse server data to json */
 export function parseJson(res: Response) {
-  let body = res.json();
+  let body;
+  try {
+    body = res.json();
+  } catch (e) {
+    // Parsing didn't work
+    body = res;
+  } 
   return body;
 }
 

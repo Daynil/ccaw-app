@@ -18,7 +18,7 @@ export class AuthService {
 
   checkSession() {
     return this.http
-              .get('/checkSession')
+              .get('/auth/checkSession')
               .toPromise()
               .then(parseJson)
               .then(res => {
@@ -34,7 +34,7 @@ export class AuthService {
 
   logout() {
     return this.http
-              .get('/logout')
+              .get('/auth/logout')
               .toPromise()
               .then(res => {
                 this.user.next(null);
