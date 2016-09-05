@@ -16,7 +16,7 @@
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
-  margin-top: 40px;
+  //margin-top: 40px;
 }
 
 .speaker {
@@ -29,9 +29,8 @@
   font-weight: 100;
   white-space: nowrap;
   overflow: hidden;
-  width: 400px;
+  width: 100%;
   .name {
-    margin-bottom: 5px;
     font-weight: bold;
   }
 }
@@ -40,13 +39,15 @@
   display: inline-block;
   vertical-align: top;
   img {
-    height: 100px;
+    width: 100px;
+    background-size: cover;
+    background-position: center center
   }
 }
 
 .speaker-right {
   display: inline-block;
-  margin-left: 50px;
-  margin-top: 10px;
+  margin-left: 10px;
+  margin-top: 3px;
   text-align: left;
 }
