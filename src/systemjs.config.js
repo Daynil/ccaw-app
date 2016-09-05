@@ -27,9 +27,7 @@
     'http',
     'platform-browser',
     'platform-browser-dynamic',
-    'router',
-    'testing',
-    'upgrade'
+    'router'
   ];
 
   // Individual files (~300 requests):
