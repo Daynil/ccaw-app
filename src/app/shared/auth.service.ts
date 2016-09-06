@@ -63,6 +63,18 @@ export class AuthService {
               .then(parseJson);
   }
 
+  signUpForCopres(leadPres: Speaker, signupData) {
+    let data = {
+      leadPres: leadPres,
+      formData: signupData
+    }
+    let pkg = packageForPost(data);
+    return this.http
+              .post('/auth/signup', pkg.body, pkg.opts)
+              .toPromise()
+              .then(parseJson);
+  }
+
   forgotPassword(formData) {
       let data = { formData: formData };
       let pkg = packageForPost(data);

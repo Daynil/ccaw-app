@@ -156,14 +156,13 @@ router.post('/updatespeaker', (req, res) => {
                 } else {
                     console.log('found existing speaker');
                     _.merge(serverSpeaker, speaker);
-                    console.log('serverspeaker', serverSpeaker);
-                    console.log('userspeaker', speaker);
                     if (serverSpeaker.costsCoveredByOrg !== speaker.costsCoveredByOrg) {
                         serverSpeaker.costsCoveredByOrg = speaker.costsCoveredByOrg;
                         serverSpeaker.markModified('costsCoveredByOrg');
                     }
                     serverSpeaker.save(err => {
                         if (err) {
+                            console.log('save error but found speaker');
                             console.log(err);
                             res.status(500).json({message: 'Speaker save error'});
                         } else res.status(200).json(serverSpeaker);
@@ -186,6 +185,7 @@ router.post('/updatespeaker', (req, res) => {
         _.merge(newSpeaker, speaker);
         newSpeaker.save(err => {
             if (err) {
+                console.log('save error and didnt find speaker');
                 console.log(err);
                 res.status(500).json({message: 'Speaker save error'});
             } else res.status(200).json(newSpeaker);

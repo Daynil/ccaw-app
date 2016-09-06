@@ -57,11 +57,9 @@ export class SessionService {
         return true;
       }
       if (session.speakers.coPresenters) {
-        session.speakers.coPresenters.forEach(coPres => {
-          if (coPres === speakerId) {
-            return true;
-          }
-        });
+        for (let i = 0; i < session.speakers.coPresenters.length; i++) {
+          if (session.speakers.coPresenters[i] === speakerId) return true;
+        }
       }
       return false;
     });

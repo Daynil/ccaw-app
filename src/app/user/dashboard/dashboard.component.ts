@@ -112,7 +112,7 @@ export class DashboardComponent {
         this.router.navigate(['/session', { leadPresId: this.speaker._id }]);
         break;
       case 'copres':
-        this.router.navigate(['/speaker']);
+        this.router.navigate(['/speaker', { leadPresId: this.speaker._id }]);
         break;
       default:
         break;
