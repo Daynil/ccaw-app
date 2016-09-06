@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
 
+import { AuthService } from '../auth.service';
 import { SpeakerService } from '../speaker.service';
 import { TransitionService } from '../transition.service';
 import { ToastComponent } from '../toast.component';
@@ -21,6 +22,7 @@ export class SpeakerComponent implements OnInit, OnDestroy {
   private paramsub: any;
 
   model: Speaker;
+  leadPresId: string = null;
 
   costsCovered = [
     {
@@ -34,6 +36,7 @@ export class SpeakerComponent implements OnInit, OnDestroy {
   ];
 
   constructor(private transitionService: TransitionService,
+              private authService: AuthService,
               private speakerService: SpeakerService,
               private route: ActivatedRoute) { }
 
@@ -42,7 +45,8 @@ export class SpeakerComponent implements OnInit, OnDestroy {
 
     // Check for params
     this.paramsub = this.route.params.subscribe(params => {
-      if (_.isEmpty(params)) {
+      // Initialize fields for brand new speakers
+      if (!params['id']) {
         this.model = <Speaker>{
           mediaWilling: true,
           costsCoveredByOrg: this.costsCovered,
@@ -52,6 +56,9 @@ export class SpeakerComponent implements OnInit, OnDestroy {
         this.model.assistantOrCC = '';
       } else {
         this.model = this.speakerService.getSpeaker(params['id']);
+      }
+      if (params['leadPresId']) {
+        this.leadPresId = params['leadPresId'];
       }
     });
   }
@@ -71,12 +78,29 @@ export class SpeakerComponent implements OnInit, OnDestroy {
 
   updateSpeaker(form: NgForm) {
     if (!form.valid) return;
-    this.speakerService
-        .updateSpeaker(this.model)
-        .then(res => this.toast.success('Speaker updated!'));
-  }
 
-  // DEBUG
-  get diagnostic() { return JSON.stringify(this.model); }
+    if (this.leadPresId) {
+      let leadPres = this.speakerService.getSpeaker(this.leadPresId);
+      let signupData = {
+        email: this.model.email,
+        firstName: this.model.nameFirst,
+        lastName: this.model.nameLast
+      }
+      this.authService
+          .signUpForCopres(leadPres, signupData)
+          .then(res => {
+            this.speakerService
+                .updateSpeaker(this.model)
+                .then(res => {
+                  this.toast.success('Copresenter account created and emailed!')
+                });
+          });
+    } else {
+      this.speakerService
+          .updateSpeaker(this.model)
+          .then(res => this.toast.success('Speaker updated!'));
+    }
+
+  }
 
 }

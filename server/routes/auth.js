@@ -13,6 +13,17 @@ var transporter = nodemailer.createTransport({
     }
 });
 
+function generateRandomPassword() {
+    let chars = "abcdefghijklmnopqrstuvwxyz123456789";
+    let newPass = '';
+
+    for (var i = 0; i < 10; i++){
+        newPass += chars.charAt(Math.floor(Math.random() * chars.length))
+    }
+
+    return newPass;
+}
+
 router.get('/checkSession', (req, res) => {
     if (req.isAuthenticated()) {
         res.status(200).json({user: req.user});
@@ -30,6 +41,37 @@ router.post('/login', (req, res, next) => {
 });
 
 router.post('/signup', (req, res, next) => {
+    // If lead presenter signs up, generate a random password and email them info
+    if (req.body.leadPres) {
+        let formData = req.body.formData;
+        console.log('data', formData);
+        req.body.email = formData.email;
+        req.body.firstName = formData.firstName;
+        req.body.lastName = formData.lastName;
+        req.body.password = generateRandomPassword();
+
+        let leadPresName = `${req.body.leadPres.nameFirst} ${req.body.leadPres.nameLast}`
+
+        var mailOptions = {
+            from: 'Jennifer Bland <ratracegrad@gmail.com>', // TODO update with CCAW sender address
+            to: req.body.email,
+            subject: `Copresenter with ${leadPresName} at CCAW`, // Subject line
+            html: `
+                <div>You've been signed up as a copresenter for a presentation at Conference for Crimes Against Women by ${leadPresName}</div>
+                <div>Please <a href="http://localhost:3000/login">log in here</a> to view and update your information with the following: </div>
+                <div>Your username: ${req.body.email}</div>
+                <div>Your password: ${req.body.password}</div>
+            ` // TODO change to URL for deployment
+        };
+
+        transporter.sendMail(mailOptions, function(error, info){
+            if(error){
+                console.log('email not sent');
+            } else {
+                console.log('email sent');
+            }
+        });
+    }
     passport.authenticate('local-signup', (err, user, info) => {
         if (err) return res.status(500).json({alert: err});
         if (!user) {
@@ -40,6 +82,14 @@ router.post('/signup', (req, res, next) => {
         return res.status(200).json({alert: info});
     })(req, res, next);
 });
+
+/*router.post('/signupforcopres', (req, res) => {
+    let leadPres = req.body.leadPres;
+    let signupData = req.body.signupData;
+    signupData.password = generateRandomPassword();
+    
+
+});*/
 
 router.get('/logout', (req, res) => {
     req.logout();
@@ -68,12 +118,7 @@ router.post('/changePassword', (req, res) => {
 
 router.post('/forgotpassword', (req, res) => {
     let formData = req.body.formData;
-    let chars = "abcdefghijklmnopqrstuvwxyz123456789";
-    let newPass = '';
-
-    for (var i = 0; i < 10; i++){
-        newPass += chars.charAt(Math.floor(Math.random() * chars.length))
-    }
+    let newPass = generateRandomPassword();
 
     Speaker.findOne({email: formData.email}, function (err, user) {
         if (err) {

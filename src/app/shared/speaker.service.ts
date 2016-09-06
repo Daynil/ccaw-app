@@ -53,6 +53,7 @@ export class SpeakerService {
               .catch(handleError);
   }
 
+  /** Get speaker by id */
   getSpeaker(speakerId: string) {
     return _.find(this.speakersUnfiltered.getValue(), speaker => speaker._id === speakerId );
   }
