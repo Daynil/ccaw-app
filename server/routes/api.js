@@ -156,8 +156,6 @@ router.post('/updatespeaker', (req, res) => {
                 } else {
                     console.log('found existing speaker');
                     _.merge(serverSpeaker, speaker);
-                    console.log('serverspeaker', serverSpeaker);
-                    console.log('userspeaker', speaker);
                     if (serverSpeaker.costsCoveredByOrg !== speaker.costsCoveredByOrg) {
                         serverSpeaker.costsCoveredByOrg = speaker.costsCoveredByOrg;
                         serverSpeaker.markModified('costsCoveredByOrg');
