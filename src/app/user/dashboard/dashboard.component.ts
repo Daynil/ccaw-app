@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 
 import { AuthService } from '../../shared/auth.service';
 import { TransitionService } from '../../shared/transition.service';
+import { SessionService } from '../../shared/session.service';
+import { Session } from '../../shared/session.model';
 import { Speaker } from '../../shared/speaker.model';
 import { SpeakerService } from '../../shared/speaker.service';
 
@@ -15,10 +17,14 @@ import { SpeakerService } from '../../shared/speaker.service';
 export class DashboardComponent {
 
   speaker: Speaker;
+  speakerSessions: Session[];
+  
+  addingCopres = false;
 
   constructor(private transitionService: TransitionService,
               private authService: AuthService,
               private router: Router,
+              private sessionService: SessionService,
               private speakerService: SpeakerService) {
     this.authService.user.subscribe(user => {
       this.speaker = this.speakerService.getSpeaker(user._id);
@@ -27,7 +33,7 @@ export class DashboardComponent {
 
   ngOnInit() {
     this.transitionService.transition();
-
+    this.speakerSessions = this.sessionService.getSpeakerSessions(this.speaker._id);
   }
 
   goto(where: string) {

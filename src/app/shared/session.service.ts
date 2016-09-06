@@ -50,6 +50,11 @@ export class SessionService {
               .catch(handleError);
   }
 
+  getSpeakerSessions(speakerId) {
+    return _.filter(this.sessionsUnfiltered.getValue(), 
+                    session => session.speakers.mainPresenter === speakerId);
+  }
+
   /** Update session display filters */
   setFiltering() {
     let unfilteredCopy = this.sessionsUnfiltered.getValue();

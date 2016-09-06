@@ -61,7 +61,45 @@
       <button class="btn btn-primary center-block" (click)="goto('proposal')">Submit Presentation Proposal</button>
     </div>
     <div class="col-md-4 col-xs-12 action-item">
-      <button class="btn btn-primary center-block" (click)="goto('copres')">Add co-presenters</button>
+      <button class="btn btn-primary center-block" (click)="addingCopres = !addingCopres">Add co-presenters</button>
+    </div>
+  </div>
+
+  <div class="row adding-copres">
+    <div *ngIf="addingCopres" class="block">
+      <p>
+        Please select your copresenters. If they have not made an
+        account, you can start one for them, and they will receive
+        an email asking them to finish making the account.
+      </p>
+      <p>
+        Select the presentation for which they will be your copresenter. <br/>
+        <b>If this list is empty, please complete a presentation proposal first.</b>
+      </p>
+      <div class="row">
+        <div class="col-md-4">
+          <select #presentations class="form-control" id="presentations">
+            <option *ngFor="let session of speakerSessions"
+                    [value]="session._id">
+                {{ session.title }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 col-xs-12 existing-copres">
+          <select #speakers class="form-control" id="speakers">
+            <option *ngFor="let speaker of (speakerService.speakers | async)"
+                    [value]="speaker._id">
+              {{ speaker.nameFirst }} {{ speaker.nameLast }}
+            </option>
+          </select>
+          <button class="btn btn-primary">Add copresenter</button>
+        </div>
+        <div class="col-md-6 col-md-offset-1 col-xs-12 new-copres">
+          <button class="btn btn-primary" (click)="goto('copres')">Create New Copresenter</button>        
+        </div>
+      </div>
     </div>
   </div>
 </div>
