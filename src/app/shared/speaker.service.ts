@@ -112,7 +112,7 @@ export class SpeakerService {
                 } else {
                   existingSpeaker = serverSpeaker;
                 }
-                this.speakers.next(newSpeakers);
+                this.speakersUnfiltered.next(newSpeakers);
                 this.setFiltering();
                 return serverSpeaker;
               })
