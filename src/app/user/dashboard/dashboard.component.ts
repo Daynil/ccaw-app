@@ -38,6 +38,7 @@ export class DashboardComponent {
 
     this.sessionService.sessionsUnfiltered.subscribe(sessions => {
       this.allSpeakerSessions = this.sessionService.getSpeakerSessions(this.speaker._id);
+
       this.pendingSessions = _.filter(this.allSpeakerSessions, session => {
         // Approved but unscheduled sessions are considered pending for dashboard
         if (session.approval === 'approved') {
@@ -48,6 +49,7 @@ export class DashboardComponent {
         }
         return false;
       });
+
       this.scheduledSessions = _.filter(this.allSpeakerSessions, session => {
         if (session.approval === 'approved' && session.statusTimeLocation.length > 0) {
           return true;

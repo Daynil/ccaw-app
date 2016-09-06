@@ -51,8 +51,20 @@ export class SessionService {
   }
 
   getSpeakerSessions(speakerId) {
-    return _.filter(this.sessionsUnfiltered.getValue(), 
-                    session => session.speakers.mainPresenter === speakerId);
+    return _.filter(this.sessionsUnfiltered.getValue(), session => {
+      if (!session.speakers) return false;
+      if (session.speakers.mainPresenter === speakerId) {
+        return true;
+      }
+      if (session.speakers.coPresenters) {
+        session.speakers.coPresenters.forEach(coPres => {
+          if (coPres === speakerId) {
+            return true;
+          }
+        });
+      }
+      return false;
+    });
   }
 
   /** Update session display filters */
