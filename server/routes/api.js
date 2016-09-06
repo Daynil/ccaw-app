@@ -164,6 +164,7 @@ router.post('/updatespeaker', (req, res) => {
                     }
                     serverSpeaker.save(err => {
                         if (err) {
+                            console.log('save error but found speaker');
                             console.log(err);
                             res.status(500).json({message: 'Speaker save error'});
                         } else res.status(200).json(serverSpeaker);
@@ -186,6 +187,7 @@ router.post('/updatespeaker', (req, res) => {
         _.merge(newSpeaker, speaker);
         newSpeaker.save(err => {
             if (err) {
+                console.log('save error and didnt find speaker');
                 console.log(err);
                 res.status(500).json({message: 'Speaker save error'});
             } else res.status(200).json(newSpeaker);

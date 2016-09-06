@@ -57,7 +57,7 @@ router.post('/signup', (req, res, next) => {
             to: req.body.email,
             subject: `Copresenter with ${leadPresName} at CCAW`, // Subject line
             html: `
-                <div>You've been signed up as a copresenter for a presentation at Conference for Crimes Against Women by ${leadPresName}</div>
+                <div>You've been signed up as a copresenter for a presentation at Conference for Crimes Against Women by ${leadPresName}.</div>
                 <div>Please <a href="http://localhost:3000/login">log in here</a> to view and update your information with the following: </div>
                 <div>Your username: ${req.body.email}</div>
                 <div>Your password: ${req.body.password}</div>
