@@ -79,7 +79,7 @@ router.post('/signup', (req, res, next) => {
                 return res.status(409).json({alert: info});
             } else return res.status(400).json({alert: info});
         }
-        return res.status(200).json({alert: info});
+        return res.status(200).json({alert: info, userId: user._id});
     })(req, res, next);
 });
 

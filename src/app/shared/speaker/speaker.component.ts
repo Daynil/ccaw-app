@@ -89,14 +89,17 @@ export class SpeakerComponent implements OnInit, OnDestroy {
       this.authService
           .signUpForCopres(leadPres, signupData)
           .then(res => {
-            if (res.status === 409) {
+            // We need to sync the mongoos ID before udating remaining fields
+            this.model._id = res.userId;
+            this.speakerService
+                .updateSpeaker(this.model)
+                .then(res => {
+                  this.toast.success('Copresenter account created and emailed!')
+                });
+          })
+          .catch(err => {
+            if (err.status === 409) {
               this.toast.error('A speaker with that email already exists');
-            } else {
-              this.speakerService
-                  .updateSpeaker(this.model)
-                  .then(res => {
-                    this.toast.success('Copresenter account created and emailed!')
-                  });
             }
           });
     } else {
