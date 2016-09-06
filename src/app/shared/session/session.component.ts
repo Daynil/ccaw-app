@@ -73,6 +73,7 @@ export class SessionComponent implements OnInit, OnDestroy {
       if (!params['id']) {
         // Initialize default values for fields that need it
         this.model = <Session>{
+          approval: 'pending',
           type: 'casestudy',
           length: '90',
           tags: this.tags,

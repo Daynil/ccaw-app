@@ -8,14 +8,28 @@
   <div class="row block">
     <h3 class="text-center title">My Information</h3>
     <div class="center-block">
+
       <div class="col-md-5 col-xs-11 dashboard-item">
         <div class="row">
           <b>My scheduled presentations</b>
         </div>
         <div class="row">
-          Approved and scheduled presentation list (times/dates/locations)...
+          <div *ngFor="let session of scheduledSessions">
+            <div><a [routerLink]="['/session', {id: session._id}]">{{ session.title }}</a></div>
+            <div *ngIf="session.speakers?.coPresenters?.length > 0" class="copres-list">
+              <div *ngFor="let coPres of speakerService.getSpeakerList(session.speakers).coPresenters">
+                {{ coPres.nameFirst }} {{ coPres.nameLast }}
+              </div>
+            </div>
+            <div>Currently Scheduled for: </div>
+            <div *ngFor="let occurrence of model.statusTimeLocation">
+              {{ getPart(session, occurrence) }}{{ getDate(occurrence) | dateCustom }} from {{ slot(occurrence)?.start | time }} to {{ slot(occurrence)?.end | time }} in {{ occurrence.room }}
+            </div>
+            <div class="divider-s"></div>
+          </div>
         </div>
       </div>
+
       <div class="col-md-5 col-xs-11 dashboard-item">
         <div class="row">
           <b>My Arrangements</b>
@@ -25,6 +39,7 @@
           Brooke's hotel arrangements...
         </div>
       </div>
+
       <div class="col-md-5 col-xs-11 dashboard-item">
         <div class="row">
           <b>My Todos</b>
@@ -33,15 +48,27 @@
           Incomplete fields (speaker info, copresenters)...
         </div>
       </div>
-      </div>
+
       <div class="col-md-5 col-xs-11 dashboard-item">
         <div class="row">
           <b>My Presentation Proposals</b>
         </div>
         <div class="row">
-          Approved and unscheduled, pending approval, denied proposals (clickable to modify)...
+          <div class="dashboard-list">
+            <div *ngFor="let session of pendingSessions">
+              <div><a [routerLink]="['/session', {id: session._id}]">{{ session.title }}</a></div>
+              <div><i>Status: </i> {{ session.approval }}</div>
+              <div *ngIf="session.speakers?.coPresenters?.length > 0" class="copres-list">
+                <div *ngFor="let coPres of speakerService.getSpeakerList(session.speakers).coPresenters">
+                  {{ coPres.nameFirst }} {{ coPres.nameLast }}
+                </div>
+              </div>
+              <div class="divider-s"></div>
+            </div>
+          </div>
         </div>
       </div>
+
     </div>
   </div>
 
@@ -72,7 +99,7 @@
       <div class="row">
         <div class="col-md-4">
           <select #presentations class="form-control" id="presentations">
-            <option *ngFor="let session of speakerSessions"
+            <option *ngFor="let session of allSpeakerSessions"
                     [value]="session._id">
                 {{ session.title }}
             </option>
