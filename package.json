@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "gulp serve",
-    "heroku-postbuild": "gulp build-production",
+
     "tsc": "tsc",
     "tsc:w": "tsc -w",
     "typings": "typings"
