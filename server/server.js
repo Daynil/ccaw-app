@@ -28,9 +28,9 @@ const mongoose = require('mongoose');
 let mongoURI = process.env.MONGO_URI || 'mongodb://localhost/ccaw-app';
 mongoose.connect(mongoURI);
 
-if (process.env.SEED_DB && process.env.SEED_DB==='true') {
+/*if (process.env.SEED_DB && process.env.SEED_DB==='true') {
   require('./seed');
-}
+}*/
 
 /** True = get response details on served node modules **/
 let verboseLogging = false;
