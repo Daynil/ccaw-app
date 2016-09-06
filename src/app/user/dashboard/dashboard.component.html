@@ -18,7 +18,9 @@
             <div *ngIf="session.speakers?.mainPresenter === speaker._id"><a [routerLink]="['/session', {id: session._id}]">{{ session.title }}</a></div>
             <div *ngIf="session.speakers?.mainPresenter !== speaker._id">{{ session.title }}</div>
             <div *ngIf="session.speakers?.coPresenters?.length > 0" class="copres-list">
+              <div><i>Copresenters:</i></div>
               <div *ngFor="let coPres of speakerService.getSpeakerList(session.speakers).coPresenters">
+                <i class="fa fa-ban delete" (click)="removeCopres(session._id, coPres._id)"></i>
                 {{ coPres.nameFirst }} {{ coPres.nameLast }}
               </div>
             </div>
@@ -61,7 +63,9 @@
               <div *ngIf="session.speakers?.mainPresenter !== speaker._id">{{ session.title }}</div>
               <div><i>Status: </i> {{ session.approval }}</div>
               <div *ngIf="session.speakers?.coPresenters?.length > 0" class="copres-list">
+                <div><i>Copresenters:</i></div>
                 <div *ngFor="let coPres of speakerService.getSpeakerList(session.speakers).coPresenters">
+                  <i class="fa fa-ban delete" (click)="removeCopres(session._id, coPres._id)"></i>
                   {{ coPres.nameFirst }} {{ coPres.nameLast }}
                 </div>
               </div>
@@ -100,8 +104,8 @@
       </p>
       <div class="row">
         <div class="col-md-4">
-          <select #presentations class="form-control" id="presentations">
-            <option *ngFor="let session of allSpeakerSessions"
+          <select #sessions class="form-control" id="sessions">
+            <option *ngFor="let session of leadOnlySessions"
                     [value]="session._id">
                 {{ session.title }}
             </option>
@@ -116,7 +120,7 @@
               {{ speaker.nameFirst }} {{ speaker.nameLast }}
             </option>
           </select>
-          <button class="btn btn-primary">Add copresenter</button>
+          <button class="btn btn-primary" (click)="addCopres(sessions.value, speakers.value)">Add copresenter</button>
         </div>
         <div class="col-md-6 col-md-offset-1 col-xs-12 new-copres">
           <button class="btn btn-primary" (click)="goto('copres')">Create New Copresenter</button>        
@@ -124,4 +128,6 @@
       </div>
     </div>
   </div>
+
+  <toast #toast></toast>
 </div>

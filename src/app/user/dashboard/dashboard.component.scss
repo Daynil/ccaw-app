@@ -44,7 +44,18 @@
   margin-bottom: 40px;
 }
 
-#presentations {
+.delete {
+  margin-right: 5px;
+  margin-top: 10px;
+  color: $gray-light;
+  transition: 0.2s;
+  &:hover {
+    color: $brand-primary;
+    cursor: pointer;
+  }
+}
+
+#sessions {
   margin-bottom: 16px;
 }
 

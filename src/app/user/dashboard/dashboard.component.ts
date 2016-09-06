@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
 
@@ -9,6 +9,7 @@ import { SessionService } from '../../shared/session.service';
 import { Session } from '../../shared/session.model';
 import { Speaker } from '../../shared/speaker.model';
 import { SpeakerService } from '../../shared/speaker.service';
+import { ToastComponent } from '../../shared/toast.component';
 
 @Component({
   moduleId: module.id,
@@ -18,10 +19,14 @@ import { SpeakerService } from '../../shared/speaker.service';
 })
 export class DashboardComponent {
 
+  @ViewChild('toast') toast: ToastComponent;
+
   speaker: Speaker;
   allSpeakerSessions: Session[] = [];
   pendingSessions: Session[] = [];
   scheduledSessions: Session[] = [];
+
+  leadOnlySessions: Session[] = [];
   
   addingCopres = false;
 
@@ -56,10 +61,9 @@ export class DashboardComponent {
         }
         return false;
       });
-      console.log('all', this.allSpeakerSessions);
-      console.log('pending', this.pendingSessions);
-      console.log('scheduled', this.scheduledSessions);
     });
+
+    this.leadOnlySessions = _.filter(this.allSpeakerSessions, session => session.speakers.mainPresenter === this.speaker._id);
 
   }
 
@@ -78,6 +82,25 @@ export class DashboardComponent {
 
   slot(occurrence) {
     return this.adminService.findSlotById(occurrence.timeSlot);
+  }
+
+  addCopres(sessionId: string, speakerId: string) {
+    let isLead = false;
+    this.sessionService.assignSpeaker(speakerId, isLead, sessionId)
+        .then(res => {
+          if (res.message === 'duplicate') {
+            this.toast.error('Already a copresenter for this presentation');
+          } else {
+            this.toast.success('Copresenter assigned');
+          }
+        });
+  }
+
+  removeCopres(sessionId: string, speakerId: string) {
+    this.sessionService.removeSpeaker(speakerId, sessionId)
+        .then(res => {
+          this.toast.success('Copresenter removed');
+        });
   }
 
   goto(where: string) {
