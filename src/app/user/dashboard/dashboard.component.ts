@@ -29,11 +29,14 @@ export class DashboardComponent {
     this.authService.user.subscribe(user => {
       this.speaker = this.speakerService.getSpeaker(user._id);
     });
+    this.sessionService.sessionsUnfiltered.subscribe(sessions => {
+      console.log(this.sessionService.getSpeakerSessions(this.speaker._id));
+      this.speakerSessions = this.sessionService.getSpeakerSessions(this.speaker._id);
+    });
   }
 
   ngOnInit() {
     this.transitionService.transition();
-    this.speakerSessions = this.sessionService.getSpeakerSessions(this.speaker._id);
   }
 
   goto(where: string) {
@@ -42,7 +45,7 @@ export class DashboardComponent {
         this.router.navigate(['/speaker', { id: this.speaker._id }]);
         break;
       case 'proposal':
-        this.router.navigate(['/session']);
+        this.router.navigate(['/session', { leadPresId: this.speaker._id }]);
         break;
       case 'copres':
         this.router.navigate(['/speaker']);
