@@ -27,7 +27,7 @@ enum SessionFilter {
 @Injectable()
 export class SessionService {
 
-  sessionsUnfiltered: Session[] = [];
+  sessionsUnfiltered: BehaviorSubject<Session[]> = new BehaviorSubject([]);
   sessions: BehaviorSubject<Session[]> = new BehaviorSubject([]);
 
   currentFilters: BehaviorSubject<{order: SessionOrder, filter: SessionFilter}> 
@@ -44,7 +44,7 @@ export class SessionService {
               .toPromise()
               .then(parseJson)
               .then(allSessions => {
-                this.sessionsUnfiltered = allSessions;
+                this.sessionsUnfiltered.next(allSessions);
                 this.setFiltering();
               })
               .catch(handleError);
@@ -52,7 +52,7 @@ export class SessionService {
 
   /** Update session display filters */
   setFiltering() {
-    let unfilteredCopy = this.sessionsUnfiltered.slice();
+    let unfilteredCopy = this.sessionsUnfiltered.getValue();
     let filtered: Session[];
 
     switch (this.currentFilters.getValue().order) {
@@ -286,14 +286,14 @@ export class SessionService {
               .toPromise()
               .then(parseJson)
               .then(serverSession => {
-                let newSessions = this.sessions.getValue();
+                let newSessions = this.sessionsUnfiltered.getValue();
                 let existingSession = _.find(newSessions, exSession => exSession._id === serverSession._id);
                 if (typeof existingSession === 'undefined') {
                   newSessions.push(serverSession);
                 } else {
                   existingSession = serverSession;
                 }
-                this.sessions.next(newSessions);
+                this.sessionsUnfiltered.next(newSessions);
                 this.setFiltering();
                 return serverSession;
               })
