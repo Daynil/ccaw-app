@@ -40,7 +40,6 @@ export class SessionComponent implements OnInit, OnDestroy {
   sessionSpeakers: BehaviorSubject<{mainPresenter: Speaker, coPresenters: Speaker[]}> = new BehaviorSubject(null);
 
   model: Session;
-  fullSession: Session;
 
   tags = tags;
   
@@ -71,9 +70,10 @@ export class SessionComponent implements OnInit, OnDestroy {
 
     // Check for params
     this.paramsub = this.route.params.subscribe(params => {
-      if (_.isEmpty(params)) {
+      if (!params['id']) {
         // Initialize default values for fields that need it
         this.model = <Session>{
+          approval: 'pending',
           type: 'casestudy',
           length: '90',
           tags: this.tags,
@@ -87,6 +87,16 @@ export class SessionComponent implements OnInit, OnDestroy {
         this.sessionService.sessions.subscribe(sessions => {
           this.getSessionSpeakers();
         });
+      }
+      // If a speaker is submitting, set him as lead presenter
+      if (params['leadPresId']) {
+        if (this.model.speakers) this.model.speakers.mainPresenter = params['leadPresId'];
+        else {
+          this.model.speakers = {
+            mainPresenter: params['leadPresId'],
+            coPresenters: []
+          }
+        }
       }
     });
   }
@@ -199,8 +209,5 @@ export class SessionComponent implements OnInit, OnDestroy {
         .updateSession(this.model)
         .then(res => this.toast.success('Session updated!'));
   }
-
-  // DEBUG
-  get diagnostic() { return JSON.stringify(this.model); }
 
 }

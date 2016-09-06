@@ -50,6 +50,23 @@ export class SessionService {
               .catch(handleError);
   }
 
+  getSpeakerSessions(speakerId) {
+    return _.filter(this.sessionsUnfiltered.getValue(), session => {
+      if (!session.speakers) return false;
+      if (session.speakers.mainPresenter === speakerId) {
+        return true;
+      }
+      if (session.speakers.coPresenters) {
+        session.speakers.coPresenters.forEach(coPres => {
+          if (coPres === speakerId) {
+            return true;
+          }
+        });
+      }
+      return false;
+    });
+  }
+
   /** Update session display filters */
   setFiltering() {
     let unfilteredCopy = this.sessionsUnfiltered.getValue();
