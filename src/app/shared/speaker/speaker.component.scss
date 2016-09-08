@@ -57,3 +57,8 @@ textarea {
   top: 80px;
   word-break: break-word;
 }
+
+.formLabelRequired::before {
+  content: "*";
+  color: red;
+}
