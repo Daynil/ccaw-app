@@ -34,7 +34,7 @@ export class SpeakerService {
   admins: BehaviorSubject<Speaker[]> = new BehaviorSubject([]);
 
   currentFilters: BehaviorSubject<{order: SpeakerOrder, filter: SpeakerFilter}>
-                  = new BehaviorSubject({order: SpeakerOrder.Alphabetical, filter: SpeakerFilter.None}); 
+                  = new BehaviorSubject({order: SpeakerOrder.Alphabetical, filter: SpeakerFilter.None});
 
 
   constructor(private http: Http) {
@@ -79,7 +79,7 @@ export class SpeakerService {
     switch (this.currentFilters.getValue().filter) {
       case SpeakerFilter.HasPresentations:
         break;
-      
+
       default:
         break;
     }

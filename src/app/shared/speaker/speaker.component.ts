@@ -41,6 +41,7 @@ export class SpeakerComponent implements OnInit, OnDestroy {
               private route: ActivatedRoute) { }
 
   ngOnInit() {
+
     this.transitionService.transition();
 
     // Check for params
@@ -77,7 +78,6 @@ export class SpeakerComponent implements OnInit, OnDestroy {
   }
 
   updateSpeaker(form: NgForm) {
-    if (!form.valid) return;
 
     if (this.leadPresId) {
       let leadPres = this.speakerService.getSpeaker(this.leadPresId);
@@ -85,7 +85,7 @@ export class SpeakerComponent implements OnInit, OnDestroy {
         email: this.model.email,
         firstName: this.model.nameFirst,
         lastName: this.model.nameLast
-      }
+      };
       this.authService
           .signUpForCopres(leadPres, signupData)
           .then(res => {
