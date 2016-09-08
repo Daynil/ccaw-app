@@ -1,11 +1,6 @@
-<div class="container" 
+<div class="container"
      [class.page-transition]="transitionService.isTransitioning()">
   <h2>Speaker Information</h2>
-
-  <div class="incomplete">
-    The following fields must still be completed for your proposal to be considered:
-    {{ incompleteFields }}
-  </div>
 
   <form #speakerForm="ngForm">
     <div class="form-group">
@@ -14,7 +9,7 @@
         <div class="row">
           <div class="col-md-8 col-xs-12">
             <label class="control-label primary-label" for="salutation">Salutation</label>
-            <input type="text" class="form-control" 
+            <input type="text" class="form-control"
                   [(ngModel)]="model.salutation"
                   name="salutation" #salutation="ngModel">
           </div>
@@ -23,21 +18,23 @@
           <div class="col-md-8 col-xs-12">
             <label class="control-label primary-label" for="title">Title</label><br/>
             <label class="control-label sub-label" for="title">If you have multiple titles, please choose the most relevant. This title will be included in CCAW materials.</label>
-            <input type="text" class="form-control" 
+            <input type="text" class="form-control"
                     [(ngModel)]="model.title"
                     name="title" #title="ngModel">
           </div>
         </div>
         <div class="row">
           <div class="col-md-4 col-xs-6">
-            <label class="control-label primary-label" for="nameFirst">First Name</label>
-            <input type="text" class="form-control" required
+            <label class="control-label primary-label formLabelRequired" for="nameFirst">First Name</label>
+            <input type="text" class="form-control"
+                   required
                   [(ngModel)]="model.nameFirst"
                   name="nameFirst" #nameFirst="ngModel">
           </div>
           <div class="col-md-4 col-xs-6">
-            <label class="control-label primary-label" for="nameLast">Last Name</label>
-            <input type="text" class="form-control" required
+            <label class="control-label primary-label formLabelRequired" for="nameLast">Last Name</label>
+            <input type="text" class="form-control"
+                   required
                   [(ngModel)]="model.nameLast"
                   name="nameLast" #nameLast="ngModel">
           </div>
@@ -46,7 +43,7 @@
           <div class="col-md-8 col-xs-12">
             <label class="control-label primary-label" for="organization">Organization</label><br/>
             <label class="control-label sub-label" for="organization">If you are associated with multiple organizations, please choose the most relevant. This organization will be included in CCAW materials.</label>
-            <input type="text" class="form-control" 
+            <input type="text" class="form-control"
                     [(ngModel)]="model.organization"
                     name="organization" #organization="ngModel">
           </div>
@@ -57,7 +54,7 @@
         <div class="row">
           <div class="col-md-8 col-xs-12">
             <label class="control-label primary-label" for="address1">Address Line 1</label>
-            <input type="text" class="form-control" 
+            <input type="text" class="form-control"
                   [(ngModel)]="model.address1"
                   name="address1" #address1="ngModel">
           </div>
@@ -65,7 +62,7 @@
         <div class="row">
           <div class="col-md-8 col-xs-12">
             <label class="control-label primary-label" for="address2">Address Line 2</label>
-            <input type="text" class="form-control" 
+            <input type="text" class="form-control"
                   [(ngModel)]="model.address2"
                   name="address2" #address2="ngModel">
           </div>
@@ -73,19 +70,19 @@
         <div class="row">
           <div class="col-md-4 col-xs-6">
             <label class="control-label primary-label" for="city">City</label>
-            <input type="text" class="form-control" 
+            <input type="text" class="form-control"
                   [(ngModel)]="model.city"
                   name="city" #city="ngModel">
           </div>
           <div class="col-md-4 col-xs-6">
             <label class="control-label primary-label" for="state">State</label>
-            <input type="text" class="form-control" 
+            <input type="text" class="form-control"
                   [(ngModel)]="model.state"
                   name="state" #state="ngModel">
           </div>
           <div class="col-md-4 col-xs-6">
             <label class="control-label primary-label" for="zip">Zip Code</label>
-            <input type="text" class="form-control" 
+            <input type="text" class="form-control"
                   [(ngModel)]="model.zip"
                   name="zip" #zip="ngModel">
           </div>
@@ -93,22 +90,23 @@
         <div class="row" id="phones">
           <div class="col-md-4 col-xs-6">
             <label class="control-label primary-label" for="phoneWork">Work Phone</label>
-            <input type="text" class="form-control" 
+            <input type="text" class="form-control"
                   [(ngModel)]="model.phoneWork"
                   name="phoneWork" #phoneWork="ngModel">
           </div>
           <div class="col-md-4 col-xs-6">
             <label class="control-label primary-label" for="phoneCell">Cell Phone</label><br/>
             <label class="control-label sub-label" for="phoneCell">This is only for use by conference staff and will not be shared.</label>
-            <input type="text" class="form-control" 
+            <input type="text" class="form-control"
                   [(ngModel)]="model.phoneCell"
                   name="phoneCell" #phoneCell="ngModel">
           </div>
         </div>
         <div class="row">
           <div class="col-md-8 col-xs-12">
-            <label class="control-label primary-label" for="email">Email</label>
-            <input type="text" class="form-control" required
+            <label class="control-label primary-label formLabelRequired" for="email">Email</label>
+            <input type="text" class="form-control"
+                   required
                   [(ngModel)]="model.email"
                   name="email" #email="ngModel">
           </div>
@@ -119,7 +117,7 @@
         <div class="row">
           <div class="col-md-8 col-xs-12">
             <label class="control-label primary-label" for="assistantOrCC">Assistant/CC</label>
-            <input type="text" class="form-control" 
+            <input type="text" class="form-control"
                   [(ngModel)]="model.assistantOrCC"
                   name="assistantOrCC" #assistantOrCC="ngModel">
           </div>
@@ -149,7 +147,7 @@
           <label class="control-label primary-label" for="headshot">***Headshot Url?</label><br/>
           <label class="control-label sub-label" for="headshot">This photo will be displayed on CCAW's website and on the conference app.</label><br/>
           <label class="control-label sub-label" for="headshot">If you prefer not to display a headshot, please upload your organization's logo instead.</label>
-          <input type="text" class="form-control" 
+          <input type="text" class="form-control"
                  [(ngModel)]="model.headshot"
                  name="headshot" #headshot="ngModel">
         </div>
@@ -180,7 +178,7 @@
           <label class="control-label primary-label" for="costsCoveredByOrg">Please select which of the following costs your organization is able to cover (check all that apply or none):</label>
           <div class="checkbox-group">
             <label *ngFor="let cost of model.costsCoveredByOrg">
-              <input type="checkbox" [checked]="cost.covered" 
+              <input type="checkbox" [checked]="cost.covered"
                      (change)="changeCostCovered($event.target.checked, cost)"
                      name="costCoveredByOrg"> {{ capitalize(cost.name) }}
             </label>
@@ -192,7 +190,7 @@
         <div class="col-md-8 col-xs-12">
           <label class="control-label primary-label" for="speakingFees"><b>Please list any required speaking fees.</b> As a non-profit, we appreciate your consideration of providing your services at a discounted rate.</label><br/>
           <label class="control-label sub-label" for="speakingFees"><b>Please note that CCAW does not pay per diems to any speakers.</b> All breakfasts and lunches will be provided free of charge.</label>
-          <input type="text" class="form-control" 
+          <input type="text" class="form-control"
                  [(ngModel)]="model.speakingFees"
                  name="speakingFees" #speakingFees="ngModel">
         </div>
@@ -239,9 +237,7 @@
       </div>
 
     </div>
-    <button type="submit" 
-            class="btn btn-primary" 
-            (click)="updateSpeaker(speakerForm.form)">Submit</button>
+    <button type="submit" [disabled]="!speakerForm.form.valid" class="btn btn-primary" (click)="updateSpeaker(speakerForm.form)">Submit</button>
     <toast #toast></toast>
   </form>
 </div>
