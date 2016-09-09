@@ -23,6 +23,7 @@ export class SpeakerComponent implements OnInit, OnDestroy {
 
   model: Speaker;
   leadPresId: string = null;
+  requiredProfileFields = ['nameFirst', 'nameLast', 'email', 'organization', 'bioWebsite', 'bioProgram'];
 
   costsCovered = [
     {
@@ -77,7 +78,8 @@ export class SpeakerComponent implements OnInit, OnDestroy {
     cost.covered = isChecked;
   }
 
-  updateSpeaker(form: NgForm) {
+  updateSpeaker(form: any) {
+    form.profileComplete = this.checkProfile(form);
 
     if (this.leadPresId) {
       let leadPres = this.speakerService.getSpeaker(this.leadPresId);
@@ -104,10 +106,21 @@ export class SpeakerComponent implements OnInit, OnDestroy {
           });
     } else {
       this.speakerService
-          .updateSpeaker(this.model)
+          .updateSpeaker(form)
           .then(res => this.toast.success('Speaker updated!'));
     }
+  }
 
+  checkProfile(form: any) {
+    var flag = true;
+
+    this.requiredProfileFields.forEach(function(item) {
+      if (!form[item]) {
+        flag = false;
+      }
+    });
+
+    return flag;
   }
 
 }
