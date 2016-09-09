@@ -16,8 +16,9 @@
             <b>Incomplete Speaker Profiles</b>
           </div>
           <div class="row">
-            <span *ngIf="speaker.profileComplete">None</span>
-            <span *ngIf="!speaker.profileComplete" class="redText">Profile Incomplete</span>
+            <div *ngFor="let speaker of (speakerService.profileCompleted | async)">
+              <div class="name">{{ speaker.salutation | capitalize }} {{ speaker.nameFirst | capitalize }} {{ speaker.nameLast | capitalize }}</div>
+            </div>
           </div>
         </div>
 
@@ -29,9 +30,9 @@
           <div class="row">
             <b>Completed Speaker Profiles</b>
           </div>
-          <div class="row">
-            <span *ngIf="speaker.profileComplete">None</span>
-            <span *ngIf="!speaker.profileComplete" class="redText">Profile Incomplete</span>
+            <div *ngFor="let speaker of (speakerService.profileNotDone | async)">
+              <div class="name">{{ speaker.salutation | capitalize }} {{ speaker.nameFirst | capitalize }} {{ speaker.nameLast | capitalize }}</div>
+            </div>
           </div>
         </div>
 
