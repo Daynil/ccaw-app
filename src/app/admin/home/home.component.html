@@ -13,7 +13,7 @@
 
         <div class="dashboard-item">
           <div class="row">
-            <b>Incomplete Speaker Profiles</b>
+            <b>Completed Speaker Profiles</b>
           </div>
           <div class="row">
             <div *ngFor="let speaker of (speakerService.profileCompleted | async)">
@@ -28,8 +28,9 @@
 
         <div class="dashboard-item">
           <div class="row">
-            <b>Completed Speaker Profiles</b>
+            <b>Incomplete Speaker Profiles</b>
           </div>
+          <div class="row">
             <div *ngFor="let speaker of (speakerService.profileNotDone | async)">
               <div class="name">{{ speaker.salutation | capitalize }} {{ speaker.nameFirst | capitalize }} {{ speaker.nameLast | capitalize }}</div>
             </div>
