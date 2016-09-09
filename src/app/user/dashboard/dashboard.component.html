@@ -7,75 +7,84 @@
 
   <div class="row block">
     <h3 class="text-center title">My Information</h3>
-    <div class="center-block">
+    <div class="col-xs-12">
 
-      <div class="col-md-5 col-xs-11 dashboard-item">
-        <div class="row">
-          <b>My scheduled presentations</b>
-        </div>
-        <div class="row">
-          <div *ngFor="let session of scheduledSessions">
-            <div *ngIf="session.speakers?.mainPresenter === speaker._id"><a [routerLink]="['/session', {id: session._id}]">{{ session.title }}</a></div>
-            <div *ngIf="session.speakers?.mainPresenter !== speaker._id">{{ session.title }}</div>
-            <div *ngIf="session.speakers?.coPresenters?.length > 0" class="copres-list">
-              <div><i>Copresenters:</i></div>
-              <div *ngFor="let coPres of speakerService.getSpeakerList(session.speakers).coPresenters">
-                <i class="fa fa-ban delete" (click)="removeCopres(session._id, coPres._id)"></i>
-                {{ coPres.nameFirst }} {{ coPres.nameLast }}
-              </div>
-            </div>
-            <div>Currently Scheduled for: </div>
-            <div *ngFor="let occurrence of model.statusTimeLocation">
-              {{ getPart(session, occurrence) }}{{ getDate(occurrence) | dateCustom }} from {{ slot(occurrence)?.start | time }} to {{ slot(occurrence)?.end | time }} in {{ occurrence.room }}
-            </div>
-            <div class="divider-s"></div>
+      <div class="col-xs-6">
+
+        <div class="dashboard-item">
+          <div class="row">
+            <b>My scheduled presentations</b>
           </div>
-        </div>
-      </div>
-
-      <div class="col-md-5 col-xs-11 dashboard-item">
-        <div class="row">
-          <b>My Arrangements</b>
-        </div>
-        <div class="row">
-          Brooke's travel arrangements...<br/>
-          Brooke's hotel arrangements...
-        </div>
-      </div>
-
-      <div class="col-md-5 col-xs-11 dashboard-item">
-        <div class="row">
-          <b>My Todos</b>
-        </div>
-        <div class="row">
-          Incomplete fields (speaker info, copresenters)...
-        </div>
-      </div>
-
-      <div class="col-md-5 col-xs-11 dashboard-item">
-        <div class="row">
-          <b>My Presentation Proposals</b>
-        </div>
-        <div class="row">
-          <div class="dashboard-list">
-            <div *ngFor="let session of pendingSessions">
+          <div class="row">
+            <div *ngFor="let session of scheduledSessions">
               <div *ngIf="session.speakers?.mainPresenter === speaker._id"><a [routerLink]="['/session', {id: session._id}]">{{ session.title }}</a></div>
               <div *ngIf="session.speakers?.mainPresenter !== speaker._id">{{ session.title }}</div>
-              <div><i>Status: </i> {{ session.approval }}</div>
               <div *ngIf="session.speakers?.coPresenters?.length > 0" class="copres-list">
                 <div><i>Copresenters:</i></div>
                 <div *ngFor="let coPres of speakerService.getSpeakerList(session.speakers).coPresenters">
-                  <i *ngIf="session.speakers?.mainPresenter === speaker._id" class="fa fa-ban delete" (click)="removeCopres(session._id, coPres._id)"></i>
+                  <i class="fa fa-ban delete" (click)="removeCopres(session._id, coPres._id)"></i>
                   {{ coPres.nameFirst }} {{ coPres.nameLast }}
                 </div>
+              </div>
+              <div>Currently Scheduled for: </div>
+              <div *ngFor="let occurrence of model.statusTimeLocation">
+                {{ getPart(session, occurrence) }}{{ getDate(occurrence) | dateCustom }} from {{ slot(occurrence)?.start | time }} to {{ slot(occurrence)?.end | time }} in {{ occurrence.room }}
               </div>
               <div class="divider-s"></div>
             </div>
           </div>
         </div>
+
+        <div class="dashboard-item">
+          <div class="row">
+            <b>My Todos</b>
+          </div>
+          <div class="row">
+            Incomplete fields (speaker info, copresenters)...
+          </div>
+        </div>
+
+      </div>
+
+      <div class="col-xs-6">
+
+        <div class="dashboard-item">
+          <div class="row">
+            <b>My Arrangements</b>
+          </div>
+          <div class="row">
+            Brooke's travel arrangements...<br/>
+            Brooke's hotel arrangements...
+          </div>
+        </div>
+
+        <div class="dashboard-item">
+          <div class="row">
+            <b>My Presentation Proposals</b>
+          </div>
+          <div class="row">
+            <div class="dashboard-list">
+              <div *ngFor="let session of pendingSessions">
+                <div *ngIf="session.speakers?.mainPresenter === speaker._id"><a [routerLink]="['/session', {id: session._id}]">{{ session.title }}</a></div>
+                <div *ngIf="session.speakers?.mainPresenter !== speaker._id">{{ session.title }}</div>
+                <div><i>Status: </i> {{ session.approval }}</div>
+                <div *ngIf="session.speakers?.coPresenters?.length > 0" class="copres-list">
+                  <div><i>Copresenters:</i></div>
+                  <div *ngFor="let coPres of speakerService.getSpeakerList(session.speakers).coPresenters">
+                    <i *ngIf="session.speakers?.mainPresenter === speaker._id" class="fa fa-ban delete" (click)="removeCopres(session._id, coPres._id)"></i>
+                    {{ coPres.nameFirst }} {{ coPres.nameLast }}
+                  </div>
+                </div>
+                <div class="divider-s"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
 
     </div>
+
   </div>
 
   <div class="row block">
@@ -94,7 +103,7 @@
   <div class="row adding-copres">
     <div *ngIf="addingCopres" class="block">
       <p>
-        Please select copresenters for presentations which you have submitted. 
+        Please select copresenters for presentations which you have submitted.
         If they have not made an account, you can start one for them, and they will receive
         an email asking them to finish making the account.
       </p>
@@ -123,7 +132,7 @@
           <button class="btn btn-primary" (click)="addCopres(sessions.value, speakers.value)">Add copresenter</button>
         </div>
         <div class="col-md-6 col-md-offset-1 col-xs-12 new-copres">
-          <button class="btn btn-primary" (click)="goto('copres')">Create New Copresenter</button>        
+          <button class="btn btn-primary" (click)="goto('copres')">Create New Copresenter</button>
         </div>
       </div>
     </div>
