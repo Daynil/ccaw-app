@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
 
@@ -39,7 +39,6 @@ export class DashboardComponent {
 
     this.authService.user.subscribe(user => {
       this.speaker = this.speakerService.getSpeaker(user._id);
-      console.log('this.speaker', this.speaker);
     });
 
     this.sessionService.sessionsUnfiltered.subscribe(sessions => {
