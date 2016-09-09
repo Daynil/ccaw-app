@@ -2,7 +2,7 @@
      [class.page-transition]="transitionService.isTransitioning()">
   <h2>Speaker Information</h2>
 
-  <form #speakerForm="ngForm">
+  <form #speakerForm="ngForm" (submit)="updateSpeaker(speakerForm.value)">
     <div class="form-group">
 
       <div class="row section">
@@ -11,6 +11,7 @@
             <label class="control-label primary-label" for="salutation">Salutation</label>
             <input type="text" class="form-control"
                   [(ngModel)]="model.salutation"
+                   id="salutation"
                   name="salutation" #salutation="ngModel">
           </div>
         </div>
@@ -20,6 +21,7 @@
             <label class="control-label sub-label" for="title">If you have multiple titles, please choose the most relevant. This title will be included in CCAW materials.</label>
             <input type="text" class="form-control"
                     [(ngModel)]="model.title"
+                   id="title"
                     name="title" #title="ngModel">
           </div>
         </div>
@@ -29,6 +31,7 @@
             <input type="text" class="form-control"
                    required
                   [(ngModel)]="model.nameFirst"
+                   id="nameFirst"
                   name="nameFirst" #nameFirst="ngModel">
           </div>
           <div class="col-md-4 col-xs-6">
@@ -36,15 +39,17 @@
             <input type="text" class="form-control"
                    required
                   [(ngModel)]="model.nameLast"
+                   id="nameLast"
                   name="nameLast" #nameLast="ngModel">
           </div>
         </div>
         <div class="row">
           <div class="col-md-8 col-xs-12">
-            <label class="control-label primary-label" for="organization">Organization</label><br/>
+            <label class="control-label primary-label formLabelRequired" for="organization">Organization</label><br/>
             <label class="control-label sub-label" for="organization">If you are associated with multiple organizations, please choose the most relevant. This organization will be included in CCAW materials.</label>
             <input type="text" class="form-control"
                     [(ngModel)]="model.organization"
+                   id="organization"
                     name="organization" #organization="ngModel">
           </div>
         </div>
@@ -56,6 +61,7 @@
             <label class="control-label primary-label" for="address1">Address Line 1</label>
             <input type="text" class="form-control"
                   [(ngModel)]="model.address1"
+                   id="address1"
                   name="address1" #address1="ngModel">
           </div>
         </div>
@@ -64,6 +70,7 @@
             <label class="control-label primary-label" for="address2">Address Line 2</label>
             <input type="text" class="form-control"
                   [(ngModel)]="model.address2"
+                   id="address2"
                   name="address2" #address2="ngModel">
           </div>
         </div>
@@ -124,7 +131,7 @@
         </div>
         <div class="row">
           <div class="col-md-8 col-xs-12">
-            <label class="control-label primary-label" for="bioWebsite">Website Bio</label><br/>
+            <label class="control-label primary-label formLabelRequired" for="bioWebsite">Website Bio</label><br/>
             <label class="control-label sub-label" for="bioWebsite"><b>125 word limit.</b> This bio will appear on CCAW's website and on the conference app. Please use third person.</label>
             <textarea class="form-control" rows="3"
                   [(ngModel)]="model.bioWebsite"
@@ -133,7 +140,7 @@
         </div>
         <div class="row">
           <div class="col-md-8 col-xs-12">
-            <label class="control-label primary-label" for="bioProgram">Program Bio</label><br/>
+            <label class="control-label primary-label formLabelRequired" for="bioProgram">Program Bio</label><br/>
             <label class="control-label sub-label" for="bioProgram"><b>60 word limit.</b> In order to cut down on printing costs and reduce paper waste, please shorten your bio to be included in the printed program. Bios longer than 60 words will be edited down at CCAW staff's discretion.</label>
             <textarea class="form-control" rows="3"
                   [(ngModel)]="model.bioProgram"
@@ -237,7 +244,7 @@
       </div>
 
     </div>
-    <button type="submit" [disabled]="!speakerForm.form.valid" class="btn btn-primary" (click)="updateSpeaker(speakerForm.form)">Submit</button>
+    <button type="submit" [disabled]="!speakerForm.form.valid" class="btn btn-primary">Submit</button>
     <toast #toast></toast>
   </form>
 </div>
