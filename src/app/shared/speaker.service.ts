@@ -1,13 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import "rxjs/add/operator/toPromise";
 import * as _ from 'lodash';
 
 import { handleError, parseJson, packageForPost } from './http-helpers';
-import { Conference, TimeSlot } from './conference.model';
-import { Session } from './session.model';
 import { Speaker } from './speaker.model';
 
 export interface SpeakerList {
@@ -32,6 +29,9 @@ export class SpeakerService {
   speakersUnfiltered: BehaviorSubject<Speaker[]> = new BehaviorSubject([]);
   speakers: BehaviorSubject<Speaker[]> = new BehaviorSubject([]);
   admins: BehaviorSubject<Speaker[]> = new BehaviorSubject([]);
+  profileCompleted: BehaviorSubject<Speaker[]> = new BehaviorSubject([]);
+  profileNotDone: BehaviorSubject<Speaker[]> = new BehaviorSubject([]);
+
 
   currentFilters: BehaviorSubject<{order: SpeakerOrder, filter: SpeakerFilter}>
                   = new BehaviorSubject({order: SpeakerOrder.Alphabetical, filter: SpeakerFilter.None});
@@ -64,6 +64,14 @@ export class SpeakerService {
     let filtered: Speaker[];
     filtered = _.filter(unfilteredCopy, speaker => !speaker.admin);
     this.admins.next(_.filter(unfilteredCopy, speaker => speaker.admin));
+
+    // get list of speakers with completed profiles
+    this.profileCompleted.next(_.filter(unfilteredCopy, speaker => speaker.profileComplete));
+
+
+    // get list of speakers with incomplete profiles
+    this.profileNotDone.next(_.filter(unfilteredCopy, speaker => !speaker.profileComplete));
+
 
     switch (this.currentFilters.getValue().order) {
       case SpeakerOrder.Alphabetical:
