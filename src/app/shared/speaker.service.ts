@@ -100,6 +100,7 @@ export class SpeakerService {
   }
 
   updateSpeaker(speaker: Speaker) {
+
     let pkg = packageForPost(speaker);
     return this.http
               .post('/api/updatespeaker', pkg.body, pkg.opts)
