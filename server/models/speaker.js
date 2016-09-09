@@ -28,6 +28,10 @@ let speakerSchema = new mongoose.Schema({
     required: true,
   },
   salutation: String,
+  profileComplete: {
+    type: Boolean,
+    default: false
+  },
 
   // Speaker information
   status: {
