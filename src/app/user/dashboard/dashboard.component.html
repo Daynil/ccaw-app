@@ -40,7 +40,8 @@
             <b>My Todos</b>
           </div>
           <div class="row">
-            Incomplete fields (speaker info, copresenters)...
+            <span *ngIf="speaker.profileComplete">None</span>
+            <span *ngIf="!speaker.profileComplete" class="redText">Profile Incomplete</span>
           </div>
         </div>
 
@@ -84,7 +85,6 @@
       </div>
 
     </div>
-
   </div>
 
   <div class="row block">

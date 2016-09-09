@@ -27,7 +27,7 @@ export class DashboardComponent {
   scheduledSessions: Session[] = [];
 
   leadOnlySessions: Session[] = [];
-  
+
   addingCopres = false;
 
   constructor(private transitionService: TransitionService,
@@ -39,6 +39,7 @@ export class DashboardComponent {
 
     this.authService.user.subscribe(user => {
       this.speaker = this.speakerService.getSpeaker(user._id);
+      console.log('this.speaker', this.speaker);
     });
 
     this.sessionService.sessionsUnfiltered.subscribe(sessions => {
